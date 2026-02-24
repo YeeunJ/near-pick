@@ -1,88 +1,58 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-02-24T06:45:02.470Z",
-  "activeFeatures": [
-    "exception",
-    "response",
-    "phase2-convention"
-  ],
-  "primaryFeature": "exception",
+  "lastUpdated": "2026-02-24T07:30:00.000Z",
+  "activeFeatures": [],
+  "primaryFeature": null,
   "features": {
-    "exception": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-02-24T06:36:00.033Z",
-        "lastUpdated": "2026-02-24T06:36:03.660Z"
-      },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/common/src/main/kotlin/com/nearpick/common/exception/BusinessException.kt"
-    },
-    "response": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-02-24T06:36:07.867Z",
-        "lastUpdated": "2026-02-24T06:36:07.867Z"
-      },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/common/src/main/kotlin/com/nearpick/common/response/ApiResponse.kt"
-    },
     "phase2-convention": {
-      "phase": "act",
-      "phaseNumber": 5,
-      "matchRate": null,
+      "phase": "completed",
+      "phaseNumber": 6,
+      "matchRate": 95,
       "iterationCount": 0,
       "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-02-24T06:45:02.469Z",
-        "lastUpdated": "2026-02-24T06:45:02.470Z"
+      "documents": {
+        "plan": "docs/01-plan/features/phase2-convention.plan.md",
+        "design": "docs/02-design/features/phase2-convention.design.md",
+        "analysis": "docs/03-analysis/phase2-convention.analysis.md",
+        "report": "docs/04-report/phase2-convention.report.md"
       },
-      "previousPhase": "check",
-      "autoAdvanced": true
+      "timestamps": {
+        "started": "2026-02-23T08:09:05.353Z",
+        "lastUpdated": "2026-02-24T07:30:00.000Z"
+      }
+    },
+    "phase2-workflow": {
+      "phase": "completed",
+      "phaseNumber": 6,
+      "matchRate": 100,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {
+        "plan": "docs/01-plan/features/phase2-workflow.plan.md",
+        "design": "docs/02-design/features/phase2-workflow.design.md"
+      },
+      "timestamps": {
+        "started": "2026-02-24T07:00:00.000Z",
+        "lastUpdated": "2026-02-24T07:30:00.000Z"
+      }
     }
   },
   "pipeline": {
-    "currentPhase": 1,
-    "level": "Dynamic",
-    "phaseHistory": []
+    "currentPhase": 2,
+    "level": "Enterprise",
+    "phaseHistory": [
+      { "phase": 1, "feature": "phase1-schema", "completedAt": "2026-02-23T08:09:05.353Z" },
+      { "phase": 2, "feature": "phase2-convention", "completedAt": "2026-02-24T06:45:00.000Z" },
+      { "phase": 2.5, "feature": "phase2-workflow", "completedAt": "2026-02-24T07:30:00.000Z" }
+    ]
   },
   "session": {
     "startedAt": "2026-02-23T08:09:05.353Z",
-    "onboardingCompleted": false,
-    "lastActivity": "2026-02-24T06:45:02.470Z"
+    "onboardingCompleted": true,
+    "lastActivity": "2026-02-24T07:30:00.000Z"
   },
   "history": [
-    {
-      "timestamp": "2026-02-24T06:36:00.033Z",
-      "feature": "exception",
-      "phase": "do",
-      "action": "updated"
-    },
-    {
-      "timestamp": "2026-02-24T06:36:03.660Z",
-      "feature": "exception",
-      "phase": "do",
-      "action": "updated"
-    },
-    {
-      "timestamp": "2026-02-24T06:36:07.867Z",
-      "feature": "response",
-      "phase": "do",
-      "action": "updated"
-    },
-    {
-      "timestamp": "2026-02-24T06:45:02.470Z",
-      "feature": "phase2-convention",
-      "phase": "act",
-      "action": "updated"
-    }
+    { "timestamp": "2026-02-24T06:45:00.000Z", "feature": "phase2-convention", "phase": "completed", "action": "updated" },
+    { "timestamp": "2026-02-24T07:30:00.000Z", "feature": "phase2-workflow", "phase": "completed", "action": "updated" }
   ]
 }
