@@ -48,6 +48,8 @@ include(
 
 ### 1.3 루트 `build.gradle.kts` (공통 설정)
 
+> `io.spring.dependency-management` + Spring Boot BOM을 루트 `subprojects` 블록에서 일괄 적용 → 각 서브모듈에서 플러그인 선언 불필요 (DRY)
+
 ```kotlin
 plugins {
     kotlin("jvm") version "2.2.21" apply false
@@ -64,15 +66,25 @@ subprojects {
     repositories {
         mavenCentral()
     }
+
+    apply(plugin = "io.spring.dependency-management")
+
+    extensions.configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:4.0.3")
+        }
+    }
 }
 ```
 
 ### 1.4 `common/build.gradle.kts`
 
+> `kotlin("plugin.spring")`으로 Spring 컴포넌트의 `open` 수식어 자동 적용. `dependency-management` 플러그인은 루트에서 일괄 적용되므로 선언 불필요.
+
 ```kotlin
 plugins {
     kotlin("jvm")
-    id("io.spring.dependency-management")
+    kotlin("plugin.spring")
 }
 
 java {
@@ -102,7 +114,6 @@ tasks.withType<Test> { useJUnitPlatform() }
 plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
-    id("io.spring.dependency-management")
 }
 
 java {
@@ -134,7 +145,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     kotlin("plugin.jpa")
-    id("io.spring.dependency-management")
 }
 
 java {
@@ -169,7 +179,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.spring")
     id("org.springframework.boot")
-    id("io.spring.dependency-management")
 }
 
 java {
@@ -215,6 +224,7 @@ com.nearpick.common/
 com.nearpick.domain/
 └── {도메인명}/                       # ex: product, user, transaction
     ├── {Domain}Service.kt           # interface
+    ├── {DomainEnum}.kt              # Enum 타입 (JPA 불필요하므로 domain에 배치)
     ├── model/
     │   └── {Domain}.kt              # data class (순수 도메인 모델)
     └── dto/
@@ -250,18 +260,19 @@ com.nearpick.app/
 
 현재 단일 모듈에 있는 Phase 1 코드를 새 구조로 이전한다.
 
-| 현재 위치 | 이전 대상 | 이전 후 모듈 |
-|-----------|----------|-------------|
-| `src/.../domain/user/entity/` | `User`, `ConsumerProfile`, `MerchantProfile`, `AdminProfile` | `domain-nearpick` |
-| `src/.../domain/user/enums/` | `UserRole`, `UserStatus`, `AdminLevel` | `domain-nearpick` |
-| `src/.../domain/product/entity/` | `Product`, `PopularityScore` | `domain-nearpick` |
-| `src/.../domain/product/enums/` | `ProductType`, `ProductStatus` | `domain-nearpick` |
-| `src/.../domain/transaction/entity/` | `Wishlist`, `Reservation`, `FlashPurchase` | `domain-nearpick` |
-| `src/.../domain/transaction/enums/` | `ReservationStatus`, `FlashPurchaseStatus` | `domain-nearpick` |
-| `src/.../NearPickApplication.kt` | 메인 클래스 | `app` |
+| 현재 위치 | 이전 대상 | 이전 후 모듈 | 비고 |
+|-----------|----------|-------------|------|
+| `src/.../domain/user/entity/` | `User`, `ConsumerProfile`, `MerchantProfile`, `AdminProfile` | `domain-nearpick` | `*Entity` 접미사 추가 |
+| `src/.../domain/user/enums/` | `UserRole`, `UserStatus`, `AdminLevel` | **`domain`** | Enum은 JPA 불필요 → domain에 배치 |
+| `src/.../domain/product/entity/` | `Product`, `PopularityScore` | `domain-nearpick` | `*Entity` 접미사 추가 |
+| `src/.../domain/product/enums/` | `ProductType`, `ProductStatus` | **`domain`** | Enum은 JPA 불필요 → domain에 배치 |
+| `src/.../domain/transaction/entity/` | `Wishlist`, `Reservation`, `FlashPurchase` | `domain-nearpick` | `*Entity` 접미사 추가 |
+| `src/.../domain/transaction/enums/` | `ReservationStatus`, `FlashPurchaseStatus` | **`domain`** | Enum은 JPA 불필요 → domain에 배치 |
+| `src/.../NearPickApplication.kt` | 메인 클래스 | `app` | `scanBasePackages = ["com.nearpick"]` 추가 |
 
 > **이전 후 패키지명 변경:**
-> `com.nearpick.app.domain.*` → `com.nearpick.nearpick.*`
+> - Entity: `com.nearpick.app.domain.*` → `com.nearpick.nearpick.{domain}.*Entity`
+> - Enum: `com.nearpick.app.domain.*` → `com.nearpick.domain.{domain}.*`
 
 ---
 
