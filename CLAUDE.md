@@ -4,10 +4,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-`near-pick` is a Spring Boot 4.0.3 application written in Kotlin 2.2.21, targeting Java 17. Currently in early scaffolding stage.
+`near-pick` is a Spring Boot 4.0.3 application written in Kotlin 2.2.21, targeting Java 17.
+Multi-module Gradle project (Phase 2 convention applied).
 
-- Root package: `com.nearpick.app`
-- Entry point: `src/main/kotlin/com/nearpick/app/NearPickApplication.kt`
+- Entry point: `app/src/main/kotlin/com/nearpick/app/NearPickApplication.kt`
+- Conventions: `CONVENTIONS.md`
+
+## Module Structure
+
+```
+app/             — Controller, Spring Boot entry point (@SpringBootApplication)
+common/          — Shared: ApiResponse, BusinessException, ErrorCode
+domain/          — Service interfaces, pure domain models, DTOs (no JPA)
+domain-nearpick/ — ServiceImpl, JpaRepository, @Entity, Mapper
+```
+
+Dependency flow: `app →(compile) domain →(compile) common`; `app →(runtimeOnly) domain-nearpick`
+
+> `domain-nearpick` is `runtimeOnly` in `app` — importing its classes in `app` is a compile error by design.
+
+## Package Roots
+
+| Module | Root package |
+|--------|--------------|
+| `app` | `com.nearpick.app` |
+| `common` | `com.nearpick.common` |
+| `domain` | `com.nearpick.domain` |
+| `domain-nearpick` | `com.nearpick.nearpick` |
 
 ## Build & Run Commands
 
@@ -16,7 +39,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ./gradlew build
 
 # Run the application
-./gradlew bootRun
+./gradlew :app:bootRun
 
 # Run all tests
 ./gradlew test
@@ -33,6 +56,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-Standard Spring Boot layered architecture using Kotlin. Kotlin compiler options enforce JSR-305 strict null safety (`-Xjsr305=strict`) and default annotation target to param-property (`-Xannotation-default-target=param-property`).
+Multi-module Spring Boot layered architecture using Kotlin. Kotlin compiler options enforce JSR-305 strict null safety (`-Xjsr305=strict`) and default annotation target to param-property (`-Xannotation-default-target=param-property`).
 
 Tests use JUnit 5 via `useJUnitPlatform()`.

@@ -1,9 +1,54 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-02-23T08:09:05.353Z",
-  "activeFeatures": [],
-  "primaryFeature": null,
-  "features": {},
+  "lastUpdated": "2026-02-24T06:45:02.470Z",
+  "activeFeatures": [
+    "exception",
+    "response",
+    "phase2-convention"
+  ],
+  "primaryFeature": "exception",
+  "features": {
+    "exception": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-24T06:36:00.033Z",
+        "lastUpdated": "2026-02-24T06:36:03.660Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/common/src/main/kotlin/com/nearpick/common/exception/BusinessException.kt"
+    },
+    "response": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-24T06:36:07.867Z",
+        "lastUpdated": "2026-02-24T06:36:07.867Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/common/src/main/kotlin/com/nearpick/common/response/ApiResponse.kt"
+    },
+    "phase2-convention": {
+      "phase": "act",
+      "phaseNumber": 5,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-24T06:45:02.469Z",
+        "lastUpdated": "2026-02-24T06:45:02.470Z"
+      },
+      "previousPhase": "check",
+      "autoAdvanced": true
+    }
+  },
   "pipeline": {
     "currentPhase": 1,
     "level": "Dynamic",
@@ -12,7 +57,32 @@
   "session": {
     "startedAt": "2026-02-23T08:09:05.353Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-02-23T08:09:05.353Z"
+    "lastActivity": "2026-02-24T06:45:02.470Z"
   },
-  "history": []
+  "history": [
+    {
+      "timestamp": "2026-02-24T06:36:00.033Z",
+      "feature": "exception",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-24T06:36:03.660Z",
+      "feature": "exception",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-24T06:36:07.867Z",
+      "feature": "response",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-24T06:45:02.470Z",
+      "feature": "phase2-convention",
+      "phase": "act",
+      "action": "updated"
+    }
+  ]
 }

@@ -1,38 +1,24 @@
 plugins {
-    kotlin("jvm") version "2.2.21"
-    kotlin("plugin.spring") version "2.2.21"
-    id("org.springframework.boot") version "4.0.3"
-    id("io.spring.dependency-management") version "1.1.7"
+    kotlin("jvm") version "2.2.21" apply false
+    kotlin("plugin.spring") version "2.2.21" apply false
+    kotlin("plugin.jpa") version "2.2.21" apply false
+    id("org.springframework.boot") version "4.0.3" apply false
+    id("io.spring.dependency-management") version "1.1.7" apply false
 }
 
-group = "com.nearpick.app"
-version = "0.0.1-SNAPSHOT"
-description = "near-pick"
+subprojects {
+    group = "com.nearpick"
+    version = "0.0.1-SNAPSHOT"
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+    repositories {
+        mavenCentral()
     }
-}
 
-repositories {
-    mavenCentral()
-}
+    apply(plugin = "io.spring.dependency-management")
 
-dependencies {
-    implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+    extensions.configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:4.0.3")
+        }
     }
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
 }
