@@ -21,14 +21,20 @@ class JwtAuthenticationFilter(
     ) {
         val token = resolveToken(request)
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            val userId = jwtTokenProvider.getUserId(token)
-            val role = jwtTokenProvider.getRole(token)
-            val auth = UsernamePasswordAuthenticationToken(
-                userId,
-                null,
-                listOf(SimpleGrantedAuthority("ROLE_${role.name}")),
-            )
-            SecurityContextHolder.getContext().authentication = auth
+            try {
+                val userId = jwtTokenProvider.getUserId(token)
+                val role = jwtTokenProvider.getRole(token)
+                val auth = UsernamePasswordAuthenticationToken(
+                    userId,
+                    null,
+                    listOf(SimpleGrantedAuthority("ROLE_${role.name}")),
+                )
+                SecurityContextHolder.getContext().authentication = auth
+            } catch (e: Exception) {
+                SecurityContextHolder.clearContext()
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token")
+                return
+            }
         }
         filterChain.doFilter(request, response)
     }

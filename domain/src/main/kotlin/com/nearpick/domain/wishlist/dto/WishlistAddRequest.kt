@@ -1,7 +1,7 @@
 package com.nearpick.domain.wishlist.dto
 
-import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Positive
 
 data class WishlistAddRequest(
-    @field:NotNull val productId: Long,
+    @field:Positive val productId: Long,
 )

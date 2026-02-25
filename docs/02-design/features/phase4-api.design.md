@@ -61,7 +61,7 @@ dependencies {
 
 ### 2.1 전체 추가 파일 목록
 
-```
+```text
 app/src/main/kotlin/com/nearpick/app/
 ├── NearPickApplication.kt
 ├── config/
@@ -156,7 +156,8 @@ domain-nearpick/src/main/kotlin/com/nearpick/nearpick/
 ### 3.2 application.properties 추가 항목
 
 ```properties
-jwt.secret=nearpick-jwt-secret-key-must-be-at-least-32-chars
+# 운영 환경에서는 반드시 환경변수로 주입 (JWT_SECRET)
+jwt.secret=${JWT_SECRET:change-me-in-production-must-be-32-chars-min}
 jwt.expiration-ms=3600000
 ```
 
@@ -656,7 +657,7 @@ ORDER BY
 
 ## 6. 구현 순서
 
-```
+```text
 1. ErrorCode 보강 (common)
 2. build.gradle.kts 의존성 추가 (app, domain)
 3. application.properties — jwt.secret, jwt.expiration-ms 추가

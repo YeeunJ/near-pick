@@ -15,7 +15,8 @@ data class DashboardResponse(
 
 data class PendingReservationItem(
     val id: Long,
-    val consumerEmail: String,
+    // 이메일 원문 대신 마스킹 처리하여 PII 노출 방지 (예: us**@example.com)
+    val consumerMaskedEmail: String,
     val productTitle: String,
     val visitAt: LocalDateTime?,
 )

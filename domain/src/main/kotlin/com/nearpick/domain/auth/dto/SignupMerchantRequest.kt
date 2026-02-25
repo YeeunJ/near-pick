@@ -1,5 +1,7 @@
 package com.nearpick.domain.auth.dto
 
+import jakarta.validation.constraints.DecimalMax
+import jakarta.validation.constraints.DecimalMin
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
@@ -11,6 +13,6 @@ data class SignupMerchantRequest(
     @field:NotBlank val businessName: String,
     @field:NotBlank val businessRegNo: String,
     @field:NotBlank val shopAddress: String,
-    val shopLat: BigDecimal,
-    val shopLng: BigDecimal,
+    @field:DecimalMin("-90.0") @field:DecimalMax("90.0") val shopLat: BigDecimal,
+    @field:DecimalMin("-180.0") @field:DecimalMax("180.0") val shopLng: BigDecimal,
 )

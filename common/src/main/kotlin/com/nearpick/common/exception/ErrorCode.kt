@@ -11,6 +11,7 @@ enum class ErrorCode(
 
     // Auth
     DUPLICATE_EMAIL(409, "Email already exists"),
+    DUPLICATE_BUSINESS_REG_NO(409, "Business registration number already exists"),
     INVALID_CREDENTIALS(401, "Invalid email or password"),
     UNAUTHORIZED(401, "Authentication required"),
     FORBIDDEN(403, "Access denied"),

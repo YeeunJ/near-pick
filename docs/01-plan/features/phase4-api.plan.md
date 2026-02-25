@@ -63,7 +63,7 @@ JWT 기반 인증을 포함하여 실제 동작하는 REST API를 완성한다.
 |------|------|------|
 | 인증 방식 | JWT (stateless) | 확장성, REST 원칙 |
 | JWT 라이브러리 | `jjwt 0.12.6` | Spring Boot 4 호환, 현재 표준 |
-| Security 프레임워크 | Spring Security 6 | Spring Boot 4 기본 |
+| Security 프레임워크 | Spring Security 7 | Spring Boot 4 기본 |
 | 위치 기반 검색 | Haversine 공식 (Native Query) | H2·PostgreSQL 모두 호환 |
 | 비밀번호 해시 | `BCryptPasswordEncoder` | Spring Security 내장 |
 | 입력 유효성 검사 | `spring-boot-starter-validation` (`@Valid`) | BOM 포함, 추가 의존성 없음 |
@@ -71,7 +71,7 @@ JWT 기반 인증을 포함하여 실제 동작하는 REST API를 완성한다.
 
 ### JWT 배치 전략
 
-```
+```text
 app/
 ├── config/SecurityConfig.kt          ← FilterChain, BCrypt Bean
 ├── config/JwtAuthenticationFilter.kt ← 요청마다 토큰 검증
@@ -88,7 +88,7 @@ domain-nearpick/ auth/
 
 ## 5. 구현 순서
 
-```
+```text
 1. 의존성 추가 (build.gradle.kts)
 2. common: ErrorCode 보강
 3. Auth — 회원가입 / 로그인 / JWT

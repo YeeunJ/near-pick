@@ -32,10 +32,13 @@ class AuthServiceImpl(
         if (userRepository.existsByEmail(request.email)) {
             throw BusinessException(ErrorCode.DUPLICATE_EMAIL)
         }
+        val encoded = requireNotNull(passwordEncoder.encode(request.password)) {
+            "Password encoding returned null"
+        }
         val user = userRepository.save(
             UserEntity(
                 email = request.email,
-                passwordHash = passwordEncoder.encode(request.password)!!,
+                passwordHash = encoded,
                 role = UserRole.CONSUMER,
             )
         )
@@ -49,12 +52,15 @@ class AuthServiceImpl(
             throw BusinessException(ErrorCode.DUPLICATE_EMAIL)
         }
         if (merchantProfileRepository.existsByBusinessRegNo(request.businessRegNo)) {
-            throw BusinessException(ErrorCode.DUPLICATE_EMAIL)
+            throw BusinessException(ErrorCode.DUPLICATE_BUSINESS_REG_NO)
+        }
+        val encoded = requireNotNull(passwordEncoder.encode(request.password)) {
+            "Password encoding returned null"
         }
         val user = userRepository.save(
             UserEntity(
                 email = request.email,
-                passwordHash = passwordEncoder.encode(request.password)!!,
+                passwordHash = encoded,
                 role = UserRole.MERCHANT,
             )
         )

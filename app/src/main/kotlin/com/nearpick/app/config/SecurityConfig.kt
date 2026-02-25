@@ -27,7 +27,6 @@ class SecurityConfig(
                     // 인증 없이 허용
                     .requestMatchers("/auth/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/products/nearby", "/products/{id}").permitAll()
-                    .requestMatchers("/h2-console/**").permitAll()
                     // 소비자 전용
                     .requestMatchers("/wishlists/**").hasRole("CONSUMER")
                     .requestMatchers(HttpMethod.POST, "/reservations").hasRole("CONSUMER")
@@ -46,7 +45,6 @@ class SecurityConfig(
                     // 나머지 인증 필요
                     .anyRequest().authenticated()
             }
-            .headers { it.frameOptions { fo -> fo.disable() } }   // H2 콘솔용
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
         return http.build()
     }
