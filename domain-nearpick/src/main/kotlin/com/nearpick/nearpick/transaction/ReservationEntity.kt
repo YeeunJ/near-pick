@@ -28,6 +28,12 @@ class ReservationEntity(
     @Column(nullable = false, length = 20)
     var status: ReservationStatus = ReservationStatus.PENDING,
 
+    @Column(nullable = false)
+    var quantity: Int = 1,
+
+    @Column(columnDefinition = "TEXT")
+    var memo: String? = null,
+
     @Column(name = "visit_scheduled_at")
     var visitScheduledAt: LocalDateTime? = null,
 

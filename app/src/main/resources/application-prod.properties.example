@@ -1,0 +1,29 @@
+# =============================================
+# 운영 설정 템플릿
+# 서버에서 application-prod.properties 또는 환경변수로 관리하세요.
+# =============================================
+spring.profiles.active=prod
+
+# =============================================
+# MySQL (운영 DB)
+# =============================================
+spring.datasource.url=jdbc:mysql://${DB_HOST}:${DB_PORT:3306}/${DB_NAME}?useSSL=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+
+# JPA / Hibernate — 운영에서는 validate (스키마 자동 변경 금지)
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+# HikariCP 커넥션 풀
+spring.datasource.hikari.maximum-pool-size=20
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.connection-timeout=30000
+
+# =============================================
+# JWT — 반드시 환경변수로 주입 (32자 이상)
+# =============================================
+jwt.secret=${JWT_SECRET}
+jwt.expiration-ms=3600000

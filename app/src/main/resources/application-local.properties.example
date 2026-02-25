@@ -1,0 +1,25 @@
+# =============================================
+# 로컬 개발 설정 템플릿
+# 이 파일을 복사해서 application-local.properties 로 이름을 바꾸고
+# 실제 값을 채워서 사용하세요. (application-local.properties 는 git 무시됩니다)
+# =============================================
+spring.profiles.active=local
+
+# =============================================
+# MySQL (docker-compose.yml 기준 기본값)
+# =============================================
+spring.datasource.url=jdbc:mysql://localhost:3306/nearpick?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.username=nearpick
+spring.datasource.password=nearpick1234
+
+# JPA / Hibernate
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+
+# =============================================
+# JWT (로컬용 — 최소 32자)
+# =============================================
+jwt.secret=local-dev-jwt-secret-key-must-be-at-least-32-chars
+jwt.expiration-ms=3600000

@@ -38,3 +38,8 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### Secrets — 절대 커밋하지 않는 설정 파일 ###
+**/src/main/resources/application-local.properties
+**/src/main/resources/application-prod.properties
+.env
