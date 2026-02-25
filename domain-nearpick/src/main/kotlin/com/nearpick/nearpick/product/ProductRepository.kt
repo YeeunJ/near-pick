@@ -1,5 +1,6 @@
 package com.nearpick.nearpick.product
 
+import com.nearpick.domain.product.ProductStatus
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -63,4 +64,12 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
     ): Page<ProductNearbyProjection>
 
     fun findAllByMerchant_UserId(merchantId: Long, pageable: Pageable): Page<ProductEntity>
+
+    @Query("SELECT p FROM ProductEntity p WHERE :status IS NULL OR p.status = :status ORDER BY p.createdAt DESC")
+    fun findAllByOptionalStatus(
+        @Param("status") status: ProductStatus?,
+        pageable: Pageable,
+    ): Page<ProductEntity>
+
+    fun findAllByMerchant_UserId(merchantId: Long): List<ProductEntity>
 }
