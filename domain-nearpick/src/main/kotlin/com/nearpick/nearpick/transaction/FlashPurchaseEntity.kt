@@ -28,6 +28,9 @@ class FlashPurchaseEntity(
     @Column(nullable = false, length = 20)
     var status: FlashPurchaseStatus = FlashPurchaseStatus.PENDING,
 
+    @Column(nullable = false)
+    var quantity: Int = 1,
+
     @Column(name = "purchased_at", nullable = false, updatable = false)
     val purchasedAt: LocalDateTime = LocalDateTime.now(),
 
