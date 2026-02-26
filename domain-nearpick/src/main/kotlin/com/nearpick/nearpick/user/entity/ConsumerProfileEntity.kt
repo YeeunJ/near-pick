@@ -1,4 +1,4 @@
-package com.nearpick.nearpick.user
+package com.nearpick.nearpick.user.entity
 
 import jakarta.persistence.*
 import java.math.BigDecimal

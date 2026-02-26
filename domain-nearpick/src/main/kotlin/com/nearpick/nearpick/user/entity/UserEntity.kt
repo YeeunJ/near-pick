@@ -1,4 +1,4 @@
-package com.nearpick.nearpick.user
+package com.nearpick.nearpick.user.entity
 
 import com.nearpick.domain.user.UserRole
 import com.nearpick.domain.user.UserStatus

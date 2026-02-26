@@ -1,8 +1,8 @@
-package com.nearpick.nearpick.transaction
+package com.nearpick.nearpick.transaction.entity
 
 import com.nearpick.domain.transaction.ReservationStatus
-import com.nearpick.nearpick.product.ProductEntity
-import com.nearpick.nearpick.user.UserEntity
+import com.nearpick.nearpick.product.entity.ProductEntity
+import com.nearpick.nearpick.user.entity.UserEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -27,6 +27,12 @@ class ReservationEntity(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     var status: ReservationStatus = ReservationStatus.PENDING,
+
+    @Column(nullable = false)
+    var quantity: Int = 1,
+
+    @Column(columnDefinition = "TEXT")
+    var memo: String? = null,
 
     @Column(name = "visit_scheduled_at")
     var visitScheduledAt: LocalDateTime? = null,

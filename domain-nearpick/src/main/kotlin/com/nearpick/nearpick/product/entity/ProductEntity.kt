@@ -1,8 +1,8 @@
-package com.nearpick.nearpick.product
+package com.nearpick.nearpick.product.entity
 
 import com.nearpick.domain.product.ProductStatus
 import com.nearpick.domain.product.ProductType
-import com.nearpick.nearpick.user.MerchantProfileEntity
+import com.nearpick.nearpick.user.entity.MerchantProfileEntity
 import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.LocalDateTime

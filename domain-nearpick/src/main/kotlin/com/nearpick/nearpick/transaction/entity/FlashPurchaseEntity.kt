@@ -1,8 +1,8 @@
-package com.nearpick.nearpick.transaction
+package com.nearpick.nearpick.transaction.entity
 
 import com.nearpick.domain.transaction.FlashPurchaseStatus
-import com.nearpick.nearpick.product.ProductEntity
-import com.nearpick.nearpick.user.UserEntity
+import com.nearpick.nearpick.product.entity.ProductEntity
+import com.nearpick.nearpick.user.entity.UserEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -27,6 +27,9 @@ class FlashPurchaseEntity(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     var status: FlashPurchaseStatus = FlashPurchaseStatus.PENDING,
+
+    @Column(nullable = false)
+    var quantity: Int = 1,
 
     @Column(name = "purchased_at", nullable = false, updatable = false)
     val purchasedAt: LocalDateTime = LocalDateTime.now(),

@@ -1,7 +1,7 @@
-package com.nearpick.nearpick.transaction
+package com.nearpick.nearpick.transaction.entity
 
-import com.nearpick.nearpick.product.ProductEntity
-import com.nearpick.nearpick.user.UserEntity
+import com.nearpick.nearpick.product.entity.ProductEntity
+import com.nearpick.nearpick.user.entity.UserEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
