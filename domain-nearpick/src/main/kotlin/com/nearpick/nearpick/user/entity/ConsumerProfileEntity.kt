@@ -1,0 +1,29 @@
+package com.nearpick.nearpick.user.entity
+
+import jakarta.persistence.*
+import java.math.BigDecimal
+import java.time.LocalDateTime
+
+@Entity
+@Table(name = "consumer_profiles")
+class ConsumerProfileEntity(
+    @Id
+    val userId: Long = 0,
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "user_id")
+    var user: UserEntity,
+
+    @Column(nullable = false, length = 50)
+    var nickname: String,
+
+    @Column(name = "current_lat", precision = 10, scale = 7)
+    var currentLat: BigDecimal? = null,
+
+    @Column(name = "current_lng", precision = 10, scale = 7)
+    var currentLng: BigDecimal? = null,
+
+    @Column(name = "updated_at", nullable = false)
+    var updatedAt: LocalDateTime = LocalDateTime.now(),
+)
