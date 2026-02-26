@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 interface FlashPurchaseRepository : JpaRepository<FlashPurchaseEntity, Long> {
 
-    fun findAllByUser_UserId(userId: Long, pageable: Pageable): Page<FlashPurchaseEntity>
+    fun findAllByUser_Id(userId: Long, pageable: Pageable): Page<FlashPurchaseEntity>
 
     fun countByProduct_Id(productId: Long): Long
 

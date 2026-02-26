@@ -21,7 +21,7 @@ class WishlistServiceImpl(
 
     @Transactional
     override fun add(userId: Long, productId: Long): Long {
-        if (wishlistRepository.existsByUser_UserIdAndProduct_Id(userId, productId)) {
+        if (wishlistRepository.existsByUser_IdAndProduct_Id(userId, productId)) {
             throw BusinessException(ErrorCode.ALREADY_WISHLISTED)
         }
         val user = userRepository.findById(userId).orElseThrow {
@@ -39,11 +39,11 @@ class WishlistServiceImpl(
 
     @Transactional
     override fun remove(userId: Long, productId: Long) {
-        val wishlist = wishlistRepository.findByUser_UserIdAndProduct_Id(userId, productId)
+        val wishlist = wishlistRepository.findByUser_IdAndProduct_Id(userId, productId)
             ?: throw BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
         wishlistRepository.delete(wishlist)
     }
 
     override fun getMyWishlists(userId: Long): List<WishlistItem> =
-        wishlistRepository.findAllByUser_UserId(userId).map { it.toItem() }
+        wishlistRepository.findAllByUser_Id(userId).map { it.toItem() }
 }

@@ -55,6 +55,6 @@ class FlashPurchaseServiceImpl(
     }
 
     override fun getMyPurchases(userId: Long, page: Int, size: Int): Page<FlashPurchaseItem> =
-        flashPurchaseRepository.findAllByUser_UserId(userId, PageRequest.of(page, size))
+        flashPurchaseRepository.findAllByUser_Id(userId, PageRequest.of(page, size))
             .map { it.toItem() }
 }

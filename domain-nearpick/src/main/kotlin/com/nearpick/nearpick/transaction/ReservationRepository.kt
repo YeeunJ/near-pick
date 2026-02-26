@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 
 interface ReservationRepository : JpaRepository<ReservationEntity, Long> {
 
-    fun findAllByUser_UserId(userId: Long, pageable: Pageable): Page<ReservationEntity>
+    fun findAllByUser_Id(userId: Long, pageable: Pageable): Page<ReservationEntity>
 
     fun countByProduct_Id(productId: Long): Long
 

@@ -81,7 +81,7 @@ class ReservationServiceImpl(
     }
 
     override fun getMyReservations(userId: Long, page: Int, size: Int): Page<ReservationItem> =
-        reservationRepository.findAllByUser_UserId(userId, PageRequest.of(page, size))
+        reservationRepository.findAllByUser_Id(userId, PageRequest.of(page, size))
             .map { it.toItem() }
 
     override fun getPendingReservations(merchantId: Long, page: Int, size: Int): Page<ReservationItem> =

@@ -6,13 +6,13 @@ import org.springframework.data.repository.query.Param
 
 interface WishlistRepository : JpaRepository<WishlistEntity, Long> {
 
-    fun existsByUser_UserIdAndProduct_Id(userId: Long, productId: Long): Boolean
+    fun existsByUser_IdAndProduct_Id(userId: Long, productId: Long): Boolean
 
-    fun findByUser_UserIdAndProduct_Id(userId: Long, productId: Long): WishlistEntity?
+    fun findByUser_IdAndProduct_Id(userId: Long, productId: Long): WishlistEntity?
 
     fun countByProduct_Id(productId: Long): Long
 
-    fun findAllByUser_UserId(userId: Long): List<WishlistEntity>
+    fun findAllByUser_Id(userId: Long): List<WishlistEntity>
 
     /** Batch wishlist count per product — avoids N+1 in product listing */
     @Query("""
