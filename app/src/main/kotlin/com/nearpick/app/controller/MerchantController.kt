@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api/merchant")
+@RequestMapping("/api/merchants")
 @PreAuthorize("hasRole('MERCHANT')")
 class MerchantController(private val merchantService: MerchantService) {
 
-    @GetMapping("/dashboard")
+    @GetMapping("/me/dashboard")
     fun getDashboard(@AuthenticationPrincipal userId: Long) =
         ApiResponse.success(merchantService.getDashboard(userId))
 
-    @GetMapping("/profile")
+    @GetMapping("/me/profile")
     fun getProfile(@AuthenticationPrincipal userId: Long) =
         ApiResponse.success(merchantService.getProfile(userId))
 }

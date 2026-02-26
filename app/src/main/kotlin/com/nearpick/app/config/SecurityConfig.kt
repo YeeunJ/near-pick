@@ -3,6 +3,7 @@ package com.nearpick.app.config
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -13,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
     private val jwtAuthenticationFilter: JwtAuthenticationFilter,
 ) {
@@ -24,24 +26,25 @@ class SecurityConfig(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { auth ->
                 auth
-                    // 인증 없이 허용
+                    // 인증 없이 허용 (Auth 엔드포인트, 공개 상품 조회)
                     .requestMatchers("/auth/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/products/nearby", "/products/{id}").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/products/nearby").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/products/{productId}").permitAll()
                     // 소비자 전용
-                    .requestMatchers("/wishlists/**").hasRole("CONSUMER")
-                    .requestMatchers(HttpMethod.POST, "/reservations").hasRole("CONSUMER")
-                    .requestMatchers(HttpMethod.GET, "/reservations/me").hasRole("CONSUMER")
-                    .requestMatchers(HttpMethod.PATCH, "/reservations/*/cancel").hasRole("CONSUMER")
-                    .requestMatchers("/flash-purchases/**").hasRole("CONSUMER")
+                    .requestMatchers("/api/wishlists/**").hasRole("CONSUMER")
+                    .requestMatchers(HttpMethod.POST, "/api/reservations").hasRole("CONSUMER")
+                    .requestMatchers(HttpMethod.GET, "/api/reservations/me").hasRole("CONSUMER")
+                    .requestMatchers(HttpMethod.PATCH, "/api/reservations/{id}/cancel").hasRole("CONSUMER")
+                    .requestMatchers("/api/flash-purchases/**").hasRole("CONSUMER")
                     // 소상공인 전용
-                    .requestMatchers(HttpMethod.POST, "/products").hasRole("MERCHANT")
-                    .requestMatchers(HttpMethod.GET, "/products/me").hasRole("MERCHANT")
-                    .requestMatchers(HttpMethod.PATCH, "/products/*/close").hasRole("MERCHANT")
-                    .requestMatchers("/merchants/**").hasRole("MERCHANT")
-                    .requestMatchers(HttpMethod.GET, "/reservations/merchant").hasRole("MERCHANT")
-                    .requestMatchers(HttpMethod.PATCH, "/reservations/*/confirm").hasRole("MERCHANT")
+                    .requestMatchers(HttpMethod.POST, "/api/products").hasRole("MERCHANT")
+                    .requestMatchers(HttpMethod.GET, "/api/products/me").hasRole("MERCHANT")
+                    .requestMatchers(HttpMethod.PATCH, "/api/products/{productId}/close").hasRole("MERCHANT")
+                    .requestMatchers("/api/merchants/**").hasRole("MERCHANT")
+                    .requestMatchers(HttpMethod.GET, "/api/reservations/merchant").hasRole("MERCHANT")
+                    .requestMatchers(HttpMethod.PATCH, "/api/reservations/{id}/confirm").hasRole("MERCHANT")
                     // 관리자 전용
-                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .requestMatchers("/api/admin/**").hasRole("ADMIN")
                     // 나머지 인증 필요
                     .anyRequest().authenticated()
             }

@@ -41,11 +41,20 @@ class AdminServiceImpl(
         ).map { it.toUserSummary() }
 
     @Transactional
-    override fun banUser(userId: Long): UserSummary {
+    override fun suspendUser(userId: Long): UserSummary {
         val user = userRepository.findById(userId).orElseThrow {
             BusinessException(ErrorCode.USER_NOT_FOUND)
         }
         user.status = UserStatus.SUSPENDED
+        return user.toUserSummary()
+    }
+
+    @Transactional
+    override fun withdrawUser(userId: Long): UserSummary {
+        val user = userRepository.findById(userId).orElseThrow {
+            BusinessException(ErrorCode.USER_NOT_FOUND)
+        }
+        user.status = UserStatus.WITHDRAWN
         return user.toUserSummary()
     }
 
@@ -56,7 +65,7 @@ class AdminServiceImpl(
         ).map { it.toAdminItem() }
 
     @Transactional
-    override fun deactivateProduct(productId: Long): AdminProductItem {
+    override fun forceCloseProduct(productId: Long): AdminProductItem {
         val product = productRepository.findById(productId).orElseThrow {
             BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
         }

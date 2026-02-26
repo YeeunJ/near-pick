@@ -10,8 +10,9 @@ import org.springframework.data.domain.Page
 
 interface AdminService {
     fun getUsers(role: UserRole?, status: UserStatus?, query: String?, page: Int, size: Int): Page<UserSummary>
-    fun banUser(userId: Long): UserSummary
+    fun suspendUser(userId: Long): UserSummary
+    fun withdrawUser(userId: Long): UserSummary
     fun getProducts(status: ProductStatus?, page: Int, size: Int): Page<AdminProductItem>
-    fun deactivateProduct(productId: Long): AdminProductItem
+    fun forceCloseProduct(productId: Long): AdminProductItem
     fun getProfile(adminId: Long): AdminProfileResponse
 }

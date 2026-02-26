@@ -10,6 +10,10 @@ import java.time.LocalDateTime
 
 // ── Wishlist ──────────────────────────────────────────────────────────────────
 
+data class WishlistAddRequest(
+    @field:Positive val productId: Long,
+)
+
 data class WishlistItem(
     val wishlistId: Long,
     val productId: Long,
@@ -22,6 +26,7 @@ data class WishlistItem(
 // ── Reservation ───────────────────────────────────────────────────────────────
 
 data class ReservationCreateRequest(
+    @field:Positive val productId: Long,
     @field:Positive @field:Max(99) val quantity: Int = 1,
     val memo: String? = null,
     val visitScheduledAt: LocalDateTime? = null,
@@ -42,6 +47,7 @@ data class ReservationStatusResponse(val reservationId: Long, val status: Reserv
 // ── FlashPurchase ─────────────────────────────────────────────────────────────
 
 data class FlashPurchaseCreateRequest(
+    @field:Positive val productId: Long,
     @field:Positive @field:Max(99) val quantity: Int = 1,
 )
 

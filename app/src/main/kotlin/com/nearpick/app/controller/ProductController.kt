@@ -5,11 +5,11 @@ import com.nearpick.domain.product.ProductService
 import com.nearpick.domain.product.dto.ProductCreateRequest
 import com.nearpick.domain.product.dto.ProductNearbyRequest
 import jakarta.validation.Valid
-import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -49,14 +49,14 @@ class ProductController(private val productService: ProductService) {
         @Valid @RequestBody request: ProductCreateRequest,
     ) = ApiResponse.success(productService.create(userId, request))
 
-    @PostMapping("/{productId}/close")
+    @PatchMapping("/{productId}/close")
     @PreAuthorize("hasRole('MERCHANT')")
     fun close(
         @AuthenticationPrincipal userId: Long,
         @PathVariable productId: Long,
     ) = ApiResponse.success(productService.close(userId, productId))
 
-    @GetMapping("/my")
+    @GetMapping("/me")
     @PreAuthorize("hasRole('MERCHANT')")
     fun getMyProducts(
         @AuthenticationPrincipal userId: Long,

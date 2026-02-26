@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -21,15 +20,14 @@ import org.springframework.web.bind.annotation.RestController
 @PreAuthorize("hasRole('CONSUMER')")
 class FlashPurchaseController(private val flashPurchaseService: FlashPurchaseService) {
 
-    @PostMapping("/products/{productId}")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun purchase(
         @AuthenticationPrincipal userId: Long,
-        @PathVariable productId: Long,
         @Valid @RequestBody request: FlashPurchaseCreateRequest,
-    ) = ApiResponse.success(flashPurchaseService.purchase(userId, productId, request))
+    ) = ApiResponse.success(flashPurchaseService.purchase(userId, request.productId, request))
 
-    @GetMapping("/my")
+    @GetMapping("/me")
     fun getMyPurchases(
         @AuthenticationPrincipal userId: Long,
         @RequestParam(defaultValue = "0") page: Int,
