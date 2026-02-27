@@ -8,7 +8,7 @@
 | **Level** | Enterprise |
 | **Stack** | Spring Boot 4.0.3, Kotlin 2.2.21, Java 17 |
 | **Started** | 2026-02-23 |
-| **Last Updated** | 2026-02-26 |
+| **Last Updated** | 2026-02-27 |
 
 ## Summary
 
@@ -26,7 +26,8 @@
 | 2 | Coding Convention | ✅ Completed | 95%+ | - |
 | 2.5 | Docs & Workflow | ✅ Completed | - | #1 merged |
 | 3 | Screen Flow Mockup | ✅ Completed | - | #2 merged |
-| 4 | API Design & Implementation | ✅ Completed | 96% | #7 open |
+| 4 | API Design & Implementation | ✅ Completed | 96% | #7 merged |
+| 4.5 | API Quality (Swagger + Test + Flyway) | ✅ Completed | 97.5% | #8 open |
 | 5 | Design System | ⏳ Pending | - | - |
 | 6 | UI + API Integration | ⏳ Pending | - | - |
 | 7 | SEO / Security | ⏳ Pending | - | - |
@@ -61,7 +62,7 @@
 
 ### Phase 4 — API Design & Implementation ✅
 - **완료일:** 2026-02-26
-- **PR:** #7 (`feature/phase4-rework` → `main`) — **머지 대기 중**
+- **PR:** #7 (`feature/phase4-rework` → `main`) — merged
 - **PDCA:** Do → Check(72%) → Act-1 → Check(96%) → Report
 - **구현:** 24개 API, JWT + Spring Security, Value Objects, Mapper 패턴
 - **인프라:** MySQL 8.4+ (로컬 native 또는 Docker), Spring Boot 4.x 설정
@@ -70,6 +71,28 @@
   - Repository 필드명 수정: `User_UserId` → `User_Id` (UserEntity.id 필드명 일치)
   - `application.properties` Jackson 설정 제거 (Spring Boot 4.x / Jackson 3.x 패키지 변경 대응)
   - `application-local.properties` 프로필 설정 이동 (profile-specific 파일 내 `spring.profiles.active` 금지)
+
+### Phase 4.5 — API Quality (Swagger + Test + Flyway) ✅
+- **완료일:** 2026-02-27
+- **PR:** #8 (`feature/phase4.5-api-quality` → `main`) — open
+- **PDCA:** Do → Check(97.5%) → Report
+- **Swagger/OpenAPI:**
+  - `springdoc-openapi-starter-webmvc-ui:3.0.0` 적용
+  - `SwaggerConfig`: OpenAPI Bean + JWT Bearer SecurityScheme
+  - `LocalSwaggerSecurityConfig`: `@Profile("local")` + `@Order(1)` — local에서만 무인증, prod에서 비활성화
+  - 7개 Controller에 `@Tag` / `@Operation` / `@SecurityRequirement` 추가
+- **테스트 (25개, 100% 통과):**
+  - Controller 7개: `@SpringBootTest(webEnvironment=MOCK)` (Spring Boot 4.x `@WebMvcTest` 제거됨)
+  - Service 4개: `AuthServiceImplTest`, `FlashPurchaseServiceImplTest`, `ReservationServiceImplTest`, `MerchantServiceImplTest`
+  - Value Object 4개: `EmailTest`, `PasswordTest`, `LocationTest`, `BusinessRegNoTest`
+  - 통합: `NearPickApplicationTests`
+  - JaCoCo: Controller 60%, Service 80%, Value Object 90%, 전체 70% 목표
+- **Flyway DB 마이그레이션:**
+  - `spring-boot-flyway` 별도 모듈 추가 (Spring Boot 4.x auto-config 분리)
+  - `V1__init_schema.sql`: 전체 스키마 DDL (8개 테이블)
+  - `V2__insert_dummy_data.sql`: local 개발용 더미 데이터 (6명 사용자, 5개 상품)
+  - local: `ddl-auto=validate` + `baseline-on-migrate=true`
+  - test: `spring.flyway.enabled=false` (Hibernate create-drop)
 
 ---
 
@@ -122,6 +145,22 @@
 | `app/src/main/resources/application.properties` | 공통 설정 | ✅ |
 | `docker-compose.yml` | MySQL 8.4 로컬 개발 | ✅ |
 
+### Phase 4.5
+| 파일 | 설명 | 상태 |
+|------|------|------|
+| `docs/01-plan/features/phase4.5-api-quality.plan.md` | 계획서 | ✅ |
+| `docs/02-design/features/phase4.5-api-quality.design.md` | 설계서 | ✅ |
+| `docs/03-analysis/phase4.5-api-quality.analysis.md` | Gap Analysis (97.5%) | ✅ |
+| `docs/04-report/features/phase4.5-api-quality.report.md` | 완료 보고서 | ✅ |
+| `app/.../config/SwaggerConfig.kt` | OpenAPI Bean 설정 | ✅ |
+| `app/.../config/LocalSwaggerSecurityConfig.kt` | local 전용 Swagger 무인증 | ✅ |
+| `app/.../controller/*Controller.kt` (7개) | @Operation 어노테이션 추가 | ✅ |
+| `app/src/test/.../controller/*ControllerTest.kt` (7개) | Controller 단위 테스트 | ✅ |
+| `domain-nearpick/src/test/.../*ServiceImplTest.kt` (4개) | Service 단위 테스트 | ✅ |
+| `domain/src/test/.../*Test.kt` (4개) | Value Object 테스트 | ✅ |
+| `app/src/main/resources/db/migration/V1__init_schema.sql` | 스키마 DDL | ✅ |
+| `app/src/main/resources/db/testdata/V2__insert_dummy_data.sql` | 더미 데이터 | ✅ |
+
 ---
 
 ## Workflow Notes
@@ -144,7 +183,11 @@
 - Jackson 3.x 패키지 변경: `com.fasterxml.jackson` → `tools.jackson`
   → `spring.jackson.*` properties 일부 호환 안 됨
 - Profile-specific 파일에 `spring.profiles.active` 설정 금지
+- `@WebMvcTest` 완전 제거됨 → `@SpringBootTest(webEnvironment=MOCK)` + `MockMvcBuilders.webAppContextSetup` 사용
+- Flyway auto-config이 `spring-boot-autoconfigure`에서 분리됨 → `spring-boot-flyway` 별도 모듈 명시 필수
 
 ### DB 환경
 - 로컬: MySQL 9.2 (`/usr/local/mysql`) — 포트 3306
 - `nearpick` DB + `nearpick` 유저 생성 필요
+- `nearpick_test` DB 생성 필요 (테스트 전용)
+- Flyway: `nearpick` DB는 `baseline-on-migrate=true`로 기존 스키마 유지, `nearpick_test`는 Flyway 비활성화
