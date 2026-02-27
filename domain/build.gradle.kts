@@ -25,3 +25,12 @@ kotlin {
 }
 
 tasks.withType<Test> { useJUnitPlatform() }
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            includes = listOf("com.nearpick.domain.model.*")
+            limit { minimum = "0.90".toBigDecimal() }
+        }
+    }
+}

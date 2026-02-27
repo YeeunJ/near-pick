@@ -1,0 +1,8 @@
+version: 2
+
+# Exclude test source directories from secret scanning.
+# Test files intentionally contain dummy/fixture values (e.g., "pass1234", "abcd1234")
+# to verify validation logic. These are NOT real credentials.
+ignore-paths:
+  - "**/src/test/**"
+  - "**/src/test/resources/**"

@@ -1,0 +1,583 @@
+{
+  "timestamp": "2026-02-25T06:25:38.769Z",
+  "reason": "compaction",
+  "status": {
+    "version": "2.0",
+    "lastUpdated": "2026-02-25T06:00:15.453Z",
+    "activeFeatures": [
+      "exception",
+      "dto",
+      "auth",
+      "product",
+      "wishlist",
+      "reservation",
+      "flashpurchase",
+      "merchant",
+      "admin",
+      "user",
+      "config",
+      "controller"
+    ],
+    "primaryFeature": "exception",
+    "features": {
+      "phase2-convention": {
+        "phase": "completed",
+        "phaseNumber": 6,
+        "matchRate": 95,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {
+          "plan": "docs/01-plan/features/phase2-convention.plan.md",
+          "design": "docs/02-design/features/phase2-convention.design.md",
+          "analysis": "docs/03-analysis/phase2-convention.analysis.md",
+          "report": "docs/04-report/phase2-convention.report.md"
+        },
+        "timestamps": {
+          "started": "2026-02-23T08:09:05.353Z",
+          "lastUpdated": "2026-02-24T07:30:00.000Z"
+        }
+      },
+      "phase2-workflow": {
+        "phase": "completed",
+        "phaseNumber": 6,
+        "matchRate": 100,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {
+          "plan": "docs/01-plan/features/phase2-workflow.plan.md",
+          "design": "docs/02-design/features/phase2-workflow.design.md"
+        },
+        "timestamps": {
+          "started": "2026-02-24T07:00:00.000Z",
+          "lastUpdated": "2026-02-24T07:30:00.000Z"
+        }
+      },
+      "exception": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-24T08:24:18.188Z",
+          "lastUpdated": "2026-02-25T05:59:21.463Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/common/src/main/kotlin/com/nearpick/common/exception/ErrorCode.kt"
+      },
+      "dto": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-24T08:24:35.977Z",
+          "lastUpdated": "2026-02-25T06:00:15.453Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/merchant/dto/DashboardResponse.kt"
+      },
+      "auth": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-24T08:25:14.182Z",
+          "lastUpdated": "2026-02-25T05:59:33.737Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/auth/AuthServiceImpl.kt"
+      },
+      "product": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-24T08:30:56.214Z",
+          "lastUpdated": "2026-02-24T08:30:56.215Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/product/ProductService.kt"
+      },
+      "wishlist": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-24T08:31:21.470Z",
+          "lastUpdated": "2026-02-24T08:31:21.470Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/wishlist/WishlistService.kt"
+      },
+      "reservation": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-25T05:15:21.072Z",
+          "lastUpdated": "2026-02-25T05:15:21.072Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/reservation/ReservationService.kt"
+      },
+      "flashpurchase": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-25T05:15:31.869Z",
+          "lastUpdated": "2026-02-25T05:15:31.869Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/flashpurchase/FlashPurchaseService.kt"
+      },
+      "merchant": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-25T05:15:39.896Z",
+          "lastUpdated": "2026-02-25T05:15:39.896Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/merchant/MerchantService.kt"
+      },
+      "admin": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-25T05:15:52.130Z",
+          "lastUpdated": "2026-02-25T05:15:52.130Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/admin/AdminService.kt"
+      },
+      "user": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-25T05:16:03.329Z",
+          "lastUpdated": "2026-02-25T05:59:40.475Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/user/UserRepository.kt"
+      },
+      "config": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-25T05:18:09.743Z",
+          "lastUpdated": "2026-02-25T05:59:14.279Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/config/DevSecurityConfig.kt"
+      },
+      "controller": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-25T05:19:41.683Z",
+          "lastUpdated": "2026-02-25T05:19:41.683Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/controller/AuthController.kt"
+      }
+    },
+    "pipeline": {
+      "currentPhase": 2,
+      "level": "Enterprise",
+      "phaseHistory": [
+        {
+          "phase": 1,
+          "feature": "phase1-schema",
+          "completedAt": "2026-02-23T08:09:05.353Z"
+        },
+        {
+          "phase": 2,
+          "feature": "phase2-convention",
+          "completedAt": "2026-02-24T06:45:00.000Z"
+        },
+        {
+          "phase": 2.5,
+          "feature": "phase2-workflow",
+          "completedAt": "2026-02-24T07:30:00.000Z"
+        }
+      ]
+    },
+    "session": {
+      "startedAt": "2026-02-23T08:09:05.353Z",
+      "onboardingCompleted": true,
+      "lastActivity": "2026-02-25T06:00:15.453Z"
+    },
+    "history": [
+      {
+        "timestamp": "2026-02-24T06:45:00.000Z",
+        "feature": "phase2-convention",
+        "phase": "completed",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T07:30:00.000Z",
+        "feature": "phase2-workflow",
+        "phase": "completed",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:24:18.188Z",
+        "feature": "exception",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:24:35.977Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:24:45.910Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:24:52.933Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:24:59.681Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:25:06.891Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:25:14.182Z",
+        "feature": "auth",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:25:21.714Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:25:29.532Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:30:20.709Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:30:31.220Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:30:38.691Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:30:45.767Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:30:56.215Z",
+        "feature": "product",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:31:04.940Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:31:13.683Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:31:21.470Z",
+        "feature": "wishlist",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-24T08:31:30.135Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:14.059Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:16.852Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:21.072Z",
+        "feature": "reservation",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:24.652Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:28.189Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:31.869Z",
+        "feature": "flashpurchase",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:37.099Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:39.896Z",
+        "feature": "merchant",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:43.765Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:47.364Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:15:52.130Z",
+        "feature": "admin",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:16:03.329Z",
+        "feature": "user",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:16:06.734Z",
+        "feature": "user",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:16:34.228Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:16:38.099Z",
+        "feature": "auth",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:16:49.360Z",
+        "feature": "auth",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:16:57.767Z",
+        "feature": "user",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:17:59.161Z",
+        "feature": "auth",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:18:09.743Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:18:26.023Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:18:36.015Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:19:33.085Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:19:41.683Z",
+        "feature": "controller",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:21:08.958Z",
+        "feature": "auth",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:58:50.692Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:58:57.092Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:59:08.026Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:59:14.279Z",
+        "feature": "config",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:59:21.463Z",
+        "feature": "exception",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:59:33.737Z",
+        "feature": "auth",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:59:40.475Z",
+        "feature": "user",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:59:45.646Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:59:49.247Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T05:59:55.365Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T06:00:02.024Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T06:00:07.821Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-25T06:00:15.453Z",
+        "feature": "dto",
+        "phase": "do",
+        "action": "updated"
+      }
+    ]
+  }
+}
