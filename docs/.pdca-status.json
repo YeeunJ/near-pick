@@ -16,9 +16,8 @@
     "phase4-api",
     "service",
     "nearpick",
-    "phase4.5-api-quality"
   ],
-  "primaryFeature": "phase4.5-api-quality",
+  "primaryFeature": null,
   "features": {
     "phase2-convention": {
       "phase": "completed",
@@ -236,18 +235,12 @@
       "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/test/kotlin/com/nearpick/app/HashGenTest.kt"
     },
     "phase4.5-api-quality": {
-      "phase": "act",
-      "phaseNumber": 5,
-      "matchRate": null,
+      "phase": "archived",
+      "matchRate": 97.5,
       "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-02-26T20:16:53.507Z",
-        "lastUpdated": "2026-02-26T20:16:53.508Z"
-      },
-      "previousPhase": "check",
-      "autoAdvanced": true
+      "startedAt": "2026-02-26T20:16:53.507Z",
+      "archivedAt": "2026-02-27T00:00:00.000Z",
+      "archivedTo": "docs/archive/2026-02/phase4.5-api-quality/"
     }
   },
   "pipeline": {
