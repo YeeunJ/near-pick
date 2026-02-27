@@ -222,3 +222,78 @@ chore(phase2): establish branch and PR workflow conventions
 ## Related        ← 관련 Phase, 문서, 이슈
 ## Checklist      ← 커밋 컨벤션, 빌드, CONVENTIONS 준수 확인
 ```
+
+---
+
+## 10. 테스트 컨벤션
+
+### 커버리지 목표 (JaCoCo 측정)
+
+| 레이어 | 목표 | 비고 |
+|--------|------|------|
+| **Service** (`*ServiceImpl`) | **80%** | 핵심 비즈니스 로직 — 가장 중요 |
+| **Value Object** (`Email`, `Password`, `Location`, `BusinessRegNo`) | **90%** | 유효성 검증 로직 |
+| **Controller** | **60%** | 주요 경로 + 주요 오류 케이스 |
+| **전체 (Overall)** | **70%** | 지속 가능한 기준선 |
+| **제외** | Entity, Repository 인터페이스, Mapper | JPA 보장 범위 또는 통합 테스트에서 간접 검증 |
+
+> 커버리지 측정: `./gradlew jacocoTestReport`
+> 빌드 강제 검증: `./gradlew jacocoTestCoverageVerification` (70% 미달 시 빌드 실패)
+
+---
+
+### 테스트 파일 위치
+
+| 모듈 | 테스트 경로 | 테스트 종류 |
+|------|------------|------------|
+| `app` | `app/src/test/.../controller/` | Controller 단위 (`@WebMvcTest`) |
+| `app` | `app/src/test/.../` | 통합 테스트 (`@SpringBootTest`) |
+| `domain` | `domain/src/test/.../model/` | Value Object 단위 |
+| `domain-nearpick` | `domain-nearpick/src/test/.../service/` | ServiceImpl 단위 (`@ExtendWith(MockitoExtension)`) |
+
+---
+
+### 테스트 파일 네이밍
+
+```
+{테스트 대상 클래스명}Test.kt
+```
+
+예시:
+- `ProductController` → `ProductControllerTest.kt`
+- `ProductServiceImpl` → `ProductServiceImplTest.kt`
+- `Email` → `EmailTest.kt`
+
+---
+
+### 테스트 작성 원칙
+
+1. **TDD-lite**: Phase 4.5 이후 신규 Service 메서드 작성 시 테스트 동시 작성
+   - 기능 코드와 테스트 코드는 같은 PR에 포함
+2. **한 테스트 = 한 시나리오**: 하나의 `@Test`는 하나의 결과만 검증
+3. **given / when / then 구조** 명시 (주석 또는 BDD 스타일)
+4. **Mockito로 외부 의존성 격리**: Repository, 외부 서비스는 모두 mock
+5. **Controller 테스트**: `@WebMvcTest` + `@MockitoBean` 사용 (전체 컨텍스트 로딩 금지)
+
+```kotlin
+// 예시 패턴
+@Test
+fun `재고가 없으면 FlashPurchase 시도 시 예외가 발생한다`() {
+    // given
+    every { productRepository.findById(any()) } returns Optional.of(soldOutProduct)
+
+    // when / then
+    assertThrows<BusinessException> {
+        flashPurchaseService.purchase(userId, productId)
+    }
+}
+```
+
+---
+
+### 통합 테스트 범위
+
+`@SpringBootTest`는 다음만 검증한다 (무거운 통합 테스트 최소화):
+- 애플리케이션 컨텍스트 정상 로딩
+- 기본 헬스 체크 (actuator 추가 시)
+- DB 스키마 자동 생성 확인 (H2 in-memory, `ddl-auto=create-drop`)

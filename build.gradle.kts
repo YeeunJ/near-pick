@@ -15,10 +15,23 @@ subprojects {
     }
 
     apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "jacoco")
 
     extensions.configure<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension> {
         imports {
             mavenBom("org.springframework.boot:spring-boot-dependencies:4.0.3")
+        }
+    }
+
+    extensions.configure<JacocoPluginExtension> {
+        toolVersion = "0.8.12"
+    }
+
+    tasks.withType<JacocoReport> {
+        dependsOn(tasks.withType<Test>())
+        reports {
+            xml.required = true
+            html.required = true
         }
     }
 }

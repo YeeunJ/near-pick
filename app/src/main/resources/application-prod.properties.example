@@ -23,6 +23,18 @@ spring.datasource.hikari.minimum-idle=5
 spring.datasource.hikari.connection-timeout=30000
 
 # =============================================
+# Flyway — 스키마 마이그레이션만 (testdata 제외)
+# =============================================
+spring.flyway.enabled=true
+spring.flyway.locations=classpath:db/migration
+
+# =============================================
+# Swagger — 운영에서는 완전 비활성화
+# =============================================
+springdoc.swagger-ui.enabled=false
+springdoc.api-docs.enabled=false
+
+# =============================================
 # JWT — 반드시 환경변수로 주입 (32자 이상)
 # =============================================
 jwt.secret=${JWT_SECRET}

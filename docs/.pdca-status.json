@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-02-26T02:18:54.930Z",
+  "lastUpdated": "2026-02-26T20:16:53.508Z",
   "activeFeatures": [
     "model",
     "dto",
@@ -13,9 +13,12 @@
     "transaction",
     "merchant",
     "admin",
-    "phase4-api"
+    "phase4-api",
+    "service",
+    "nearpick",
+    "phase4.5-api-quality"
   ],
-  "primaryFeature": "model",
+  "primaryFeature": "phase4.5-api-quality",
   "features": {
     "phase2-convention": {
       "phase": "completed",
@@ -58,9 +61,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-02-25T07:32:00.707Z",
-        "lastUpdated": "2026-02-25T07:32:20.131Z"
+        "lastUpdated": "2026-02-26T04:22:59.287Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/model/Password.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/test/kotlin/com/nearpick/domain/model/BusinessRegNoTest.kt"
     },
     "dto": {
       "phase": "do",
@@ -123,9 +126,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-02-25T07:33:35.497Z",
-        "lastUpdated": "2026-02-26T02:18:54.930Z"
+        "lastUpdated": "2026-02-26T19:09:26.705Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/config/SecurityConfig.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/config/LocalSwaggerSecurityConfig.kt"
     },
     "controller": {
       "phase": "do",
@@ -136,9 +139,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-02-25T07:34:12.043Z",
-        "lastUpdated": "2026-02-26T02:18:41.648Z"
+        "lastUpdated": "2026-02-26T10:45:17.514Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/controller/AdminController.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/test/kotlin/com/nearpick/app/controller/WishlistControllerTest.kt"
     },
     "product": {
       "phase": "do",
@@ -205,6 +208,46 @@
       },
       "previousPhase": "check",
       "autoAdvanced": true
+    },
+    "service": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-26T04:23:28.569Z",
+        "lastUpdated": "2026-02-26T10:14:36.347Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/test/kotlin/com/nearpick/nearpick/user/service/MerchantServiceImplTest.kt"
+    },
+    "nearpick": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-26T04:29:14.642Z",
+        "lastUpdated": "2026-02-26T11:58:21.180Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/test/kotlin/com/nearpick/app/HashGenTest.kt"
+    },
+    "phase4.5-api-quality": {
+      "phase": "act",
+      "phaseNumber": 5,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-26T20:16:53.507Z",
+        "lastUpdated": "2026-02-26T20:16:53.508Z"
+      },
+      "previousPhase": "check",
+      "autoAdvanced": true
     }
   },
   "pipeline": {
@@ -231,7 +274,7 @@
   "session": {
     "startedAt": "2026-02-23T08:09:05.353Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-02-26T02:18:54.930Z"
+    "lastActivity": "2026-02-26T20:16:53.508Z"
   },
   "history": [
     {
@@ -664,6 +707,318 @@
       "timestamp": "2026-02-26T02:18:54.930Z",
       "feature": "config",
       "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:18:41.732Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:18:51.030Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:19:23.352Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:19:40.894Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:19:54.295Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:20:10.413Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:20:24.486Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:20:37.449Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:20:53.192Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:22:26.438Z",
+      "feature": "model",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:22:35.618Z",
+      "feature": "model",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:22:48.261Z",
+      "feature": "model",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:22:59.287Z",
+      "feature": "model",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:23:28.569Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:24:51.928Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:25:48.799Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:26:17.961Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:26:38.618Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:27:42.819Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:28:01.621Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:28:12.948Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:28:24.586Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:28:37.571Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:28:50.084Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:28:59.521Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T04:29:14.642Z",
+      "feature": "nearpick",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:13:02.207Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:13:19.386Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:13:31.467Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:13:44.836Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:13:56.786Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:14:11.295Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:14:23.851Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:14:32.068Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:14:36.347Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:21:11.348Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:26:36.643Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:44:16.152Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:44:24.500Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:44:31.750Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:44:39.209Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:44:46.925Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:44:54.479Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:45:02.042Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:45:09.999Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T10:45:17.514Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T11:21:02.314Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T11:31:50.461Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T11:58:21.180Z",
+      "feature": "nearpick",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T19:09:20.058Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T19:09:26.705Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-26T20:16:53.508Z",
+      "feature": "phase4.5-api-quality",
+      "phase": "act",
       "action": "updated"
     }
   ]
