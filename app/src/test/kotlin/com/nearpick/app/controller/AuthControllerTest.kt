@@ -48,7 +48,7 @@ class AuthControllerTest {
             SignupResponse(userId = 1L, email = "user@example.com", role = UserRole.CONSUMER)
         )
 
-        mockMvc.post("/auth/signup/consumer") {
+        mockMvc.post("/api/auth/signup/consumer") {
             contentType = MediaType.APPLICATION_JSON
             content = """{"email":"user@example.com","password":"pass1234"}"""
         }.andExpect {
@@ -59,7 +59,7 @@ class AuthControllerTest {
 
     @Test
     fun `POST auth-signup-consumer - 이메일 형식이 잘못되면 400을 반환한다`() {
-        mockMvc.post("/auth/signup/consumer") {
+        mockMvc.post("/api/auth/signup/consumer") {
             contentType = MediaType.APPLICATION_JSON
             content = """{"email":"not-an-email","password":"pass1234"}"""
         }.andExpect {
@@ -74,7 +74,7 @@ class AuthControllerTest {
         )
         whenever(jwtTokenProvider.createToken(1L, UserRole.CONSUMER)).thenReturn("mock-jwt-token")
 
-        mockMvc.post("/auth/login") {
+        mockMvc.post("/api/auth/login") {
             contentType = MediaType.APPLICATION_JSON
             content = """{"email":"user@example.com","password":"pass1234"}"""
         }.andExpect {
@@ -88,7 +88,7 @@ class AuthControllerTest {
     fun `POST auth-login - 비밀번호 오류 시 서비스 예외가 GlobalExceptionHandler를 통해 처리된다`() {
         whenever(authService.login(any())).thenThrow(BusinessException(ErrorCode.INVALID_CREDENTIALS))
 
-        mockMvc.post("/auth/login") {
+        mockMvc.post("/api/auth/login") {
             contentType = MediaType.APPLICATION_JSON
             content = """{"email":"user@example.com","password":"wrong"}"""
         }.andExpect {

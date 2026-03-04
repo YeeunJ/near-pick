@@ -39,7 +39,7 @@ class SecurityConfig(
             .authorizeHttpRequests { auth ->
                 auth
                     // 인증 없이 허용 (Auth 엔드포인트, 공개 상품 조회)
-                    .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/products/nearby").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/products/{productId}").permitAll()
                     // 소비자 전용

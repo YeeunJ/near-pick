@@ -27,7 +27,7 @@ class RateLimitFilter(
     ) {
         val ip = resolveIp(request)
         val isAuthPath = request.method == "POST" &&
-            (request.requestURI == "/auth/login" || request.requestURI.startsWith("/auth/signup"))
+            (request.requestURI == "/api/auth/login" || request.requestURI.startsWith("/api/auth/signup"))
 
         val bucket = if (isAuthPath) {
             loginBuckets.computeIfAbsent(ip) { Bucket.builder().addLimit(loginBandwidth).build() }
