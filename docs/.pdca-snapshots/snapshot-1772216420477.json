@@ -1,0 +1,123 @@
+{
+  "timestamp": "2026-02-27T18:20:20.476Z",
+  "reason": "compaction",
+  "status": {
+    "version": "2.0",
+    "lastUpdated": "2026-02-27T18:19:19.476Z",
+    "activeFeatures": [
+      "near-pick-web",
+      "mock",
+      "StatusBadge.tsx",
+      "product"
+    ],
+    "primaryFeature": "near-pick-web",
+    "features": {
+      "near-pick-web": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T18:17:57.475Z",
+          "lastUpdated": "2026-02-27T18:18:18.221Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick-web/lib/utils.ts"
+      },
+      "mock": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T18:18:40.039Z",
+          "lastUpdated": "2026-02-27T18:18:57.613Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick-web/lib/mock/users.ts"
+      },
+      "StatusBadge.tsx": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T18:19:04.912Z",
+          "lastUpdated": "2026-02-27T18:19:04.912Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick-web/components/features/StatusBadge.tsx"
+      },
+      "product": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T18:19:19.476Z",
+          "lastUpdated": "2026-02-27T18:19:19.476Z"
+        },
+        "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick-web/components/features/product/ProductCard.tsx"
+      }
+    },
+    "pipeline": {
+      "currentPhase": 1,
+      "level": "Dynamic",
+      "phaseHistory": []
+    },
+    "session": {
+      "startedAt": "2026-02-27T18:17:57.475Z",
+      "onboardingCompleted": false,
+      "lastActivity": "2026-02-27T18:19:19.476Z"
+    },
+    "history": [
+      {
+        "timestamp": "2026-02-27T18:17:57.475Z",
+        "feature": "near-pick-web",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T18:18:18.221Z",
+        "feature": "near-pick-web",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T18:18:40.039Z",
+        "feature": "mock",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T18:18:50.512Z",
+        "feature": "mock",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T18:18:57.613Z",
+        "feature": "mock",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T18:19:04.912Z",
+        "feature": "StatusBadge.tsx",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T18:19:19.476Z",
+        "feature": "product",
+        "phase": "do",
+        "action": "updated"
+      }
+    ]
+  }
+}
