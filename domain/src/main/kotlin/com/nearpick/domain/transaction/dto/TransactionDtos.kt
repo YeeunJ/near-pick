@@ -14,6 +14,8 @@ data class WishlistAddRequest(
     @field:Positive val productId: Long,
 )
 
+data class WishlistAddResponse(val wishlistId: Long)
+
 data class WishlistItem(
     val wishlistId: Long,
     val productId: Long,

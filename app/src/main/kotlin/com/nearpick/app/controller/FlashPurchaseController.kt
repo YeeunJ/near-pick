@@ -33,7 +33,7 @@ class FlashPurchaseController(private val flashPurchaseService: FlashPurchaseSer
     @ResponseStatus(HttpStatus.CREATED)
     fun purchase(
         @AuthenticationPrincipal userId: Long,
-        @Valid @RequestBody request: FlashPurchaseCreateRequest,
+        @RequestBody @Valid request: FlashPurchaseCreateRequest,
     ) = ApiResponse.success(flashPurchaseService.purchase(userId, request.productId, request))
 
     @Operation(summary = "내 구매 내역 조회")

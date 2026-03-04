@@ -42,10 +42,10 @@ class WishlistServiceImpl(
     @Transactional
     override fun remove(userId: Long, productId: Long) {
         val wishlist = wishlistRepository.findByUser_IdAndProduct_Id(userId, productId)
-            ?: throw BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
+            ?: throw BusinessException(ErrorCode.RESOURCE_NOT_FOUND)
         wishlistRepository.delete(wishlist)
     }
 
     override fun getMyWishlists(userId: Long): List<WishlistItem> =
-        wishlistRepository.findAllByUser_Id(userId).map { it.toItem() }
+        wishlistRepository.findTop200ByUser_IdOrderByCreatedAtDesc(userId).map { it.toItem() }
 }

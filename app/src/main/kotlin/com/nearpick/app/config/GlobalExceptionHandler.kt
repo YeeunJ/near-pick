@@ -6,6 +6,7 @@ import com.nearpick.common.response.ApiResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
@@ -32,6 +33,12 @@ class GlobalExceptionHandler {
         ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body(ApiResponse.error(e.message ?: ErrorCode.INVALID_INPUT.message))
+
+    @ExceptionHandler(MissingServletRequestParameterException::class)
+    fun handleMissingParam(e: MissingServletRequestParameterException): ResponseEntity<ApiResponse<Nothing>> =
+        ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ApiResponse.error("Missing required parameter: ${e.parameterName}"))
 
     @ExceptionHandler(Exception::class)
     fun handleGeneral(e: Exception): ResponseEntity<ApiResponse<Nothing>> =

@@ -60,7 +60,7 @@ class ProductController(private val productService: ProductService) {
     @PreAuthorize("hasRole('MERCHANT')")
     fun create(
         @AuthenticationPrincipal userId: Long,
-        @Valid @RequestBody request: ProductCreateRequest,
+        @RequestBody @Valid request: ProductCreateRequest,
     ) = ApiResponse.success(productService.create(userId, request))
 
     @Operation(summary = "상품 마감 처리 (소상공인 전용)")

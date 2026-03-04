@@ -9,7 +9,11 @@ import java.time.LocalDateTime
 @Entity
 @Table(
     name = "reservations",
-    indexes = [Index(name = "idx_reservations_user", columnList = "user_id")]
+    indexes = [
+        Index(name = "idx_reservations_user", columnList = "user_id"),
+        Index(name = "idx_reservations_product", columnList = "product_id"),
+        Index(name = "idx_reservations_status", columnList = "status"),
+    ]
 )
 class ReservationEntity(
     @Id

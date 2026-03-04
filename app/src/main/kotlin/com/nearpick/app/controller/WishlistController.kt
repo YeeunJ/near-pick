@@ -3,6 +3,7 @@ package com.nearpick.app.controller
 import com.nearpick.common.response.ApiResponse
 import com.nearpick.domain.transaction.WishlistService
 import com.nearpick.domain.transaction.dto.WishlistAddRequest
+import com.nearpick.domain.transaction.dto.WishlistAddResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.responses.ApiResponse as SwaggerApiResponse
@@ -34,7 +35,7 @@ class WishlistController(private val wishlistService: WishlistService) {
     fun add(
         @AuthenticationPrincipal userId: Long,
         @Valid @RequestBody request: WishlistAddRequest,
-    ) = ApiResponse.success(mapOf("wishlistId" to wishlistService.add(userId, request.productId)))
+    ) = ApiResponse.success(WishlistAddResponse(wishlistService.add(userId, request.productId)))
 
     @Operation(summary = "상품 찜 취소")
     @SwaggerApiResponse(responseCode = "200", description = "찜 취소 성공")
