@@ -68,9 +68,9 @@
 #### 인증 (3)
 | Method | Path | 설명 |
 |--------|------|------|
-| POST | `/auth/signup/consumer` | 소비자 회원가입 |
-| POST | `/auth/signup/merchant` | 소상공인 회원가입 |
-| POST | `/auth/login` | 로그인 (JWT 발급) |
+| POST | `/api/auth/signup/consumer` | 소비자 회원가입 |
+| POST | `/api/auth/signup/merchant` | 소상공인 회원가입 |
+| POST | `/api/auth/login` | 로그인 (JWT 발급) |
 
 #### 상품 (5)
 | Method | Path | 설명 |

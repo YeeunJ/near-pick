@@ -36,7 +36,7 @@ Phase 6(UI Integration)은 near-pick-web에서 진행 중이며, 백엔드와의
 ## 목표 (Goal)
 
 1. **CORS 설정** — near-pick-web origin 허용, prod/local 환경 분리
-2. **Rate Limiting** — 로그인 API 보호 (`/auth/login`), 일반 API 보호
+2. **Rate Limiting** — 로그인 API 보호 (`/api/auth/login`), 일반 API 보호
 3. **입력값 검증 강화** — Controller DTO에 `@Valid` + Bean Validation 적용
 4. **JWT 보안 개선** — secret 환경변수화, 만료 정책 명확화
 5. **보안 헤더 추가** — Spring Security 기본 보안 헤더 활성화
@@ -50,7 +50,7 @@ Phase 6(UI Integration)은 near-pick-web에서 진행 중이며, 백엔드와의
 | 항목 | 설명 |
 |------|------|
 | CORS 설정 | `CorsConfig.kt` 추가 — local/prod origin 분리 |
-| Rate Limiting | Bucket4j 또는 Spring 자체 필터로 `/auth/login` throttle |
+| Rate Limiting | Bucket4j 또는 Spring 자체 필터로 `/api/auth/login` throttle |
 | Bean Validation | `@NotBlank`, `@Email`, `@Size` DTO 적용 + `@Valid` Controller |
 | JWT secret 분리 | `application-local.properties`에서 관리, prod는 환경변수로 |
 | 보안 헤더 | `SecurityConfig`에서 `headers()` 활성화 |
@@ -82,7 +82,7 @@ Spring MVC의 `CorsConfigurationSource` Bean 등록 방식 사용.
 ### Rate Limiting
 
 **Bucket4j** 라이브러리 채택 (Spring Boot starter 지원, in-memory 방식 간단):
-- `/auth/login` : 분당 10회 제한 (IP 기반)
+- `/api/auth/login` : 분당 10회 제한 (IP 기반)
 - 일반 API : 분당 100회 제한 (IP 기반)
 
 > 대안: Spring Security의 `RequestRateLimiter` (Redis 필요) → 현재 단계는 Bucket4j로 충분
@@ -137,7 +137,7 @@ Spring Boot 내장 `spring-boot-starter-validation` 사용 (이미 의존성 추
 19. `RateLimitConfig.kt` 생성 — Bucket 설정 (login: 10/min, api: 100/min)
 20. `RateLimitFilter.kt` 생성 — `OncePerRequestFilter` 구현
 21. IP 추출: `X-Forwarded-For` → fallback to `remoteAddr`
-22. `/auth/login` 경로 전용 throttle 로직
+22. `/api/auth/login` 경로 전용 throttle 로직
 23. 초과 시 `429 Too Many Requests` 응답
 24. `SecurityConfig.kt` — filter 순서 등록
 25. `application.properties`에 rate limit 값 프로퍼티화 (`rate.limit.login`, `rate.limit.api`)
@@ -152,7 +152,7 @@ Spring Boot 내장 `spring-boot-starter-validation` 사용 (이미 의존성 추
 
 ### 6단계 — 테스트 및 검증 (10단계)
 
-31. CORS preflight 테스트 (`OPTIONS /auth/login` → 200, Allow-Origin 헤더 확인)
+31. CORS preflight 테스트 (`OPTIONS /api/auth/login` → 200, Allow-Origin 헤더 확인)
 32. 로그인 성공 후 `Authorization` 헤더 확인
 33. Rate Limit 초과 시 429 응답 확인
 34. 유효하지 않은 email 형식 → 400 응답 확인

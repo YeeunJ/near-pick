@@ -146,8 +146,8 @@ Spring Security 기본 보안 헤더를 명시적으로 활성화.
 
 | 경로 | 제한 | 기준 | 초과 응답 |
 |------|------|------|---------|
-| `POST /auth/login` | 분당 10회 | IP 기반 | `429 Too Many Requests` |
-| `POST /auth/signup/**` | 분당 5회 | IP 기반 | `429 Too Many Requests` |
+| `POST /api/auth/login` | 분당 10회 | IP 기반 | `429 Too Many Requests` |
+| `POST /api/auth/signup/**` | 분당 5회 | IP 기반 | `429 Too Many Requests` |
 | 그 외 전체 API | 분당 200회 | IP 기반 | `429 Too Many Requests` |
 
 ### 4.3 파일 명세
@@ -194,7 +194,7 @@ class RateLimitFilter(
     ) {
         val ip = resolveIp(request)
         val isLoginPath = request.method == "POST" &&
-            (request.requestURI == "/auth/login" || request.requestURI.startsWith("/auth/signup"))
+            (request.requestURI == "/api/auth/login" || request.requestURI.startsWith("/api/auth/signup"))
 
         val bucket = if (isLoginPath) {
             loginBuckets.computeIfAbsent(ip) { Bucket.builder().addLimit(loginBandwidth).build() }
@@ -335,8 +335,8 @@ class SecurityConfig(
 
 - [ ] `./gradlew build -x test` 빌드 성공
 - [ ] `./gradlew :app:bootRun` 구동 성공
-- [ ] `curl -X OPTIONS http://localhost:8080/auth/login -H "Origin: http://localhost:3000"` → `200 + Access-Control-Allow-Origin`
-- [ ] `curl -I http://localhost:8080/auth/login` → `X-Frame-Options: DENY` 확인
+- [ ] `curl -X OPTIONS http://localhost:8080/api/auth/login -H "Origin: http://localhost:3000"` → `200 + Access-Control-Allow-Origin`
+- [ ] `curl -I http://localhost:8080/api/auth/login` → `X-Frame-Options: DENY` 확인
 - [ ] 로그인 11회 연속 → 마지막은 `429` 확인
 - [ ] `./gradlew test` 기존 25개 테스트 전체 통과
 

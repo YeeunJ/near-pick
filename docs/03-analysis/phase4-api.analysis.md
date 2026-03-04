@@ -30,9 +30,9 @@
 
 | 설계 | 구현 | 상태 |
 |------|------|------|
-| `POST /auth/login` | `POST /auth/login` | ✅ |
-| `POST /auth/signup/consumer` | `POST /auth/signup/consumer` | ✅ |
-| `POST /auth/signup/merchant` | `POST /auth/signup/merchant` | ✅ |
+| `POST /api/auth/login` | `POST /api/auth/login` | ✅ |
+| `POST /api/auth/signup/consumer` | `POST /api/auth/signup/consumer` | ✅ |
+| `POST /api/auth/signup/merchant` | `POST /api/auth/signup/merchant` | ✅ |
 
 ### Product (5/5) ✅
 

@@ -60,7 +60,7 @@
 **액션 → API**:
 | 액션 | API |
 |------|-----|
-| 로그인 버튼 | `POST /auth/login` |
+| 로그인 버튼 | `POST /api/auth/login` |
 
 ---
 
@@ -87,8 +87,8 @@
 **액션 → API**:
 | 액션 | API |
 |------|-----|
-| 가입하기 (소비자) | `POST /auth/signup/consumer` |
-| 가입하기 (소상공인) | `POST /auth/signup/merchant` |
+| 가입하기 (소비자) | `POST /api/auth/signup/consumer` |
+| 가입하기 (소상공인) | `POST /api/auth/signup/merchant` |
 
 ---
 
@@ -456,9 +456,9 @@ Phase 3 목업에서 도출된 필요 API 전체 목록:
 ### 인증 (Auth)
 | Method | Path | 설명 |
 |--------|------|------|
-| POST | `/auth/login` | 로그인 |
-| POST | `/auth/signup/consumer` | 소비자 회원가입 |
-| POST | `/auth/signup/merchant` | 소상공인 회원가입 |
+| POST | `/api/auth/login` | 로그인 |
+| POST | `/api/auth/signup/consumer` | 소비자 회원가입 |
+| POST | `/api/auth/signup/merchant` | 소상공인 회원가입 |
 
 ### 상품 (Product)
 | Method | Path | 설명 |
