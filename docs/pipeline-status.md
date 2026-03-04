@@ -8,7 +8,7 @@
 | **Level** | Enterprise |
 | **Stack** | Spring Boot 4.0.3, Kotlin 2.2.21, Java 17 |
 | **Started** | 2026-02-23 |
-| **Last Updated** | 2026-02-27 |
+| **Last Updated** | 2026-03-04 |
 
 ## Summary
 
@@ -27,10 +27,10 @@
 | 2.5 | Docs & Workflow | ✅ Completed | - | #1 merged |
 | 3 | Screen Flow Mockup | ✅ Completed | - | #2 merged |
 | 4 | API Design & Implementation | ✅ Completed | 96% | #7 merged |
-| 4.5 | API Quality (Swagger + Test + Flyway) | ✅ Completed | 97.5% | #8 open |
-| 5 | Design System | ⏳ Pending | - | - |
-| 6 | UI + API Integration | ⏳ Pending | - | - |
-| 7 | SEO / Security | ⏳ Pending | - | - |
+| 4.5 | API Quality (Swagger + Test + Flyway) | ✅ Completed | 97.5% | #8 merged |
+| 5 | Design System | ✅ Completed | 95% | #9 merged |
+| 6 | UI + API Integration | ➡️ near-pick-web | - | - |
+| 7 | Security (백엔드) | ⏳ Pending | - | - |
 | 8 | Review | ⏳ Pending | - | - |
 | 9 | Deployment | ⏳ Pending | - | - |
 
@@ -72,6 +72,20 @@
   - `application.properties` Jackson 설정 제거 (Spring Boot 4.x / Jackson 3.x 패키지 변경 대응)
   - `application-local.properties` 프로필 설정 이동 (profile-specific 파일 내 `spring.profiles.active` 금지)
 
+### Phase 5 — Design System ✅
+- **완료일:** 2026-02-28
+- **PR:** #9 merged
+- **구현 레포:** near-pick-web
+- **PDCA:** Do(near-pick-web) → Check(95%) → Report
+- **산출물:** 15개 라우트, 7개 공통 컴포넌트, 18개 타입, 46개 Mock 데이터
+- **기술 선택:** Next.js 15 (App Router), TypeScript, Tailwind CSS v4, shadcn/ui v3, pnpm
+
+### Phase 6 — UI + API Integration ➡️ near-pick-web
+- **관리 레포:** [near-pick-web](https://github.com/YeeunJ/near-pick-web)
+- **내용:** API 클라이언트 레이어, 인증 상태 관리 (Zustand + JWT), Mock → 실제 API 연동, 지오로케이션
+
+---
+
 ### Phase 4.5 — API Quality (Swagger + Test + Flyway) ✅
 - **완료일:** 2026-02-27
 - **PR:** #8 (`feature/phase4.5-api-quality` → `main`) — open
@@ -93,6 +107,28 @@
   - `V2__insert_dummy_data.sql`: local 개발용 더미 데이터 (6명 사용자, 5개 상품)
   - local: `ddl-auto=validate` + `baseline-on-migrate=true`
   - test: `spring.flyway.enabled=false` (Hibernate create-drop)
+
+### Phase 7 — Security (백엔드) ⏳
+- **내용 (예정):**
+  - CORS 설정 (near-pick-web origin 허용)
+  - Rate Limiting
+  - 입력값 검증 강화 (XSS, Injection 방어)
+  - JWT 토큰 보안 설정 점검 (만료/갱신 정책)
+  - HTTPS 설정 (배포 시 적용)
+- **참고:** SEO는 near-pick-web에서 처리
+
+### Phase 8 — Review ⏳
+- **내용 (예정):**
+  - 전체 백엔드 코드 리뷰 & Gap 분석
+  - 테스트 커버리지 점검
+  - API 문서 최종 정리
+
+### Phase 9 — Deployment ⏳
+- **내용 (예정):**
+  - 서버 환경 설정 (EC2 / Cloud Run 등)
+  - CI/CD 파이프라인 구성
+  - prod DB 마이그레이션 (Flyway)
+  - 환경변수 관리
 
 ---
 
