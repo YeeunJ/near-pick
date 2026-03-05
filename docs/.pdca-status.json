@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-04T16:38:23.562Z",
+  "lastUpdated": "2026-03-05T00:13:09.808Z",
   "activeFeatures": [
     "controller",
     "service",
@@ -20,9 +20,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:30:38.018Z",
-        "lastUpdated": "2026-03-04T16:34:41.532Z"
+        "lastUpdated": "2026-03-05T00:13:09.807Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/controller/FlashPurchaseController.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/controller/ReservationController.kt"
     },
     "service": {
       "phase": "do",
@@ -144,7 +144,7 @@
   "session": {
     "startedAt": "2026-03-05T00:00:00.000Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-04T16:38:23.562Z"
+    "lastActivity": "2026-03-05T00:13:09.808Z"
   },
   "history": [
     {
@@ -276,6 +276,18 @@
     {
       "timestamp": "2026-03-04T16:38:23.562Z",
       "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:13:08.988Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:13:09.807Z",
+      "feature": "controller",
       "phase": "do",
       "action": "updated"
     }
