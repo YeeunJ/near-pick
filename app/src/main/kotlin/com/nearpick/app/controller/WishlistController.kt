@@ -34,7 +34,7 @@ class WishlistController(private val wishlistService: WishlistService) {
     @ResponseStatus(HttpStatus.CREATED)
     fun add(
         @AuthenticationPrincipal userId: Long,
-        @Valid @RequestBody request: WishlistAddRequest,
+        @RequestBody @Valid request: WishlistAddRequest,
     ) = ApiResponse.success(WishlistAddResponse(wishlistService.add(userId, request.productId)))
 
     @Operation(summary = "상품 찜 취소")

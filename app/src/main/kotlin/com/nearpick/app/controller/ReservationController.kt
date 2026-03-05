@@ -35,7 +35,7 @@ class ReservationController(private val reservationService: ReservationService) 
     @PreAuthorize("hasRole('CONSUMER')")
     fun create(
         @AuthenticationPrincipal userId: Long,
-        @Valid @RequestBody request: ReservationCreateRequest,
+        @RequestBody @Valid request: ReservationCreateRequest,
     ) = ApiResponse.success(reservationService.create(userId, request.productId, request))
 
     @Operation(summary = "예약 취소 (소비자 전용)")
