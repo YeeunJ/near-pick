@@ -41,7 +41,7 @@ class ProductServiceImpl(
             lat = request.lat.toDouble(),
             lng = request.lng.toDouble(),
             radius = request.radius,
-            sort = request.sort,
+            sort = request.sort.name.lowercase(),
             pageable = pageable,
         ).map { it.toSummaryResponse() }
     }

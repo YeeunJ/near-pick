@@ -2,12 +2,12 @@ package com.nearpick.domain.product.dto
 
 import com.nearpick.domain.product.ProductStatus
 import com.nearpick.domain.product.ProductType
+import com.nearpick.domain.product.SortType
 import jakarta.validation.constraints.AssertTrue
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Positive
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -16,8 +16,7 @@ data class ProductNearbyRequest(
     val lat: BigDecimal,
     val lng: BigDecimal,
     @field:Positive @field:Max(50) val radius: Double = 5.0,
-    @field:Pattern(regexp = "popularity|distance", message = "sort must be 'popularity' or 'distance'")
-    val sort: String = "popularity",
+    val sort: SortType = SortType.POPULARITY,
     @field:Min(0) val page: Int = 0,
     @field:Positive @field:Max(100) val size: Int = 20,
 )
