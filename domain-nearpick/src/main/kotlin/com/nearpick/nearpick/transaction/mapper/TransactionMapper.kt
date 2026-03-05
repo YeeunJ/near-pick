@@ -17,6 +17,8 @@ object TransactionMapper {
         productTitle = product.title,
         productPrice = product.price,
         productType = product.productType,
+        productStatus = product.status,
+        shopAddress = product.merchant.shopAddress,
         createdAt = createdAt,
     )
 
@@ -26,6 +28,7 @@ object TransactionMapper {
         productTitle = product.title,
         quantity = quantity,
         status = status,
+        memo = memo,
         visitScheduledAt = visitScheduledAt,
         reservedAt = reservedAt,
     )

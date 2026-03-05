@@ -32,7 +32,10 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
                         * COS(RADIANS(p.shop_lng) - RADIANS(:lng))
                     + SIN(RADIANS(:lat)) * SIN(RADIANS(p.shop_lat))
                 ))))                                                        AS distanceKm,
-                mp.business_name                                            AS merchantName
+                mp.business_name                                            AS merchantName,
+                mp.shop_address                                             AS shopAddress,
+                p.shop_lat                                                  AS shopLat,
+                p.shop_lng                                                  AS shopLng
             FROM products p
             LEFT JOIN popularity_scores ps ON ps.product_id = p.id
             JOIN merchant_profiles mp ON mp.user_id = p.merchant_id

@@ -46,6 +46,9 @@ data class ProductSummaryResponse(
     val popularityScore: Double,
     val distanceKm: Double,
     val merchantName: String,
+    val shopAddress: String?,
+    val shopLat: BigDecimal,
+    val shopLng: BigDecimal,
 )
 
 data class ProductDetailResponse(

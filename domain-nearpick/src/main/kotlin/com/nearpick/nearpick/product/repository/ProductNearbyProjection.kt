@@ -1,5 +1,7 @@
 package com.nearpick.nearpick.product.repository
 
+import java.math.BigDecimal
+
 interface ProductNearbyProjection {
     val id: Long
     val title: String
@@ -9,4 +11,7 @@ interface ProductNearbyProjection {
     val popularityScore: Double
     val distanceKm: Double
     val merchantName: String
+    val shopAddress: String?
+    val shopLat: BigDecimal
+    val shopLng: BigDecimal
 }

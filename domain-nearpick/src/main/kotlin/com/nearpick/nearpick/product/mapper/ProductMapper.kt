@@ -21,6 +21,9 @@ object ProductMapper {
         popularityScore = popularityScore,
         distanceKm = distanceKm,
         merchantName = merchantName,
+        shopAddress = shopAddress,
+        shopLat = shopLat,
+        shopLng = shopLng,
     )
 
     fun ProductEntity.toDetailResponse(
@@ -61,6 +64,7 @@ object ProductMapper {
     fun ProductEntity.toAdminItem() = AdminProductItem(
         productId = id,
         title = title,
+        price = price,
         merchantId = merchant.userId,
         merchantName = merchant.businessName,
         status = status,

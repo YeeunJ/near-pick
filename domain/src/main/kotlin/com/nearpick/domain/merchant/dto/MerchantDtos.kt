@@ -1,6 +1,7 @@
 package com.nearpick.domain.merchant.dto
 
 import com.nearpick.domain.product.dto.ProductListItem
+import com.nearpick.domain.transaction.dto.ReservationItem
 import java.math.BigDecimal
 
 data class MerchantDashboardResponse(
@@ -10,6 +11,7 @@ data class MerchantDashboardResponse(
     val thisMonthReservationCount: Long,
     val thisMonthPurchaseCount: Long,
     val products: List<ProductListItem>,
+    val recentReservations: List<ReservationItem>,
 )
 
 data class MerchantProfileResponse(

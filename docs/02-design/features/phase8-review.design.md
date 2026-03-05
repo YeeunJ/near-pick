@@ -323,8 +323,61 @@ class RateLimitFilterTest {
 
 ---
 
+---
+
+## 10. UI 피드백 반영 — 추가 필드 (2026-03-05)
+
+UI 개발팀 피드백으로 발생한 백엔드 DTO 보강 5건.
+
+### B-1: AdminProductItem에 price 필드 추가
+
+- **페이지**: `/admin/products` (관리자 상품 검수)
+- **문제**: 가격 정보 없어서 비정상가 상품을 목록 단계에서 필터링 불가
+- **변경**:
+  - `AdminProductItem` → `price: Int` 추가
+  - `ProductMapper.toAdminItem()` → `price = price`
+
+### B-2: WishlistItem에 productStatus, shopAddress 필드 추가
+
+- **페이지**: `/mypage/wishlist` (소비자 찜 목록)
+- **문제**: 찜 목록에서 판매 종료 상태 및 가게 위치 확인 불가
+- **변경**:
+  - `WishlistItem` → `productStatus: ProductStatus`, `shopAddress: String?` 추가
+  - `TransactionMapper.WishlistEntity.toItem()` → `product.status`, `product.merchant.shopAddress` 추가
+  - 비고: `product.merchant`는 Lazy load, 200개 상한으로 허용 범위
+
+### B-3: ProductSummaryResponse에 shopAddress, shopLat, shopLng 추가
+
+- **페이지**: `/` (홈, 근처 상품 목록)
+- **문제**: 지도 마커 표시 불가, 가게 주소 미노출
+- **변경**:
+  - `ProductSummaryResponse` → `shopAddress: String?`, `shopLat: BigDecimal`, `shopLng: BigDecimal` 추가
+  - `ProductNearbyProjection` → 동일 필드 추가
+  - `ProductRepository.findNearby()` native query SELECT → `mp.shop_address AS shopAddress, p.shop_lat AS shopLat, p.shop_lng AS shopLng` 추가
+  - `ProductMapper.toSummaryResponse()` → 매핑 추가
+
+### B-4: MerchantDashboardResponse에 recentReservations 추가
+
+- **페이지**: `/merchant/dashboard` (소상공인 대시보드)
+- **문제**: 대기 중인 예약을 대시보드에서 바로 확인·확정 불가
+- **변경**:
+  - `MerchantDashboardResponse` → `recentReservations: List<ReservationItem>` 추가
+  - `MerchantServiceImpl.getDashboard()` → `findByMerchantIdAndStatus(merchantId, PENDING, PageRequest.of(0, 5))` 호출 추가
+  - 기준: **PENDING 상태 최근 5건** (reservedAt DESC)
+
+### B-5: ReservationItem에 memo 필드 추가
+
+- **페이지**: `/mypage/reservations`, `/merchant/reservations`
+- **문제**: 예약 시 입력한 `memo`(요청사항)가 DB에 저장되지만 응답 DTO에서 누락된 버그
+- **변경**:
+  - `ReservationItem` → `memo: String?` 추가
+  - `TransactionMapper.ReservationEntity.toItem()` → `memo = memo`
+
+---
+
 ## 9. 변경 이력
 
 | 버전 | 날짜 | 내용 | 작성자 |
 |------|------|------|--------|
 | 1.0 | 2026-03-05 | 최초 작성 — 전체 코드 리뷰 후 9개 이슈 도출 | pdca-design |
+| 1.1 | 2026-03-05 | UI 피드백 반영 — B-1~B-5 추가 필드 5건 추가 | claude |
