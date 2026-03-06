@@ -26,7 +26,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.kafka:spring-kafka")
-    implementation("org.redisson:redisson-spring-boot-starter:3.36.0")
+    implementation("org.redisson:redisson:3.36.0")
     implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
     implementation("org.springframework.boot:spring-boot-flyway")  // Spring Boot 4.x: Flyway auto-config 별도 모듈
     implementation("org.flywaydb:flyway-core")

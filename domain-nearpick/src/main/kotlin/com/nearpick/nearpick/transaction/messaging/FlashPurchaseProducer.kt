@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class FlashPurchaseProducer(
-    private val kafkaTemplate: KafkaTemplate<String, FlashPurchaseRequestEvent>,
+    private val kafkaTemplate: KafkaTemplate<String, Any>,
 ) {
     fun send(event: FlashPurchaseRequestEvent) {
         // key = productId → 같은 파티션으로 라우팅 → 상품별 순서 보장
