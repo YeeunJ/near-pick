@@ -5,13 +5,16 @@ import com.nearpick.common.exception.ErrorCode
 import com.nearpick.domain.merchant.MerchantService
 import com.nearpick.domain.merchant.dto.MerchantDashboardResponse
 import com.nearpick.domain.merchant.dto.MerchantProfileResponse
+import com.nearpick.domain.transaction.ReservationStatus
 import com.nearpick.nearpick.product.repository.PopularityScoreRepository
 import com.nearpick.nearpick.product.mapper.ProductMapper.toListItem
 import com.nearpick.nearpick.product.repository.ProductRepository
+import com.nearpick.nearpick.transaction.mapper.TransactionMapper.toItem
 import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository
 import com.nearpick.nearpick.transaction.repository.ReservationRepository
 import com.nearpick.nearpick.transaction.repository.WishlistRepository
 import com.nearpick.nearpick.user.mapper.MerchantMapper.toProfileResponse
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -42,6 +45,10 @@ class MerchantServiceImpl(
         val now = LocalDateTime.now()
         val monthStart = now.withDayOfMonth(1).toLocalDate().atStartOfDay()
 
+        val recentReservations = reservationRepository
+            .findByMerchantIdAndStatus(merchantId, ReservationStatus.PENDING, PageRequest.of(0, 5))
+            .content.map { it.toItem() }
+
         return MerchantDashboardResponse(
             merchantId = merchantId,
             businessName = merchant.businessName,
@@ -55,6 +62,7 @@ class MerchantServiceImpl(
             products = products.map { product ->
                 product.toListItem(wishlistCounts[product.id] ?: 0L)
             },
+            recentReservations = recentReservations,
         )
     }
 

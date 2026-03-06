@@ -9,7 +9,10 @@ import java.time.LocalDateTime
 @Entity
 @Table(
     name = "flash_purchases",
-    indexes = [Index(name = "idx_flash_purchases_user", columnList = "user_id")]
+    indexes = [
+        Index(name = "idx_flash_purchases_user", columnList = "user_id"),
+        Index(name = "idx_flash_purchases_product", columnList = "product_id"),
+    ]
 )
 class FlashPurchaseEntity(
     @Id

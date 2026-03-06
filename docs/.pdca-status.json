@@ -1,27 +1,520 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-05T00:00:00.000Z",
+  "lastUpdated": "2026-03-06T07:30:00.000Z",
   "activeFeatures": [],
   "primaryFeature": null,
-  "features": {},
+  "features": {
+    "controller": {
+      "phase": "archived",
+      "phaseNumber": 5,
+      "matchRate": 98,
+      "iterationCount": 0,
+      "archivedAt": "2026-03-06T07:30:00.000Z",
+      "archivedTo": "docs/archive/2026-03/controller/",
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-04T16:30:38.018Z",
+        "lastUpdated": "2026-03-05T00:58:16.595Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/test/kotlin/com/nearpick/app/controller/MerchantControllerTest.kt"
+    },
+    "service": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-04T16:33:09.860Z",
+        "lastUpdated": "2026-03-05T01:02:26.673Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/test/kotlin/com/nearpick/nearpick/user/service/MerchantServiceImplTest.kt"
+    },
+    "config": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-04T16:33:17.651Z",
+        "lastUpdated": "2026-03-05T10:18:06.652Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/config/FlywayRepairConfig.kt"
+    },
+    "entity": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-04T16:33:33.026Z",
+        "lastUpdated": "2026-03-04T16:33:36.974Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/transaction/entity/FlashPurchaseEntity.kt"
+    },
+    "dto": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-04T16:33:45.149Z",
+        "lastUpdated": "2026-03-05T00:46:23.534Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/merchant/dto/MerchantDtos.kt"
+    },
+    "repository": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-04T16:34:10.616Z",
+        "lastUpdated": "2026-03-05T09:25:47.533Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/product/repository/ProductNearbyProjection.kt"
+    },
+    "product": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-05T00:26:10.547Z",
+        "lastUpdated": "2026-03-06T07:09:35.480Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/product/ProductType.kt"
+    },
+    "mapper": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-05T00:46:33.594Z",
+        "lastUpdated": "2026-03-05T09:26:23.612Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/product/mapper/ProductMapper.kt"
+    }
+  },
   "pipeline": {
     "currentPhase": 7,
     "level": "Enterprise",
     "phaseHistory": [
-      { "phase": 1, "feature": "phase1-schema", "status": "archived", "matchRate": 97 },
-      { "phase": 2, "feature": "phase2-convention", "status": "archived", "matchRate": 95 },
-      { "phase": 2.5, "feature": "phase2-workflow", "status": "archived" },
-      { "phase": 3, "feature": "phase3-mockup", "status": "archived" },
-      { "phase": 4, "feature": "phase4-api", "status": "archived" },
-      { "phase": 4.5, "feature": "phase4.5-api-quality", "status": "archived", "matchRate": 97.5 },
-      { "phase": 5, "feature": "phase5-design-system", "status": "archived", "matchRate": 95 },
-      { "phase": 7, "feature": "phase7-security", "status": "archived", "matchRate": 94 }
+      {
+        "phase": 1,
+        "feature": "phase1-schema",
+        "status": "archived",
+        "matchRate": 97
+      },
+      {
+        "phase": 2,
+        "feature": "phase2-convention",
+        "status": "archived",
+        "matchRate": 95
+      },
+      {
+        "phase": 2.5,
+        "feature": "phase2-workflow",
+        "status": "archived"
+      },
+      {
+        "phase": 3,
+        "feature": "phase3-mockup",
+        "status": "archived"
+      },
+      {
+        "phase": 4,
+        "feature": "phase4-api",
+        "status": "archived"
+      },
+      {
+        "phase": 4.5,
+        "feature": "phase4.5-api-quality",
+        "status": "archived",
+        "matchRate": 97.5
+      },
+      {
+        "phase": 5,
+        "feature": "phase5-design-system",
+        "status": "archived",
+        "matchRate": 95
+      },
+      {
+        "phase": 7,
+        "feature": "phase7-security",
+        "status": "archived",
+        "matchRate": 94
+      }
     ]
   },
   "session": {
     "startedAt": "2026-03-05T00:00:00.000Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-05T00:00:00.000Z"
+    "lastActivity": "2026-03-06T07:09:35.480Z"
   },
-  "history": []
+  "history": [
+    {
+      "timestamp": "2026-03-04T16:30:38.018Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:31:14.018Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:31:44.980Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:33:09.860Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:33:17.651Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:33:23.712Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:33:33.026Z",
+      "feature": "entity",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:33:36.974Z",
+      "feature": "entity",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:33:45.149Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:33:52.602Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:34:00.749Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:34:10.616Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:34:16.438Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:34:24.204Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:34:34.382Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:34:41.532Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:35:06.520Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:35:27.509Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:37:21.033Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:37:24.436Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:38:03.737Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-04T16:38:23.562Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:13:08.988Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:13:09.807Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:26:10.547Z",
+      "feature": "product",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:26:17.480Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:26:24.807Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:26:31.668Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:26:37.861Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:26:45.804Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:02.411Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:04.394Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:11.839Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:14.027Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:20.161Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:23.534Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:31.114Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:33.594Z",
+      "feature": "mapper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:38.790Z",
+      "feature": "mapper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:40.914Z",
+      "feature": "mapper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:47.580Z",
+      "feature": "mapper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:46:57.468Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:47:05.721Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:47:13.731Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T00:58:16.595Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T01:02:17.679Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T01:02:26.673Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T09:01:59.922Z",
+      "feature": "product",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T09:25:47.533Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T09:26:23.612Z",
+      "feature": "mapper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T09:27:11.214Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T09:31:11.875Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T09:45:27.755Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T09:45:34.319Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T09:47:23.568Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T09:47:30.684Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-05T10:18:06.652Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T07:09:35.480Z",
+      "feature": "product",
+      "phase": "do",
+      "action": "updated"
+    }
+  ]
 }

@@ -1,5 +1,6 @@
 package com.nearpick.domain.transaction.dto
 
+import com.nearpick.domain.product.ProductStatus
 import com.nearpick.domain.product.ProductType
 import com.nearpick.domain.transaction.FlashPurchaseStatus
 import com.nearpick.domain.transaction.ReservationStatus
@@ -14,12 +15,16 @@ data class WishlistAddRequest(
     @field:Positive val productId: Long,
 )
 
+data class WishlistAddResponse(val wishlistId: Long)
+
 data class WishlistItem(
     val wishlistId: Long,
     val productId: Long,
     val productTitle: String,
     val productPrice: Int,
     val productType: ProductType,
+    val productStatus: ProductStatus,
+    val shopAddress: String?,
     val createdAt: LocalDateTime,
 )
 
@@ -38,6 +43,7 @@ data class ReservationItem(
     val productTitle: String,
     val quantity: Int,
     val status: ReservationStatus,
+    val memo: String?,
     val visitScheduledAt: LocalDateTime?,
     val reservedAt: LocalDateTime,
 )

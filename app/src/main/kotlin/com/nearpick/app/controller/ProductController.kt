@@ -2,6 +2,7 @@ package com.nearpick.app.controller
 
 import com.nearpick.common.response.ApiResponse
 import com.nearpick.domain.product.ProductService
+import com.nearpick.domain.product.SortType
 import com.nearpick.domain.product.dto.ProductCreateRequest
 import com.nearpick.domain.product.dto.ProductNearbyRequest
 import io.swagger.v3.oas.annotations.Operation
@@ -35,7 +36,7 @@ class ProductController(private val productService: ProductService) {
         @RequestParam lat: BigDecimal,
         @RequestParam lng: BigDecimal,
         @RequestParam(defaultValue = "5.0") radius: Double,
-        @RequestParam(defaultValue = "popularity") sort: String,
+        @RequestParam(defaultValue = "POPULARITY") sort: SortType,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int,
     ) = ApiResponse.success(
@@ -60,7 +61,7 @@ class ProductController(private val productService: ProductService) {
     @PreAuthorize("hasRole('MERCHANT')")
     fun create(
         @AuthenticationPrincipal userId: Long,
-        @Valid @RequestBody request: ProductCreateRequest,
+        @RequestBody @Valid request: ProductCreateRequest,
     ) = ApiResponse.success(productService.create(userId, request))
 
     @Operation(summary = "상품 마감 처리 (소상공인 전용)")

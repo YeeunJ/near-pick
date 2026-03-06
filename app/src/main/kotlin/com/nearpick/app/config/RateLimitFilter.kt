@@ -20,7 +20,7 @@ class RateLimitFilter(
     private val loginBuckets = ConcurrentHashMap<String, Bucket>()
     private val apiBuckets = ConcurrentHashMap<String, Bucket>()
 
-    override fun doFilterInternal(
+    public override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         chain: FilterChain,

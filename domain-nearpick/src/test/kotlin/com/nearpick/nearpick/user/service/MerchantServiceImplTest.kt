@@ -2,6 +2,7 @@ package com.nearpick.nearpick.user.service
 
 import com.nearpick.common.exception.BusinessException
 import com.nearpick.common.exception.ErrorCode
+import com.nearpick.domain.transaction.ReservationStatus
 import com.nearpick.domain.user.UserRole
 import com.nearpick.nearpick.product.repository.PopularityScoreRepository
 import com.nearpick.nearpick.product.repository.ProductRepository
@@ -11,6 +12,7 @@ import com.nearpick.nearpick.transaction.repository.WishlistRepository
 import com.nearpick.nearpick.user.entity.MerchantProfileEntity
 import com.nearpick.nearpick.user.entity.UserEntity
 import com.nearpick.nearpick.user.repository.MerchantProfileRepository
+import org.springframework.data.domain.PageImpl
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -60,6 +62,7 @@ class MerchantServiceImplTest {
         whenever(popularityScoreRepository.sumScoreByMerchantId(1L)).thenReturn(0.0)
         whenever(reservationRepository.countByMerchantIdAndPeriod(any(), any(), any())).thenReturn(0L)
         whenever(flashPurchaseRepository.countByMerchantIdAndPeriod(any(), any(), any())).thenReturn(0L)
+        whenever(reservationRepository.findByMerchantIdAndStatus(any(), any(), any())).thenReturn(PageImpl(emptyList()))
 
         // when
         val response = merchantService.getDashboard(1L)

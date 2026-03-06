@@ -53,6 +53,7 @@ class MerchantControllerTest {
                 thisMonthReservationCount = 0L,
                 thisMonthPurchaseCount = 0L,
                 products = emptyList(),
+                recentReservations = emptyList(),
             )
         )
 

@@ -17,6 +17,7 @@ data class UserSummary(
 data class AdminProductItem(
     val productId: Long,
     val title: String,
+    val price: Int,
     val merchantId: Long,
     val merchantName: String,
     val status: ProductStatus,

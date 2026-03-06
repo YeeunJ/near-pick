@@ -13,7 +13,7 @@ interface WishlistRepository : JpaRepository<WishlistEntity, Long> {
 
     fun countByProduct_Id(productId: Long): Long
 
-    fun findAllByUser_Id(userId: Long): List<WishlistEntity>
+    fun findTop200ByUser_IdOrderByCreatedAtDesc(userId: Long): List<WishlistEntity>
 
     /** Batch wishlist count per product — avoids N+1 in product listing */
     @Query("""
