@@ -18,7 +18,7 @@ object ProductMapper {
         price = price,
         productType = ProductType.valueOf(productType),
         status = ProductStatus.valueOf(status),
-        popularityScore = popularityScore,
+        popularityScore = popularityScore.toDouble(),
         distanceKm = distanceKm,
         merchantName = merchantName,
         shopAddress = shopAddress,

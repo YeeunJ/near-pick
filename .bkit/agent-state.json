@@ -1,25 +1,14 @@
 {
   "version": "1.0",
-  "enabled": true,
+  "enabled": false,
   "teamName": "",
   "feature": "controller",
   "pdcaPhase": "do",
   "orchestrationPattern": "leader",
   "ctoAgent": "opus",
   "startedAt": "2026-03-05T00:16:35.573Z",
-  "lastUpdated": "2026-03-05T00:17:27.287Z",
-  "teammates": [
-    {
-      "name": "a7fa2b5859eca75c0",
-      "role": "bkit:report-generator",
-      "model": "sonnet",
-      "status": "completed",
-      "currentTask": null,
-      "taskId": null,
-      "startedAt": "2026-03-05T00:16:35.574Z",
-      "lastActivityAt": "2026-03-05T00:17:27.285Z"
-    }
-  ],
+  "lastUpdated": "2026-03-05T10:00:47.897Z",
+  "teammates": [],
   "progress": {
     "totalTasks": 0,
     "completedTasks": 0,

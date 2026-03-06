@@ -8,7 +8,7 @@ interface ProductNearbyProjection {
     val price: Int
     val productType: String
     val status: String
-    val popularityScore: Double
+    val popularityScore: BigDecimal
     val distanceKm: Double
     val merchantName: String
     val shopAddress: String?

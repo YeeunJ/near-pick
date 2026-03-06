@@ -8,7 +8,7 @@
 | **Level** | Enterprise |
 | **Stack** | Spring Boot 4.0.3, Kotlin 2.2.21, Java 17 |
 | **Started** | 2026-02-23 |
-| **Last Updated** | 2026-03-04 |
+| **Last Updated** | 2026-03-06 |
 
 ## Summary
 
@@ -30,9 +30,15 @@
 | 4.5 | API Quality (Swagger + Test + Flyway) | ✅ Completed | 97.5% | #8 merged |
 | 5 | Design System | ✅ Completed | 95% | #9 merged |
 | 6 | UI + API Integration | ➡️ near-pick-web | - | - |
-| 7 | Security (백엔드) | ⏳ Pending | - | - |
-| 8 | Review | ⏳ Pending | - | - |
-| 9 | Deployment | ⏳ Pending | - | - |
+| 7 | Security (백엔드) | ✅ Completed | 94% | - |
+| 8 | Code Review & Quality | ✅ Completed | 98% | - |
+| 9 | 고성능 아키텍처 (Redis, Kafka, 10K TPS) | ⏳ Pending | - | - |
+| 10 | 위치 & 지도 서비스 | ⏳ Pending | - | - |
+| 11 | 상품 고도화 (사진, 카테고리) | ⏳ Pending | - | - |
+| 12 | 구매 라이프사이클 정리 | ⏳ Pending | - | - |
+| 13 | 리뷰 시스템 + AI 검증 | ⏳ Pending | - | - |
+| 14 | 사용자 고도화 | ⏳ Pending | - | - |
+| 15 | 종합 QA & 배포 | ⏳ Pending | - | - |
 
 ---
 
@@ -108,27 +114,80 @@
   - local: `ddl-auto=validate` + `baseline-on-migrate=true`
   - test: `spring.flyway.enabled=false` (Hibernate create-drop)
 
-### Phase 7 — Security (백엔드) ⏳
-- **내용 (예정):**
-  - CORS 설정 (near-pick-web origin 허용)
-  - Rate Limiting
-  - 입력값 검증 강화 (XSS, Injection 방어)
-  - JWT 토큰 보안 설정 점검 (만료/갱신 정책)
-  - HTTPS 설정 (배포 시 적용)
-- **참고:** SEO는 near-pick-web에서 처리
+### Phase 7 — Security (백엔드) ✅
+- **완료일:** 2026-03-04
+- **Match Rate:** 94%
+- **구현:** Spring Security 설정, JWT 인증/인가, CORS, Rate Limiting (Bucket4j), 보안 헤더 (HSTS, X-Frame-Options), 입력값 검증
 
-### Phase 8 — Review ⏳
-- **내용 (예정):**
-  - 전체 백엔드 코드 리뷰 & Gap 분석
-  - 테스트 커버리지 점검
-  - API 문서 최종 정리
+### Phase 8 — Code Review & Quality ✅
+- **완료일:** 2026-03-05
+- **Match Rate:** 98%
+- **브랜치:** `feature/phase8-review`
+- **구현:** P1 기능 오작동 3건, P2 성능/일관성 4건, P3 테스트 보완 2건, UI 피드백 B-1~B-5, 추가 버그 3건 (ProductType RESERVATION→GENERAL, nearby 500, 잘못된 enum 500)
+- **테스트:** 34개 케이스 전체 통과
 
-### Phase 9 — Deployment ⏳
+---
+
+### Phase 9 — 고성능 아키텍처 ⏳
+- **목표 TPS:** 평시 200 / 이벤트 3,000 / 선착순 10,000
 - **내용 (예정):**
-  - 서버 환경 설정 (EC2 / Cloud Run 등)
-  - CI/CD 파이프라인 구성
-  - prod DB 마이그레이션 (Flyway)
-  - 환경변수 관리
+  - Redis 캐싱 레이어 (상품 목록, 인기도 점수, 세션)
+  - Kafka 기반 선착순 구매 이벤트 처리 (재고 감소 비동기화)
+  - DB Read Replica 전략 (쓰기/읽기 분리)
+  - Distributed Lock (Redisson) — 재고 동시성 제어
+  - Rate Limiting 고도화 (Redis Bucket4j)
+  - Circuit Breaker (Resilience4j)
+
+### Phase 10 — 위치 & 지도 서비스 ⏳
+- **내용 (예정):**
+  - 주소 검색 API 연동 (카카오 주소 API)
+  - 소비자 위치 관리: 현 위치 + 저장 위치 최대 5개
+  - 저장 위치 CRUD (별칭, 기본 위치 지정)
+  - 지도 API 연동 (상품 핀 표시, 클러스터링)
+  - `nearby` 쿼리 위치 소스 선택 지원
+
+### Phase 11 — 상품 고도화 ⏳
+- **내용 (예정):**
+  - 상품 이미지 업로드 (S3 + CloudFront CDN, 최대 5장)
+  - 카테고리 체계 (음식 / 음료 / 뷰티 / 생활용품 / 기타)
+  - 음식 카테고리: 메뉴 옵션 시스템 (사이즈, 추가 토핑 등)
+  - 비음식 카테고리: 유연한 상품 스펙 속성
+  - 소상공인 상품 등록 UI 고도화
+
+### Phase 12 — 구매 라이프사이클 정리 ⏳
+- **내용 (예정):**
+  - 예약 상태 플로우: `PENDING → CONFIRMED → VISITED → COMPLETED / CANCELLED / NO_SHOW`
+  - 선착순 구매 플로우: `PENDING → CONFIRMED → PICKED_UP / CANCELLED`
+  - 방문 확인 기능 (소상공인 QR / 코드 체크인)
+  - 자동 상태 변경 스케줄러 (미방문 시 NO_SHOW 처리)
+  - 취소/환불 정책 로직
+
+### Phase 13 — 리뷰 시스템 + AI 검증 ⏳
+- **내용 (예정):**
+  - 리뷰 엔티티 (구매/방문 완료 후에만 작성 가능)
+  - 리뷰: 별점 + 텍스트 + 이미지 (최대 3장)
+  - 소상공인 답글 기능
+  - AI 리뷰 검증 (Claude API): 비속어, 허위 리뷰 패턴 감지 → 자동 블라인드
+  - 리뷰 신고 기능 → 관리자 검토 큐
+  - 상품 평점 자동 집계
+
+### Phase 14 — 사용자 고도화 ⏳
+- **내용 (예정):**
+  - 소비자 등급 체계 (활동량 기반: 일반 / 단골 / VIP)
+  - 소상공인 인증 레벨 (우수 파트너 등)
+  - 단골 기능 (가게 즐겨찾기 → 새 상품 등록 시 알림)
+  - 알림 시스템 기반 (FCM / APNs 연동 준비)
+  - 관리자 사용자 세그먼트 조회 & 대상별 공지
+
+### Phase 15 — 종합 QA & 배포 ⏳
+- **내용 (예정):**
+  - 부하 테스트 (k6 / Gatling): 200 / 3,000 / 10,000 TPS 시나리오
+  - SRE: SLI/SLO 정의, 알람 설정
+  - 인프라: Kubernetes (EKS), Helm Chart, HPA
+  - CI/CD: GitHub Actions → ArgoCD
+  - 모니터링: Prometheus + Grafana, Loki, Jaeger
+  - DB: RDS Aurora MySQL Multi-AZ + Read Replica
+  - CDN: CloudFront (이미지 + API 캐시)
 
 ---
 

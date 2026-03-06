@@ -1,19 +1,29 @@
 # Archive Index — 2026-03
 
-> near-pick backend PDCA 완료 피처 아카이브 (2026년 3월)
+## controller (Phase 8: Code Review & Quality)
 
-| Feature | 문서 | Match Rate | 아카이브일 |
-|---------|------|:----------:|-----------|
-| [phase1-schema](./phase1-schema/) | Plan·Design·Analysis·Report | 97% | 2026-03-05 |
-| [phase2-convention](./phase2-convention/) | Plan·Design·Analysis·Report | 95%+ | 2026-03-05 |
-| [phase2-workflow](./phase2-workflow/) | Plan·Design | — | 2026-03-05 |
-| [phase3-mockup](./phase3-mockup/) | Plan·Design | — | 2026-03-05 |
-| [phase4-api](./phase4-api/) | Analysis·Report | — | 2026-03-05 |
-| [phase5-design-system](./phase5-design-system/) | Plan·Design·Analysis·Report | 95% | 2026-03-05 |
-| [phase7-security](./phase7-security/) | Plan·Design·Analysis·Report | 94% | 2026-03-05 |
+| 항목 | 내용 |
+|------|------|
+| **아카이브일** | 2026-03-06 |
+| **Match Rate** | 98% |
+| **브랜치** | `feature/phase8-review` |
+| **경로** | `docs/archive/2026-03/controller/` |
 
-## Notes
+### 포함 문서
 
-- `phase2-workflow`, `phase3-mockup`: 구현 완료됐으나 Analysis/Report 미작성 상태로 아카이브
-- `phase4-api`: PDCA 시스템 도입 전 완료된 피처 — Plan/Design 문서 없음
-- `phase4.5-api-quality`: [2026-02 아카이브](../2026-02/phase4.5-api-quality/) 참조
+| 파일 | 설명 |
+|------|------|
+| `phase8-review.plan.md` | Phase 8 계획서 |
+| `phase8-review.design.md` | Phase 8 설계서 (9개 이슈 + B-1~B-5) |
+| `phase8-review.analysis.md` | Phase 8 Gap Analysis |
+| `phase8-review.report.md` | Phase 8 완료 보고서 |
+| `controller.analysis.md` | PDCA Check — Gap Analysis (98%) |
+| `controller.report.md` | PDCA 완료 보고서 (전체 로드맵 포함) |
+
+### 주요 완료 항목
+
+- P1: AdminController 200 응답, WishlistService RESOURCE_NOT_FOUND, GlobalExceptionHandler 핸들러 추가
+- P2: 인덱스 추가, WishlistAddResponse DTO, 최대 200개 제한, @RequestBody @Valid 통일
+- P3: WishlistServiceImplTest (6케이스), RateLimitFilterTest (5케이스)
+- UI 피드백: B-1~B-5 DTO 필드 5건
+- 추가 버그픽스: ProductType RESERVATION 복원, nearby BigDecimal 수정, HttpMessageNotReadableException 400 처리
