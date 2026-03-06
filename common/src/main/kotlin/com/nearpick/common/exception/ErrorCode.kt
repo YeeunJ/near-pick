@@ -29,4 +29,8 @@ enum class ErrorCode(
     PRODUCT_NOT_ACTIVE(422, "Product is not available"),
     RESERVATION_CANNOT_BE_CANCELLED(422, "Reservation cannot be cancelled in current status"),
     RESERVATION_CANNOT_BE_CONFIRMED(422, "Reservation cannot be confirmed in current status"),
+
+    // Flash Purchase (Phase 9)
+    FLASH_PURCHASE_LOCK_FAILED(409, "선착순 처리 중 충돌이 발생했습니다. 다시 시도해주세요."),
+    FLASH_PURCHASE_UNAVAILABLE(503, "선착순 구매 서비스가 일시적으로 이용 불가합니다."),
 }

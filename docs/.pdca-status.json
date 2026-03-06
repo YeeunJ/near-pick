@@ -1,8 +1,16 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-06T07:30:00.000Z",
-  "activeFeatures": [],
-  "primaryFeature": null,
+  "lastUpdated": "2026-03-06T13:29:17.096Z",
+  "activeFeatures": [
+    "config",
+    "service",
+    "exception",
+    "dto",
+    "messaging",
+    "load-tests",
+    "scenarios"
+  ],
+  "primaryFeature": "config",
   "features": {
     "controller": {
       "phase": "archived",
@@ -28,9 +36,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:33:09.860Z",
-        "lastUpdated": "2026-03-05T01:02:26.673Z"
+        "lastUpdated": "2026-03-06T13:26:18.591Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/test/kotlin/com/nearpick/nearpick/user/service/MerchantServiceImplTest.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/transaction/service/FlashPurchaseServiceImpl.kt"
     },
     "config": {
       "phase": "do",
@@ -41,9 +49,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:33:17.651Z",
-        "lastUpdated": "2026-03-05T10:18:06.652Z"
+        "lastUpdated": "2026-03-06T13:25:08.073Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/config/FlywayRepairConfig.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/config/RateLimitFilter.kt"
     },
     "entity": {
       "phase": "do",
@@ -67,9 +75,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:33:45.149Z",
-        "lastUpdated": "2026-03-05T00:46:23.534Z"
+        "lastUpdated": "2026-03-06T13:25:41.318Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/merchant/dto/MerchantDtos.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/transaction/dto/TransactionDtos.kt"
     },
     "repository": {
       "phase": "do",
@@ -109,6 +117,58 @@
         "lastUpdated": "2026-03-05T09:26:23.612Z"
       },
       "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/product/mapper/ProductMapper.kt"
+    },
+    "exception": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-06T13:25:36.998Z",
+        "lastUpdated": "2026-03-06T13:25:36.998Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/common/src/main/kotlin/com/nearpick/common/exception/ErrorCode.kt"
+    },
+    "messaging": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-06T13:25:47.106Z",
+        "lastUpdated": "2026-03-06T13:29:17.096Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/transaction/messaging/FlashPurchaseConsumer.kt"
+    },
+    "load-tests": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-06T13:26:33.486Z",
+        "lastUpdated": "2026-03-06T13:27:12.300Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/load-tests/run-all.sh"
+    },
+    "scenarios": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-06T13:26:46.639Z",
+        "lastUpdated": "2026-03-06T13:27:01.630Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/load-tests/scenarios/03-flash.js"
     }
   },
   "pipeline": {
@@ -165,7 +225,7 @@
   "session": {
     "startedAt": "2026-03-05T00:00:00.000Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-06T07:09:35.480Z"
+    "lastActivity": "2026-03-06T13:29:17.096Z"
   },
   "history": [
     {
@@ -513,6 +573,132 @@
     {
       "timestamp": "2026-03-06T07:09:35.480Z",
       "feature": "product",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:24:34.338Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:24:39.172Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:24:45.531Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:24:57.639Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:25:08.073Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:25:29.575Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:25:36.998Z",
+      "feature": "exception",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:25:41.318Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:25:47.106Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:25:52.851Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:26:07.341Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:26:18.591Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:26:33.486Z",
+      "feature": "load-tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:26:38.160Z",
+      "feature": "load-tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:26:46.639Z",
+      "feature": "scenarios",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:26:51.843Z",
+      "feature": "scenarios",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:27:01.630Z",
+      "feature": "scenarios",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:27:12.300Z",
+      "feature": "load-tests",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:28:51.218Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:29:13.580Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T13:29:17.096Z",
+      "feature": "messaging",
       "phase": "do",
       "action": "updated"
     }
