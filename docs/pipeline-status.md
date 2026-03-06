@@ -137,6 +137,7 @@
   - Distributed Lock (Redisson) — 재고 동시성 제어
   - Rate Limiting 고도화 (Redis Bucket4j)
   - Circuit Breaker (Resilience4j)
+  - **k6 부하 테스트**: 200 / 3,000 / 10,000 TPS 시나리오 (구현 직후 검증)
 
 ### Phase 10 — 위치 & 지도 서비스 ⏳
 - **내용 (예정):**
@@ -181,8 +182,7 @@
 
 ### Phase 15 — 종합 QA & 배포 ⏳
 - **내용 (예정):**
-  - 부하 테스트 (k6 / Gatling): 200 / 3,000 / 10,000 TPS 시나리오
-  - SRE: SLI/SLO 정의, 알람 설정
+  - SRE: SLI/SLO 정의, 알람 설정 (Phase 9 부하 테스트 결과 기반)
   - 인프라: Kubernetes (EKS), Helm Chart, HPA
   - CI/CD: GitHub Actions → ArgoCD
   - 모니터링: Prometheus + Grafana, Loki, Jaeger
