@@ -1,126 +1,87 @@
 package com.nearpick.nearpick.transaction.service
 
-import com.nearpick.common.exception.BusinessException
-import com.nearpick.common.exception.ErrorCode
-import com.nearpick.domain.product.ProductStatus
-import com.nearpick.domain.product.ProductType
+import com.nearpick.domain.transaction.FlashPurchaseStatus
 import com.nearpick.domain.transaction.dto.FlashPurchaseCreateRequest
-import com.nearpick.domain.user.UserRole
-import com.nearpick.nearpick.product.entity.ProductEntity
-import com.nearpick.nearpick.product.repository.ProductRepository
-import com.nearpick.nearpick.transaction.entity.FlashPurchaseEntity
+import com.nearpick.nearpick.transaction.messaging.FlashPurchaseProducer
+import com.nearpick.nearpick.transaction.messaging.FlashPurchaseRequestEvent
 import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository
-import com.nearpick.nearpick.user.entity.MerchantProfileEntity
-import com.nearpick.nearpick.user.entity.UserEntity
-import com.nearpick.nearpick.user.repository.UserRepository
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
-import org.mockito.kotlin.whenever
-import java.math.BigDecimal
-import java.util.Optional
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.verify
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
+/**
+ * FlashPurchaseServiceImpl 단위 테스트
+ *
+ * Phase 9에서 서비스가 Kafka 비동기 방식으로 전환됨:
+ * - 재고 감소/구매자 조회는 Consumer로 이동
+ * - 서비스는 Kafka 이벤트 발행 + 즉시 PENDING 반환만 수행
+ * - 재고/구매자 검증 로직은 FlashPurchaseConsumerTest에서 검증
+ */
 @ExtendWith(MockitoExtension::class)
 class FlashPurchaseServiceImplTest {
 
+    @Mock lateinit var producer: FlashPurchaseProducer
     @Mock lateinit var flashPurchaseRepository: FlashPurchaseRepository
-    @Mock lateinit var userRepository: UserRepository
-    @Mock lateinit var productRepository: ProductRepository
 
-    @InjectMocks lateinit var flashPurchaseService: FlashPurchaseServiceImpl
-
-    private lateinit var user: UserEntity
-    private lateinit var merchant: MerchantProfileEntity
-    private lateinit var activeProduct: ProductEntity
-
-    @BeforeEach
-    fun setUp() {
-        user = UserEntity(id = 1L, email = "consumer@example.com", passwordHash = "h", role = UserRole.CONSUMER)
-
-        val merchantUser = UserEntity(id = 2L, email = "merchant@example.com", passwordHash = "h", role = UserRole.MERCHANT)
-        merchant = MerchantProfileEntity(
-            userId = 2L, user = merchantUser, businessName = "Shop",
-            businessRegNo = "123-45-67890",
-            shopLat = BigDecimal("37.5"), shopLng = BigDecimal("127.0"),
-        )
-
-        activeProduct = ProductEntity(
-            id = 10L, merchant = merchant, title = "Flash Item",
-            price = 1000, productType = ProductType.FLASH_SALE,
-            status = ProductStatus.ACTIVE, stock = 5,
-            shopLat = BigDecimal("37.5"), shopLng = BigDecimal("127.0"),
-        )
-    }
+    @InjectMocks lateinit var service: FlashPurchaseServiceImpl
 
     @Test
-    fun `purchase - 재고가 충분하면 재고를 차감하고 구매를 저장한다`() {
+    fun `purchase - Kafka 이벤트를 발행하고 즉시 PENDING 상태를 반환한다`() {
         // given
         val request = FlashPurchaseCreateRequest(productId = 10L, quantity = 2)
-        val savedPurchase = FlashPurchaseEntity(id = 1L, user = user, product = activeProduct, quantity = 2)
-
-        whenever(userRepository.findById(1L)).thenReturn(Optional.of(user))
-        whenever(productRepository.findByIdWithLock(10L)).thenReturn(activeProduct)
-        whenever(flashPurchaseRepository.save(any())).thenReturn(savedPurchase)
 
         // when
-        val response = flashPurchaseService.purchase(1L, 10L, request)
+        val response = service.purchase(userId = 1L, productId = 10L, request = request)
 
         // then
-        assertEquals(5 - 2, activeProduct.stock)  // 재고 차감 확인
+        assertEquals(FlashPurchaseStatus.PENDING, response.status)
+        assertNull(response.purchaseId)
+        verify(producer).send(any<FlashPurchaseRequestEvent>())
     }
 
     @Test
-    fun `purchase - 재고가 부족하면 OUT_OF_STOCK 예외를 던진다`() {
-        // given
-        val request = FlashPurchaseCreateRequest(productId = 10L, quantity = 10)
-        whenever(userRepository.findById(1L)).thenReturn(Optional.of(user))
-        whenever(productRepository.findByIdWithLock(10L)).thenReturn(activeProduct)
-
-        // when / then
-        val ex = assertThrows<BusinessException> { flashPurchaseService.purchase(1L, 10L, request) }
-        assertEquals(ErrorCode.OUT_OF_STOCK, ex.errorCode)
-    }
-
-    @Test
-    fun `purchase - 상품이 비활성 상태이면 PRODUCT_NOT_ACTIVE 예외를 던진다`() {
-        // given
-        val inactiveProduct = activeProduct.apply { status = ProductStatus.CLOSED }
-        val request = FlashPurchaseCreateRequest(productId = 10L, quantity = 1)
-
-        whenever(userRepository.findById(1L)).thenReturn(Optional.of(user))
-        whenever(productRepository.findByIdWithLock(10L)).thenReturn(inactiveProduct)
-
-        // when / then
-        val ex = assertThrows<BusinessException> { flashPurchaseService.purchase(1L, 10L, request) }
-        assertEquals(ErrorCode.PRODUCT_NOT_ACTIVE, ex.errorCode)
-    }
-
-    @Test
-    fun `purchase - 상품이 없으면 PRODUCT_NOT_FOUND 예외를 던진다`() {
-        // given
-        val request = FlashPurchaseCreateRequest(productId = 99L, quantity = 1)
-        whenever(userRepository.findById(1L)).thenReturn(Optional.of(user))
-        whenever(productRepository.findByIdWithLock(99L)).thenReturn(null)
-
-        // when / then
-        val ex = assertThrows<BusinessException> { flashPurchaseService.purchase(1L, 99L, request) }
-        assertEquals(ErrorCode.PRODUCT_NOT_FOUND, ex.errorCode)
-    }
-
-    @Test
-    fun `purchase - 사용자가 없으면 USER_NOT_FOUND 예외를 던진다`() {
+    fun `purchase - 멱등성 키는 userId-productId-날짜 형식으로 생성된다`() {
         // given
         val request = FlashPurchaseCreateRequest(productId = 10L, quantity = 1)
-        whenever(userRepository.findById(99L)).thenReturn(Optional.empty())
+        val eventCaptor = argumentCaptor<FlashPurchaseRequestEvent>()
 
-        // when / then
-        val ex = assertThrows<BusinessException> { flashPurchaseService.purchase(99L, 10L, request) }
-        assertEquals(ErrorCode.USER_NOT_FOUND, ex.errorCode)
+        // when
+        service.purchase(userId = 5L, productId = 10L, request = request)
+
+        // then
+        verify(producer).send(eventCaptor.capture())
+        val event = eventCaptor.firstValue
+        assertEquals(5L, event.userId)
+        assertEquals(10L, event.productId)
+        assertEquals(1, event.quantity)
+        // idempotencyKey 형식: "5-10-YYYYMMDD"
+        assert(event.idempotencyKey.startsWith("5-10-")) {
+            "idempotencyKey should start with '5-10-', got: ${event.idempotencyKey}"
+        }
+    }
+
+    @Test
+    fun `purchase - 서로 다른 사용자의 동일 상품 구매 이벤트는 다른 멱등성 키를 가진다`() {
+        // given
+        val request = FlashPurchaseCreateRequest(productId = 10L, quantity = 1)
+        val captor = argumentCaptor<FlashPurchaseRequestEvent>()
+
+        // when
+        service.purchase(userId = 1L, productId = 10L, request = request)
+        service.purchase(userId = 2L, productId = 10L, request = request)
+
+        // then
+        verify(producer, org.mockito.kotlin.times(2)).send(captor.capture())
+        val (event1, event2) = captor.allValues
+        assert(event1.idempotencyKey != event2.idempotencyKey) {
+            "Different users must have different idempotency keys"
+        }
     }
 }

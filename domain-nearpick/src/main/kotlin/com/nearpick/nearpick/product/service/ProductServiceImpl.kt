@@ -18,6 +18,9 @@ import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository
 import com.nearpick.nearpick.transaction.repository.ReservationRepository
 import com.nearpick.nearpick.transaction.repository.WishlistRepository
 import com.nearpick.nearpick.user.repository.MerchantProfileRepository
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.cache.annotation.Caching
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -35,6 +38,10 @@ class ProductServiceImpl(
     private val flashPurchaseRepository: FlashPurchaseRepository,
 ) : ProductService {
 
+    @Cacheable(
+        value = ["products-nearby"],
+        key = "#request.lat.toString().substring(0, T(Math).min(6, #request.lat.toString().length())) + ':' + #request.lng.toString().substring(0, T(Math).min(6, #request.lng.toString().length())) + ':' + #request.radius + ':' + #request.sort + ':' + #request.page + ':' + #request.size"
+    )
     override fun getNearby(request: ProductNearbyRequest): Page<ProductSummaryResponse> {
         val pageable = PageRequest.of(request.page, request.size)
         return productRepository.findNearby(
@@ -46,6 +53,7 @@ class ProductServiceImpl(
         ).map { it.toSummaryResponse() }
     }
 
+    @Cacheable(value = ["products-detail"], key = "#productId")
     override fun getDetail(productId: Long): ProductDetailResponse {
         val product = productRepository.findById(productId).orElseThrow {
             BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
@@ -58,6 +66,9 @@ class ProductServiceImpl(
     }
 
     @Transactional
+    @Caching(evict = [
+        CacheEvict(value = ["products-nearby"], allEntries = true),
+    ])
     override fun create(merchantId: Long, request: ProductCreateRequest): ProductStatusResponse {
         val merchant = merchantProfileRepository.findById(merchantId).orElseThrow {
             BusinessException(ErrorCode.USER_NOT_FOUND)
@@ -79,6 +90,10 @@ class ProductServiceImpl(
     }
 
     @Transactional
+    @Caching(evict = [
+        CacheEvict(value = ["products-detail"], key = "#productId"),
+        CacheEvict(value = ["products-nearby"], allEntries = true),
+    ])
     override fun close(merchantId: Long, productId: Long): ProductStatusResponse {
         val product = productRepository.findById(productId).orElseThrow {
             BusinessException(ErrorCode.PRODUCT_NOT_FOUND)

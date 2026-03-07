@@ -66,4 +66,4 @@ data class FlashPurchaseItem(
     val purchasedAt: LocalDateTime,
 )
 
-data class FlashPurchaseStatusResponse(val purchaseId: Long, val status: FlashPurchaseStatus)
+data class FlashPurchaseStatusResponse(val purchaseId: Long?, val status: FlashPurchaseStatus)
