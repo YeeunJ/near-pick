@@ -40,7 +40,7 @@ class ProductServiceImpl(
 
     @Cacheable(
         value = ["products-nearby"],
-        key = "#request.lat.toString().take(6) + ':' + #request.lng.toString().take(6) + ':' + #request.radius + ':' + #request.sort + ':' + #request.page + ':' + #request.size"
+        key = "#request.lat.toString().substring(0, T(Math).min(6, #request.lat.toString().length())) + ':' + #request.lng.toString().substring(0, T(Math).min(6, #request.lng.toString().length())) + ':' + #request.radius + ':' + #request.sort + ':' + #request.page + ':' + #request.size"
     )
     override fun getNearby(request: ProductNearbyRequest): Page<ProductSummaryResponse> {
         val pageable = PageRequest.of(request.page, request.size)

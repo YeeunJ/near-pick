@@ -1,5 +1,8 @@
 package com.nearpick.app.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.apache.kafka.clients.admin.NewTopic
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
@@ -8,6 +11,7 @@ import org.apache.kafka.common.serialization.StringSerializer
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.kafka.annotation.EnableKafka
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory
 import org.springframework.kafka.config.TopicBuilder
 import org.springframework.kafka.core.ConsumerFactory
@@ -19,6 +23,7 @@ import org.springframework.kafka.support.serializer.JsonDeserializer
 import org.springframework.kafka.support.serializer.JsonSerializer
 
 @Configuration
+@EnableKafka
 class KafkaTopicConfig {
 
     // ── Topics ────────────────────────────────────────────────────────────────
@@ -61,17 +66,24 @@ class KafkaTopicConfig {
     fun consumerFactory(
         @Value("\${spring.kafka.bootstrap-servers:localhost:9092}") bootstrapServers: String,
     ): ConsumerFactory<String, Any> {
+        val objectMapper = ObjectMapper()
+            .registerModule(JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        val valueDeserializer = JsonDeserializer<Any>(objectMapper)
+        valueDeserializer.configure(
+            mapOf(
+                JsonDeserializer.TRUSTED_PACKAGES to "com.nearpick.*",
+                JsonDeserializer.VALUE_DEFAULT_TYPE to
+                    "com.nearpick.nearpick.transaction.messaging.FlashPurchaseRequestEvent",
+            ),
+            false,
+        )
         val config = mapOf(
             ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
             ConsumerConfig.GROUP_ID_CONFIG to "flash-purchase-cg",
             ConsumerConfig.AUTO_OFFSET_RESET_CONFIG to "earliest",
-            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to StringDeserializer::class.java,
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to JsonDeserializer::class.java,
-            JsonDeserializer.TRUSTED_PACKAGES to "com.nearpick.*",
-            JsonDeserializer.VALUE_DEFAULT_TYPE to
-                "com.nearpick.nearpick.transaction.messaging.FlashPurchaseRequestEvent",
         )
-        return DefaultKafkaConsumerFactory(config)
+        return DefaultKafkaConsumerFactory(config, StringDeserializer(), valueDeserializer)
     }
 
     @Bean

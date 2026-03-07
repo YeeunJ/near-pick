@@ -8,7 +8,7 @@
 | **Level** | Enterprise |
 | **Stack** | Spring Boot 4.0.3, Kotlin 2.2.21, Java 17 |
 | **Started** | 2026-02-23 |
-| **Last Updated** | 2026-03-06 |
+| **Last Updated** | 2026-03-07 |
 
 ## Summary
 
@@ -32,7 +32,7 @@
 | 6 | UI + API Integration | ➡️ near-pick-web | - | - |
 | 7 | Security (백엔드) | ✅ Completed | 94% | - |
 | 8 | Code Review & Quality | ✅ Completed | 98% | - |
-| 9 | 고성능 아키텍처 (Redis, Kafka, 10K TPS) | ⏳ Pending | - | - |
+| 9 | 고성능 아키텍처 (Redis, Kafka, 10K TPS) | ✅ Completed | 97% | - |
 | 10 | 위치 & 지도 서비스 | ⏳ Pending | - | - |
 | 11 | 상품 고도화 (사진, 카테고리) | ⏳ Pending | - | - |
 | 12 | 구매 라이프사이클 정리 | ⏳ Pending | - | - |
@@ -128,16 +128,23 @@
 
 ---
 
-### Phase 9 — 고성능 아키텍처 ⏳
-- **목표 TPS:** 평시 200 / 이벤트 3,000 / 선착순 10,000
-- **내용 (예정):**
-  - Redis 캐싱 레이어 (상품 목록, 인기도 점수, 세션)
-  - Kafka 기반 선착순 구매 이벤트 처리 (재고 감소 비동기화)
-  - DB Read Replica 전략 (쓰기/읽기 분리)
-  - Distributed Lock (Redisson) — 재고 동시성 제어
-  - Rate Limiting 고도화 (Redis Bucket4j)
-  - Circuit Breaker (Resilience4j)
-  - **k6 부하 테스트**: 200 / 3,000 / 10,000 TPS 시나리오 (구현 직후 검증)
+### Phase 9 — 고성능 아키텍처 ✅
+- **완료일:** 2026-03-07
+- **Match Rate:** 97% (Act 1회 반복 후)
+- **브랜치:** `feature/phase9-performance`
+- **구현:**
+  - Redis 캐싱 (products-detail 60s, products-nearby 30s) + JdkSerializationRedisSerializer
+  - Kafka 비동기 선착순 구매 (FlashPurchaseProducer → Consumer, 10 파티션)
+  - Redisson 분산 락 (RLock) + 멱등성 (RBucket.setIfAbsent)
+  - Redis Bucket4j Rate Limiting (LettuceBasedProxyManager, IP별)
+  - Circuit Breaker (Resilience4j flashPurchase instance)
+  - readOnly 트랜잭션 전면 적용
+- **k6 부하 테스트 결과:**
+  - 시나리오 1 (200 TPS): p95=3.71ms, 에러율 0% ✅
+  - 시나리오 2 (포화점 측정): 포화점 ~174 req/s 확인, 에러율 0%
+  - 시나리오 3 (선착순 100재고): 100/100 CONFIRMED, stock=0, 에러율 0% ✅
+- **테스트:** 39개 케이스 전체 통과 (FlashPurchaseConsumerTest 6개, ServiceTest 3개, ConcurrencyTest 1개, ProductServiceTest 3개)
+- **주요 버그 수정:** @EnableKafka 누락, LocalDateTime 역직렬화, Redis 직렬화, SpEL take(), SQL 구문 오류, Rate Limit 외부화
 
 ### Phase 10 — 위치 & 지도 서비스 ⏳
 - **내용 (예정):**

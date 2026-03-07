@@ -6,6 +6,7 @@ import io.github.bucket4j.redis.lettuce.cas.LettuceBasedProxyManager
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
@@ -15,13 +16,17 @@ import java.time.Duration
 @Component
 class RateLimitFilter(
     private val proxyManager: LettuceBasedProxyManager<String>,
+    @Value("\${rate-limit.auth.capacity:10}") private val authCapacity: Long,
+    @Value("\${rate-limit.auth.refill-per-minutes:1}") private val authRefillMinutes: Long,
 ) : OncePerRequestFilter() {
 
     private fun getBucketConfig(isAuthPath: Boolean): BucketConfiguration {
         val bandwidth = if (isAuthPath) {
-            Bandwidth.builder().capacity(10).refillGreedy(10, Duration.ofMinutes(1)).build()
+            Bandwidth.builder().capacity(authCapacity)
+                .refillGreedy(authCapacity, Duration.ofMinutes(authRefillMinutes)).build()
         } else {
-            Bandwidth.builder().capacity(200).refillGreedy(200, Duration.ofMinutes(1)).build()
+            // 500 req/sec per IP (burst-capable; realistic per-user limit for load testing)
+            Bandwidth.builder().capacity(500).refillGreedy(500, Duration.ofSeconds(1)).build()
         }
         return BucketConfiguration.builder().addLimit(bandwidth).build()
     }

@@ -51,7 +51,7 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
                         COS(RADIANS(:lat)) * COS(RADIANS(p.shop_lat))
                             * COS(RADIANS(p.shop_lng) - RADIANS(:lng))
                         + SIN(RADIANS(:lat)) * SIN(RADIANS(p.shop_lat))
-                    ))) END ASC,
+                    )))) END ASC,
                 CASE WHEN :sort = 'popularity' THEN COALESCE(ps.score, 0) END DESC
         """,
         countQuery = """

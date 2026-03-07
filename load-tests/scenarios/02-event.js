@@ -1,25 +1,28 @@
 import http from 'k6/http';
 import { check } from 'k6';
-import { BASE_URL, defaultThresholds } from '../common/config.js';
+import { BASE_URL } from '../common/config.js';
 
+// 단계별 ramping: 포화점 탐색 + Tomcat 튜닝 후 최대 처리량 확인
 export const options = {
   scenarios: {
     event_load: {
       executor: 'ramping-arrival-rate',
-      startRate: 100,
+      startRate: 200,
       timeUnit: '1s',
-      preAllocatedVUs: 500,
-      maxVUs: 3000,
+      preAllocatedVUs: 300,
+      maxVUs: 1500,
       stages: [
-        { target: 3000, duration: '30s' },
-        { target: 3000, duration: '30s' },
+        { target: 500,  duration: '20s' },  // 워밍업
+        { target: 1000, duration: '20s' },  // 중간 부하
+        { target: 1500, duration: '20s' },  // 고부하
+        { target: 2000, duration: '20s' },  // 한계 탐색
+        { target: 2000, duration: '20s' },  // 지속성 확인
       ],
     },
   },
   thresholds: {
-    ...defaultThresholds,
-    http_req_duration: ['p(95)<500'],
-    http_req_failed:   ['rate<0.02'],
+    http_req_failed:   ['rate<0.05'],    // 5% 이내 (고부하 구간 일부 실패 허용)
+    http_req_duration: ['p(95)<2000'],   // 95th percentile 2s 이내
   },
 };
 

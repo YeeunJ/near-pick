@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-06T13:29:17.096Z",
+  "lastUpdated": "2026-03-07T05:01:42.037Z",
   "activeFeatures": [
     "config",
     "service",
@@ -8,7 +8,8 @@
     "dto",
     "messaging",
     "load-tests",
-    "scenarios"
+    "scenarios",
+    "repository"
   ],
   "primaryFeature": "config",
   "features": {
@@ -36,9 +37,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:33:09.860Z",
-        "lastUpdated": "2026-03-06T13:26:18.591Z"
+        "lastUpdated": "2026-03-07T04:57:29.205Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/transaction/service/FlashPurchaseServiceImpl.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/test/kotlin/com/nearpick/nearpick/product/service/ProductServiceImplTest.kt"
     },
     "config": {
       "phase": "do",
@@ -49,7 +50,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:33:17.651Z",
-        "lastUpdated": "2026-03-06T13:25:08.073Z"
+        "lastUpdated": "2026-03-07T04:42:36.390Z"
       },
       "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/config/RateLimitFilter.kt"
     },
@@ -75,9 +76,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:33:45.149Z",
-        "lastUpdated": "2026-03-06T13:25:41.318Z"
+        "lastUpdated": "2026-03-06T17:28:06.133Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/transaction/dto/TransactionDtos.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/product/dto/ProductDtos.kt"
     },
     "repository": {
       "phase": "do",
@@ -88,9 +89,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:34:10.616Z",
-        "lastUpdated": "2026-03-05T09:25:47.533Z"
+        "lastUpdated": "2026-03-06T17:20:52.650Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/product/repository/ProductNearbyProjection.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/product/repository/ProductRepository.kt"
     },
     "product": {
       "phase": "do",
@@ -140,9 +141,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-06T13:25:47.106Z",
-        "lastUpdated": "2026-03-06T13:29:17.096Z"
+        "lastUpdated": "2026-03-07T05:01:42.037Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/transaction/messaging/FlashPurchaseConsumer.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/test/kotlin/com/nearpick/nearpick/transaction/messaging/FlashPurchaseConsumerTest.kt"
     },
     "load-tests": {
       "phase": "do",
@@ -166,13 +167,13 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-06T13:26:46.639Z",
-        "lastUpdated": "2026-03-06T13:27:01.630Z"
+        "lastUpdated": "2026-03-07T04:44:13.188Z"
       },
       "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/load-tests/scenarios/03-flash.js"
     }
   },
   "pipeline": {
-    "currentPhase": 7,
+    "currentPhase": 9,
     "level": "Enterprise",
     "phaseHistory": [
       {
@@ -219,13 +220,22 @@
         "feature": "phase7-security",
         "status": "archived",
         "matchRate": 94
+      },
+      {
+        "phase": 9,
+        "feature": "phase9-performance",
+        "status": "archived",
+        "matchRate": 97,
+        "iterationCount": 1,
+        "archivedAt": "2026-03-07T00:00:00.000Z",
+        "archivedTo": "docs/archive/2026-03/phase9-performance/"
       }
     ]
   },
   "session": {
     "startedAt": "2026-03-05T00:00:00.000Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-06T13:29:17.096Z"
+    "lastActivity": "2026-03-07T05:01:42.037Z"
   },
   "history": [
     {
@@ -698,6 +708,222 @@
     },
     {
       "timestamp": "2026-03-06T13:29:17.096Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T15:38:18.218Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T15:39:01.935Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T15:39:52.013Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T15:40:31.296Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T16:27:41.251Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T16:30:55.904Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T16:31:02.205Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T16:32:33.157Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T16:33:25.082Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T17:20:52.650Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T17:22:01.508Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T17:28:06.133Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T17:28:19.608Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T17:33:28.046Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T17:41:33.098Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T17:41:36.344Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T17:44:28.935Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T17:44:59.491Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T17:46:47.531Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T18:08:04.332Z",
+      "feature": "scenarios",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T18:08:27.224Z",
+      "feature": "scenarios",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-06T18:34:09.281Z",
+      "feature": "scenarios",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:42:32.024Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:42:36.390Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:44:13.188Z",
+      "feature": "scenarios",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:53:02.778Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:53:35.009Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:53:51.910Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:54:35.457Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:54:59.149Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:57:15.175Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:57:25.879Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T04:57:29.205Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T05:01:13.387Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T05:01:17.284Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T05:01:42.037Z",
       "feature": "messaging",
       "phase": "do",
       "action": "updated"

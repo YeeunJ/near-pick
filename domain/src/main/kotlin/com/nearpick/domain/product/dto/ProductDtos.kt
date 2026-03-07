@@ -49,7 +49,7 @@ data class ProductSummaryResponse(
     val shopAddress: String?,
     val shopLat: BigDecimal,
     val shopLng: BigDecimal,
-)
+) : java.io.Serializable
 
 data class ProductDetailResponse(
     val id: Long,
@@ -68,7 +68,7 @@ data class ProductDetailResponse(
     val wishlistCount: Long,
     val reservationCount: Long,
     val purchaseCount: Long,
-)
+) : java.io.Serializable
 
 data class ProductListItem(
     val id: Long,
