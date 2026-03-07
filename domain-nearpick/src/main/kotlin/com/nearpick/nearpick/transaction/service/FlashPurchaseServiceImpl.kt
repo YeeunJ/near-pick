@@ -16,8 +16,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.time.Instant
 
 @Service
 @Transactional(readOnly = true)
@@ -32,7 +31,8 @@ class FlashPurchaseServiceImpl(
         productId: Long,
         request: FlashPurchaseCreateRequest,
     ): FlashPurchaseStatusResponse {
-        val idempotencyKey = "$userId-$productId-${LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE)}"
+        // 시간 단위 idempotency key — 동일 사용자가 같은 상품을 1시간 내 중복 요청 방지
+        val idempotencyKey = "$userId-$productId-${Instant.now().epochSecond / 3_600}"
 
         producer.send(
             FlashPurchaseRequestEvent(
