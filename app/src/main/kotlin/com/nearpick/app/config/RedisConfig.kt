@@ -1,5 +1,12 @@
 package com.nearpick.app.config
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.kotlinModule
 import org.redisson.Redisson
 import org.redisson.api.RedissonClient
 import org.redisson.config.Config
@@ -12,7 +19,7 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration
 import org.springframework.data.redis.cache.RedisCacheManager
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import java.time.Duration
@@ -21,23 +28,45 @@ import java.time.Duration
 @EnableCaching
 class RedisConfig {
 
+    /**
+     * Jackson 2.x ObjectMapper — Redis 직렬화 전용.
+     * Spring Boot 4.x 는 tools.jackson(3.x)을 기본 사용하므로 Redis용으로 별도 구성.
+     * DefaultTyping.EVERYTHING: Kotlin data class(final)도 타입 메타데이터 포함.
+     */
+    @Bean(name = ["redisObjectMapper"])
+    fun redisObjectMapper(): ObjectMapper = ObjectMapper().apply {
+        registerModule(kotlinModule())
+        registerModule(JavaTimeModule())
+        disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        activateDefaultTyping(
+            LaissezFaireSubTypeValidator.instance,
+            ObjectMapper.DefaultTyping.EVERYTHING,
+            JsonTypeInfo.As.PROPERTY,
+        )
+    }
+
     @Bean
     fun redisTemplate(connectionFactory: RedisConnectionFactory): RedisTemplate<String, Any> {
-        val template = RedisTemplate<String, Any>()
-        template.connectionFactory = connectionFactory
-        template.keySerializer = StringRedisSerializer()
-        template.valueSerializer = JdkSerializationRedisSerializer()
-        return template
+        val serializer = GenericJackson2JsonRedisSerializer(redisObjectMapper())
+        return RedisTemplate<String, Any>().apply {
+            this.connectionFactory = connectionFactory
+            keySerializer = StringRedisSerializer()
+            valueSerializer = serializer
+            hashKeySerializer = StringRedisSerializer()
+            hashValueSerializer = serializer
+        }
     }
 
     @Bean
     fun cacheManager(connectionFactory: RedisConnectionFactory): CacheManager {
+        val serializer = GenericJackson2JsonRedisSerializer(redisObjectMapper())
         val defaultConfig = RedisCacheConfiguration.defaultCacheConfig()
             .serializeKeysWith(
                 RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer())
             )
             .serializeValuesWith(
-                RedisSerializationContext.SerializationPair.fromSerializer(JdkSerializationRedisSerializer())
+                RedisSerializationContext.SerializationPair.fromSerializer(serializer)
             )
             .disableCachingNullValues()
 

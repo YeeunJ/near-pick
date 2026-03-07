@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Lock
+import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import org.springframework.transaction.annotation.Transactional
 import com.nearpick.nearpick.product.entity.ProductEntity
 
 interface ProductRepository : JpaRepository<ProductEntity, Long> {
@@ -81,8 +83,18 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
     @Query("SELECT p FROM ProductEntity p WHERE :status IS NULL OR p.status = :status ORDER BY p.createdAt DESC")
     fun findAllByOptionalStatus(@Param("status") status: ProductStatus?, pageable: Pageable): Page<ProductEntity>
 
-    /** 선착순 구매 재고 차감 시 비관적 락 적용 */
+    /** 선착순 구매 재고 차감 시 비관적 락 적용 (레거시 — Redis 원자적 차감으로 대체됨) */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM ProductEntity p WHERE p.id = :id")
     fun findByIdWithLock(@Param("id") id: Long): ProductEntity?
+
+    /**
+     * Redis 원자적 재고 차감 후 DB 동기화.
+     * 비관적 락 불필요 — Redis `addAndGet` 이 이미 원자적으로 재고를 보호.
+     * 반환값: 업데이트된 행 수 (0이면 DB-Redis 재고 불일치 → Redis 복원 필요)
+     */
+    @Transactional
+    @Modifying
+    @Query("UPDATE ProductEntity p SET p.stock = p.stock - :quantity WHERE p.id = :id AND p.stock >= :quantity")
+    fun decrementStockIfSufficient(@Param("id") id: Long, @Param("quantity") quantity: Int): Int
 }
