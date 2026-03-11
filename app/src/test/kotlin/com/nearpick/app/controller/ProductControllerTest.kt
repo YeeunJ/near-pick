@@ -8,6 +8,7 @@ import com.nearpick.domain.product.dto.ProductStatusResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -51,7 +52,7 @@ class ProductControllerTest {
 
     @Test
     fun `GET api-products-nearby - 인증 없이 200을 반환한다`() {
-        whenever(productService.getNearby(any())).thenReturn(PageImpl(emptyList()))
+        whenever(productService.getNearby(any(), anyOrNull())).thenReturn(PageImpl(emptyList()))
 
         mockMvc.get("/api/products/nearby") {
             param("lat", "37.5")

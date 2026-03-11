@@ -22,4 +22,8 @@ class RateLimitConfig {
         val connection = client.connect(codec)
         return LettuceBasedProxyManager.builderFor(connection).build()
     }
+
+    @Bean
+    fun bucketProvider(proxyManager: LettuceBasedProxyManager<String>): BucketProvider =
+        BucketProvider { key, config -> proxyManager.builder().build(key) { config } }
 }
