@@ -1,5 +1,36 @@
 # Archive Index — 2026-03
 
+## phase10-location (Phase 10: 위치 & 지도 서비스)
+
+| 항목 | 내용 |
+|------|------|
+| **아카이브일** | 2026-03-11 |
+| **Match Rate** | 97% (0 iterations) |
+| **브랜치** | `feature/phase10-location` |
+| **PR** | #14 |
+| **경로** | `docs/archive/2026-03/phase10-location/` |
+
+### 포함 문서
+
+| 파일 | 설명 |
+|------|------|
+| `phase10-location.plan.md` | Phase 10 계획서 |
+| `phase10-location.design.md` | Phase 10 설계서 |
+| `phase10-location.analysis.md` | Gap Analysis (97%) |
+| `phase10-location.report.md` | 완료 보고서 |
+
+### 주요 완료 항목
+
+- 현재 위치 갱신: `PATCH /api/consumers/me/location` (ConsumerProfile.currentLat/Lng)
+- 저장 위치 CRUD: `GET/POST/PUT/DELETE/PATCH /api/consumers/me/locations` (최대 5개, default 단일성)
+- 카카오 주소 검색: `GET /api/location/search?query=...` (KakaoLocationClient, RestClient)
+- nearby locationSource: `DIRECT/CURRENT/SAVED` 파라미터 추가
+- Flyway V4: `saved_locations` 테이블 마이그레이션
+- BucketProvider 추출: RateLimitFilter 테스트 가능성 개선
+- 단위 테스트 11개 추가 (총 app+domain-nearpick 81개 / 0 failures)
+
+---
+
 ## phase9-hardening (Phase 9 성능 강화 — 5가지 아키텍처 개선)
 
 | 항목 | 내용 |

@@ -1,8 +1,8 @@
 package com.nearpick.app.config
 
 import io.github.bucket4j.Bandwidth
+import io.github.bucket4j.Bucket
 import io.github.bucket4j.BucketConfiguration
-import io.github.bucket4j.redis.lettuce.cas.LettuceBasedProxyManager
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -13,9 +13,13 @@ import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import java.time.Duration
 
+fun interface BucketProvider {
+    fun get(key: String, config: BucketConfiguration): Bucket
+}
+
 @Component
 class RateLimitFilter(
-    private val proxyManager: LettuceBasedProxyManager<String>,
+    private val bucketProvider: BucketProvider,
     @Value("\${rate-limit.auth.capacity:10}") private val authCapacity: Long,
     @Value("\${rate-limit.auth.refill-per-minutes:1}") private val authRefillMinutes: Long,
 ) : OncePerRequestFilter() {
@@ -43,7 +47,7 @@ class RateLimitFilter(
         val bucketKey = if (isAuthPath) "rate:auth:$ip" else "rate:api:$ip"
         val config = getBucketConfig(isAuthPath)
 
-        val bucket = proxyManager.builder().build(bucketKey) { config }
+        val bucket = bucketProvider.get(bucketKey, config)
 
         if (bucket.tryConsume(1)) {
             chain.doFilter(request, response)

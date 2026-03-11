@@ -33,4 +33,11 @@ enum class ErrorCode(
     // Flash Purchase (Phase 9)
     FLASH_PURCHASE_LOCK_FAILED(409, "선착순 처리 중 충돌이 발생했습니다. 다시 시도해주세요."),
     FLASH_PURCHASE_UNAVAILABLE(503, "선착순 구매 서비스가 일시적으로 이용 불가합니다."),
+
+    // Location (Phase 10)
+    SAVED_LOCATION_LIMIT_EXCEEDED(400, "저장 위치는 최대 5개까지 등록 가능합니다."),
+    SAVED_LOCATION_NOT_FOUND(404, "저장 위치를 찾을 수 없습니다."),
+    LOCATION_NOT_SET(400, "현재 위치가 설정되지 않았습니다."),
+    EXTERNAL_API_UNAVAILABLE(503, "외부 API를 사용할 수 없습니다."),
+    CONSUMER_NOT_FOUND(404, "소비자 프로필을 찾을 수 없습니다."),
 }

@@ -1,5 +1,6 @@
 package com.nearpick.domain.product.dto
 
+import com.nearpick.domain.location.LocationSource
 import com.nearpick.domain.product.ProductStatus
 import com.nearpick.domain.product.ProductType
 import com.nearpick.domain.product.SortType
@@ -13,13 +14,22 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class ProductNearbyRequest(
-    val lat: BigDecimal,
-    val lng: BigDecimal,
+    val lat: BigDecimal? = null,
+    val lng: BigDecimal? = null,
     @field:Positive @field:Max(50) val radius: Double = 5.0,
     val sort: SortType = SortType.POPULARITY,
     @field:Min(0) val page: Int = 0,
     @field:Positive @field:Max(100) val size: Int = 20,
-)
+    val locationSource: LocationSource = LocationSource.DIRECT,
+    val savedLocationId: Long? = null,
+) {
+    @AssertTrue(message = "lat and lng are required when locationSource is DIRECT")
+    fun isLocationValid(): Boolean {
+        if (locationSource == LocationSource.DIRECT) return lat != null && lng != null
+        if (locationSource == LocationSource.SAVED) return savedLocationId != null
+        return true  // CURRENT
+    }
+}
 
 data class ProductCreateRequest(
     @field:NotBlank val title: String,

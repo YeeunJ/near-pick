@@ -8,7 +8,7 @@
 | **Level** | Enterprise |
 | **Stack** | Spring Boot 4.0.3, Kotlin 2.2.21, Java 17 |
 | **Started** | 2026-02-23 |
-| **Last Updated** | 2026-03-11 |
+| **Last Updated** | 2026-03-11 (Phase 10 completed) |
 
 ## Summary
 
@@ -33,7 +33,7 @@
 | 7 | Security (백엔드) | ✅ Completed | 94% | - |
 | 8 | Code Review & Quality | ✅ Completed | 98% | - |
 | 9 | 고성능 아키텍처 (Redis, Kafka, 10K TPS) | ✅ Completed | 97% | - |
-| 10 | 위치 & 지도 서비스 | ⏳ Pending | - | - |
+| 10 | 위치 & 지도 서비스 | ✅ Completed | 97% | #14 merged |
 | 11 | 상품 고도화 (사진, 카테고리) | ⏳ Pending | - | - |
 | 12 | 구매 라이프사이클 정리 | ⏳ Pending | - | - |
 | 13 | 리뷰 시스템 + AI 검증 | ⏳ Pending | - | - |
@@ -149,13 +149,22 @@
 - **테스트:** 39개 케이스 전체 통과 (FlashPurchaseConsumerTest 6개, ServiceTest 3개, ConcurrencyTest 1개, ProductServiceTest 3개)
 - **주요 버그 수정:** @EnableKafka 누락, LocalDateTime 역직렬화, Redis 직렬화, SpEL take(), SQL 구문 오류, Rate Limit 외부화
 
-### Phase 10 — 위치 & 지도 서비스 ⏳
-- **내용 (예정):**
-  - 주소 검색 API 연동 (카카오 주소 API)
+### Phase 10 — 위치 & 지도 서비스 ✅
+- **완료일:** 2026-03-11
+- **Match Rate:** 97%
+- **PR:** #14 merged
+- **PDCA:** Plan → Design → Do → Check(97%) → Report
+- **구현:**
+  - 주소 검색 API 연동 (카카오 주소 API, RestClient)
   - 소비자 위치 관리: 현 위치 + 저장 위치 최대 5개
-  - 저장 위치 CRUD (별칭, 기본 위치 지정)
-  - 지도 API 연동 (상품 핀 표시, 클러스터링)
-  - `nearby` 쿼리 위치 소스 선택 지원
+  - 저장 위치 CRUD (별칭, 기본 위치 지정, is_default 단일성)
+  - nearby 쿼리 위치 소스 선택 지원 (DIRECT/CURRENT/SAVED)
+  - SavedLocationEntity + SavedLocationRepository + 3개 서비스 구현
+  - KakaoLocationClient + LocationSearchServiceImpl
+  - ConsumerLocationController + LocationController
+  - Flyway V4__add_saved_locations.sql (saved_locations 테이블)
+  - 11개 단위 테스트 (설계 요구 8개 초과 달성)
+  - 8개 enhancement (Swagger, @PreAuthorize 클래스 레벨, 캐싱, apiKey blank check)
 
 ### Phase 11 — 상품 고도화 ⏳
 - **내용 (예정):**
@@ -314,6 +323,20 @@
 | `domain/src/test/.../*Test.kt` (4개) | Value Object 테스트 | ✅ |
 | `app/src/main/resources/db/migration/V1__init_schema.sql` | 스키마 DDL | ✅ |
 | `app/src/main/resources/db/testdata/V2__insert_dummy_data.sql` | 더미 데이터 | ✅ |
+
+### Phase 10
+| 파일 | 설명 | 상태 |
+|------|------|------|
+| `docs/01-plan/features/phase10-location.plan.md` | 위치 서비스 계획서 | ✅ |
+| `docs/02-design/features/phase10-location.design.md` | 위치 서비스 설계서 | ✅ |
+| `docs/03-analysis/phase10-location.analysis.md` | Gap Analysis (97%) | ✅ |
+| `docs/04-report/features/phase10-location.report.md` | 완료 보고서 | ✅ |
+| `domain/location/` (4개 파일) | 서비스 인터페이스 + DTO | ✅ |
+| `domain-nearpick/location/` (6개 파일) | Entity + Repo + ServiceImpl + Client | ✅ |
+| `app/controller/ConsumerLocationController.kt` | 현재 위치 + 저장 위치 API | ✅ |
+| `app/controller/LocationController.kt` | 주소 검색 API | ✅ |
+| `app/src/main/resources/db/migration/V4__add_saved_locations.sql` | saved_locations 테이블 마이그레이션 | ✅ |
+| `domain-nearpick/src/test/.../location/` (3개 테스트) | 11개 단위 테스트 (100% 통과) | ✅ |
 
 ---
 

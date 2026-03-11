@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":common"))
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.security:spring-security-crypto")
     implementation("org.springframework.kafka:spring-kafka")

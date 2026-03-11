@@ -8,6 +8,7 @@ import com.nearpick.domain.product.SortType
 import com.nearpick.domain.product.dto.ProductNearbyRequest
 import com.nearpick.domain.user.UserRole
 import com.nearpick.nearpick.product.entity.ProductEntity
+import com.nearpick.nearpick.location.repository.SavedLocationRepository
 import com.nearpick.nearpick.product.repository.ProductNearbyProjection
 import com.nearpick.nearpick.product.repository.ProductRepository
 import org.mockito.kotlin.mock
@@ -16,6 +17,7 @@ import com.nearpick.nearpick.transaction.repository.ReservationRepository
 import com.nearpick.nearpick.transaction.repository.WishlistRepository
 import com.nearpick.nearpick.user.entity.MerchantProfileEntity
 import com.nearpick.nearpick.user.entity.UserEntity
+import com.nearpick.nearpick.user.repository.ConsumerProfileRepository
 import com.nearpick.nearpick.user.repository.MerchantProfileRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -40,6 +42,8 @@ class ProductServiceImplTest {
     @Mock lateinit var wishlistRepository: WishlistRepository
     @Mock lateinit var reservationRepository: ReservationRepository
     @Mock lateinit var flashPurchaseRepository: FlashPurchaseRepository
+    @Mock lateinit var consumerProfileRepository: ConsumerProfileRepository
+    @Mock lateinit var savedLocationRepository: SavedLocationRepository
 
     @InjectMocks lateinit var productService: ProductServiceImpl
 

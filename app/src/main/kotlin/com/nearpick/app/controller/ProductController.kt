@@ -1,6 +1,7 @@
 package com.nearpick.app.controller
 
 import com.nearpick.common.response.ApiResponse
+import com.nearpick.domain.location.LocationSource
 import com.nearpick.domain.product.ProductService
 import com.nearpick.domain.product.SortType
 import com.nearpick.domain.product.dto.ProductCreateRequest
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -29,19 +31,26 @@ import java.math.BigDecimal
 @RequestMapping("/api/products")
 class ProductController(private val productService: ProductService) {
 
-    @Operation(summary = "주변 인기 상품 조회", description = "현재 위치(lat, lng) 기준 반경 내 활성 상품을 인기도순/거리순으로 조회한다.")
+    @Operation(summary = "주변 인기 상품 조회", description = "위치 기준 반경 내 활성 상품을 인기도순/거리순으로 조회한다. locationSource: DIRECT(기본, lat/lng 필수), CURRENT(현재 위치), SAVED(저장 위치, savedLocationId 필수)")
     @SwaggerApiResponse(responseCode = "200", description = "조회 성공")
     @GetMapping("/nearby")
     fun getNearby(
-        @RequestParam lat: BigDecimal,
-        @RequestParam lng: BigDecimal,
+        @AuthenticationPrincipal userId: Long?,
+        @RequestParam(required = false) lat: BigDecimal?,
+        @RequestParam(required = false) lng: BigDecimal?,
         @RequestParam(defaultValue = "5.0") radius: Double,
         @RequestParam(defaultValue = "POPULARITY") sort: SortType,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int,
+        @RequestParam(defaultValue = "DIRECT") locationSource: LocationSource,
+        @RequestParam(required = false) savedLocationId: Long?,
     ) = ApiResponse.success(
         productService.getNearby(
-            ProductNearbyRequest(lat = lat, lng = lng, radius = radius, sort = sort, page = page, size = size)
+            request = ProductNearbyRequest(
+                lat = lat, lng = lng, radius = radius, sort = sort, page = page, size = size,
+                locationSource = locationSource, savedLocationId = savedLocationId,
+            ),
+            userId = userId,
         )
     )
 
