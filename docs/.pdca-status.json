@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-07T05:01:42.037Z",
+  "lastUpdated": "2026-03-11T00:00:00.000Z",
   "activeFeatures": [
     "config",
     "service",
@@ -9,10 +9,18 @@
     "messaging",
     "load-tests",
     "scenarios",
-    "repository"
+    "repository",
+    "transaction"
   ],
   "primaryFeature": "config",
   "features": {
+    "phase9-hardening": {
+      "phase": "archived",
+      "matchRate": 100,
+      "iterationCount": 0,
+      "archivedAt": "2026-03-11T00:00:00.000Z",
+      "archivedTo": "docs/archive/2026-03/phase9-hardening/"
+    },
     "controller": {
       "phase": "archived",
       "phaseNumber": 5,
@@ -37,9 +45,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:33:09.860Z",
-        "lastUpdated": "2026-03-07T04:57:29.205Z"
+        "lastUpdated": "2026-03-07T06:00:33.246Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/test/kotlin/com/nearpick/nearpick/product/service/ProductServiceImplTest.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/transaction/service/FlashPurchaseServiceImpl.kt"
     },
     "config": {
       "phase": "do",
@@ -50,9 +58,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:33:17.651Z",
-        "lastUpdated": "2026-03-07T04:42:36.390Z"
+        "lastUpdated": "2026-03-07T06:00:24.439Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/config/RateLimitFilter.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/config/RedisConfig.kt"
     },
     "entity": {
       "phase": "do",
@@ -89,7 +97,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:34:10.616Z",
-        "lastUpdated": "2026-03-06T17:20:52.650Z"
+        "lastUpdated": "2026-03-07T05:58:39.987Z"
       },
       "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/product/repository/ProductRepository.kt"
     },
@@ -141,9 +149,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-06T13:25:47.106Z",
-        "lastUpdated": "2026-03-07T05:01:42.037Z"
+        "lastUpdated": "2026-03-07T06:09:12.039Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/test/kotlin/com/nearpick/nearpick/transaction/messaging/FlashPurchaseConsumerTest.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/test/kotlin/com/nearpick/nearpick/transaction/messaging/FlashPurchaseConcurrencyTest.kt"
     },
     "load-tests": {
       "phase": "do",
@@ -170,6 +178,19 @@
         "lastUpdated": "2026-03-07T04:44:13.188Z"
       },
       "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/load-tests/scenarios/03-flash.js"
+    },
+    "transaction": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-07T05:53:16.707Z",
+        "lastUpdated": "2026-03-07T05:53:16.707Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/transaction/FlashPurchaseStatus.kt"
     }
   },
   "pipeline": {
@@ -235,7 +256,7 @@
   "session": {
     "startedAt": "2026-03-05T00:00:00.000Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-07T05:01:42.037Z"
+    "lastActivity": "2026-03-07T06:09:12.039Z"
   },
   "history": [
     {
@@ -924,6 +945,66 @@
     },
     {
       "timestamp": "2026-03-07T05:01:42.037Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T05:53:16.708Z",
+      "feature": "transaction",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T05:58:31.698Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T05:58:39.987Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T05:59:01.333Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T05:59:35.927Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T06:00:24.439Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T06:00:29.100Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T06:00:33.246Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T06:00:47.927Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-07T06:09:12.039Z",
       "feature": "messaging",
       "phase": "do",
       "action": "updated"

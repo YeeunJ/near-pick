@@ -1,5 +1,34 @@
 # Archive Index — 2026-03
 
+## phase9-hardening (Phase 9 성능 강화 — 5가지 아키텍처 개선)
+
+| 항목 | 내용 |
+|------|------|
+| **아카이브일** | 2026-03-11 |
+| **Match Rate** | 100% (23/23, 0 iterations) |
+| **브랜치** | `feature/phase9-hardening` |
+| **PR** | #13 |
+| **경로** | `docs/archive/2026-03/phase9-hardening/` |
+
+### 포함 문서
+
+| 파일 | 설명 |
+|------|------|
+| `phase9-hardening.design.md` | 5가지 개선 설계서 |
+| `phase9-hardening.analysis.md` | Gap Analysis (100%, 0 iterations) |
+| `phase9-hardening.report.md` | 완료 보고서 |
+
+### 주요 완료 항목
+
+- Virtual Threads: `spring.threads.virtual.enabled=true` (Java 21 대비)
+- Redis 원자적 재고 카운터: `RAtomicLong.addAndGet()` — DB 비관적 락 + Redisson RLock 제거
+- Micrometer + Prometheus + Grafana: `flash.purchase` 커스텀 메트릭, docker-compose 통합
+- Redis JSON 직렬화: `JdkSerializationRedisSerializer` → `GenericJackson2JsonRedisSerializer` (Jackson 2.x)
+- Idempotency 시간 단위 전환 (일→시간) + `FlashPurchaseDlqConsumer` (FAILED 상태 기록)
+- 단위 테스트 40개 전체 통과 (신규 7개 포함)
+
+---
+
 ## phase9-performance (Phase 9: 고성능 아키텍처)
 
 | 항목 | 내용 |

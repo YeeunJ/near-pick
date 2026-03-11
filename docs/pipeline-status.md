@@ -8,7 +8,7 @@
 | **Level** | Enterprise |
 | **Stack** | Spring Boot 4.0.3, Kotlin 2.2.21, Java 17 |
 | **Started** | 2026-02-23 |
-| **Last Updated** | 2026-03-07 |
+| **Last Updated** | 2026-03-11 |
 
 ## Summary
 
@@ -39,6 +39,9 @@
 | 13 | 리뷰 시스템 + AI 검증 | ⏳ Pending | - | - |
 | 14 | 사용자 고도화 | ⏳ Pending | - | - |
 | 15 | 종합 QA & 배포 | ⏳ Pending | - | - |
+| 16 | 운영 가시성 강화 (단기) | ⏳ Pending | - | - |
+| 17 | Java 21 & DB 마이그레이션 (중기) | ⏳ Pending | - | - |
+| 18 | AI 재고 예측 & 멀티 리전 (장기) | ⏳ Pending | - | - |
 
 ---
 
@@ -195,6 +198,55 @@
   - 모니터링: Prometheus + Grafana, Loki, Jaeger
   - DB: RDS Aurora MySQL Multi-AZ + Read Replica
   - CDN: CloudFront (이미지 + API 캐시)
+
+---
+
+### Phase 16 — 운영 가시성 강화 ⏳ (단기 · ~1개월)
+> Phase 9 Hardening 단기 개선 사항 (출처: `docs/04-report/phase9-hardening.report.md`)
+
+- **Grafana 대시보드 템플릿 구축**
+  - Prometheus 메트릭 기반 선착순 구매 현황 패널 (성공률, 중복 요청률, 재고 부족 건수)
+  - 대시보드 JSON 파일 버전 관리 (`grafana/dashboards/flash-purchase.json`)
+- **Alert 규칙 설정**
+  - DB-Redis 재고 불일치 발생 시 관리자 슬랙/이메일 알림
+  - Alertmanager 연동 또는 Grafana Alerting 사용
+- **메트릭 확장**
+  - 선착순 구매 처리 지연시간 (latency: `Timer` 추가)
+  - 재고 부족 예측 (Redis 카운터 임계값 경보 설정)
+
+---
+
+### Phase 17 — Java 21 & DB 마이그레이션 ⏳ (중기 · ~3개월)
+> Phase 9 Hardening 중기 개선 사항 (출처: `docs/04-report/phase9-hardening.report.md`)
+
+- **Java 21 전환**
+  - JDK 21 (LTS) toolchain 전환 (`app/build.gradle.kts`, `domain-nearpick/build.gradle.kts`)
+  - `spring.threads.virtual.enabled=true` 실 효과 발현 — Tomcat Virtual Thread 스케줄링
+  - 전환 전/후 TPS 정량 측정 (k6 시나리오 3 재실행)
+- **PostgreSQL 마이그레이션**
+  - MySQL → PostgreSQL 전환 (JSON 직렬화 효과 극대화, `jsonb` 타입 활용)
+  - AdminProfile.permissions: TEXT → `jsonb` 컬럼 전환
+  - Flyway: `V3__postgresql_migration.sql` 작성
+- **마이크로서비스 준비**
+  - Redis JSON 직렬화 기반으로 Python/Node.js 서비스 연동 가능
+  - 상품 추천 서비스 별도 언어 구현 가능성 확보
+
+---
+
+### Phase 18 — AI 재고 예측 & 멀티 리전 ⏳ (장기 · ~6개월)
+> Phase 9 Hardening 장기 개선 사항 (출처: `docs/04-report/phase9-hardening.report.md`)
+
+- **AI 기반 선착순 재고 수요 예측**
+  - Prometheus 시계열 메트릭 → 머신러닝 모델 학습
+  - 상품별 수요 예측으로 적정 재고량 자동 추천 (소상공인 대시보드)
+  - Claude API 활용 가능 (Phase 13 AI 리뷰 검증과 연계)
+- **멀티 리전 배포**
+  - Redis Cluster: 단일 노드 → 클러스터 구성 (고가용성)
+  - Kafka 파티션 분산: 리전별 파티션 할당 (지연 최소화)
+  - 글로벌 선착순 구매 지원 (CDN + 엣지 캐싱)
+- **Zero Downtime Deployment**
+  - JSON 직렬화 호환성을 활용한 Rolling 배포 전략
+  - Blue/Green 배포 + Redis 캐시 워밍 자동화
 
 ---
 
