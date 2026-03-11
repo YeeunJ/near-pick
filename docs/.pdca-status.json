@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-11T08:04:29.717Z",
+  "lastUpdated": "2026-03-11T09:21:31.861Z",
   "activeFeatures": [
     "config",
     "service",
@@ -37,9 +37,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:30:38.018Z",
-        "lastUpdated": "2026-03-11T07:59:38.381Z"
+        "lastUpdated": "2026-03-11T09:21:20.850Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/controller/LocationController.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/test/kotlin/com/nearpick/app/controller/ProductControllerTest.kt"
     },
     "service": {
       "phase": "do",
@@ -63,9 +63,9 @@
       "documents": {},
       "timestamps": {
         "started": "2026-03-04T16:33:17.651Z",
-        "lastUpdated": "2026-03-07T06:00:24.439Z"
+        "lastUpdated": "2026-03-11T09:21:31.861Z"
       },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/config/RedisConfig.kt"
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/test/kotlin/com/nearpick/app/config/RateLimitFilterTest.kt"
     },
     "entity": {
       "phase": "do",
@@ -222,10 +222,33 @@
         "lastUpdated": "2026-03-11T07:57:52.948Z"
       },
       "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/location/client/KakaoLocationClient.kt"
+    },
+    "phase10-location": {
+      "phase": "completed",
+      "phaseNumber": 10,
+      "matchRate": 97,
+      "iterationCount": 0,
+      "requirements": [
+        "현재 위치 갱신 API",
+        "저장 위치 CRUD",
+        "카카오 주소 검색 연동",
+        "nearby locationSource 파라미터"
+      ],
+      "documents": {
+        "plan": "docs/01-plan/features/phase10-location.plan.md",
+        "design": "docs/02-design/features/phase10-location.design.md",
+        "analysis": "docs/03-analysis/phase10-location.analysis.md",
+        "report": "docs/04-report/features/phase10-location.report.md"
+      },
+      "timestamps": {
+        "started": "2026-03-11T07:56:15.982Z",
+        "completed": "2026-03-11T08:10:00.000Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/docs/04-report/features/phase10-location.report.md"
     }
   },
   "pipeline": {
-    "currentPhase": 9,
+    "currentPhase": 10,
     "level": "Enterprise",
     "phaseHistory": [
       {
@@ -281,13 +304,20 @@
         "iterationCount": 1,
         "archivedAt": "2026-03-07T00:00:00.000Z",
         "archivedTo": "docs/archive/2026-03/phase9-performance/"
+      },
+      {
+        "phase": 10,
+        "feature": "phase10-location",
+        "status": "completed",
+        "matchRate": 97,
+        "iterationCount": 0
       }
     ]
   },
   "session": {
     "startedAt": "2026-03-05T00:00:00.000Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-03-11T08:04:29.717Z"
+    "lastActivity": "2026-03-11T09:21:31.861Z"
   },
   "history": [
     {
@@ -1205,6 +1235,54 @@
     {
       "timestamp": "2026-03-11T08:04:29.717Z",
       "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-11T09:14:29.014Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-11T09:14:38.651Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-11T09:14:55.358Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-11T09:15:21.930Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-11T09:15:35.773Z",
+      "feature": "config",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-11T09:21:16.222Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-11T09:21:20.850Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-11T09:21:31.861Z",
+      "feature": "config",
       "phase": "do",
       "action": "updated"
     }

@@ -5,8 +5,8 @@
     "platform": "claude",
     "level": "Enterprise"
   },
-  "currentFeature": "phase10-location",
-  "currentPhase": "check",
-  "matchRate": 97,
+  "currentFeature": null,
+  "currentPhase": "archived",
+  "matchRate": null,
   "iterationCount": 0
 }
