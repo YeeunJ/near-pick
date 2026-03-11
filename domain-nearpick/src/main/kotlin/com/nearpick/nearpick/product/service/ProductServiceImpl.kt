@@ -2,6 +2,7 @@ package com.nearpick.nearpick.product.service
 
 import com.nearpick.common.exception.BusinessException
 import com.nearpick.common.exception.ErrorCode
+import com.nearpick.domain.location.LocationSource
 import com.nearpick.domain.product.ProductService
 import com.nearpick.domain.product.ProductStatus
 import com.nearpick.domain.product.dto.ProductCreateRequest
@@ -10,13 +11,17 @@ import com.nearpick.domain.product.dto.ProductListItem
 import com.nearpick.domain.product.dto.ProductNearbyRequest
 import com.nearpick.domain.product.dto.ProductStatusResponse
 import com.nearpick.domain.product.dto.ProductSummaryResponse
+import com.nearpick.nearpick.location.repository.SavedLocationRepository
+import com.nearpick.nearpick.product.entity.ProductEntity
 import com.nearpick.nearpick.product.mapper.ProductMapper.toDetailResponse
 import com.nearpick.nearpick.product.mapper.ProductMapper.toListItem
 import com.nearpick.nearpick.product.mapper.ProductMapper.toStatusResponse
 import com.nearpick.nearpick.product.mapper.ProductMapper.toSummaryResponse
+import com.nearpick.nearpick.product.repository.ProductRepository
 import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository
 import com.nearpick.nearpick.transaction.repository.ReservationRepository
 import com.nearpick.nearpick.transaction.repository.WishlistRepository
+import com.nearpick.nearpick.user.repository.ConsumerProfileRepository
 import com.nearpick.nearpick.user.repository.MerchantProfileRepository
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
@@ -25,8 +30,7 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import com.nearpick.nearpick.product.entity.ProductEntity
-import com.nearpick.nearpick.product.repository.ProductRepository
+import java.math.BigDecimal
 
 @Service
 @Transactional(readOnly = true)
@@ -36,22 +40,51 @@ class ProductServiceImpl(
     private val wishlistRepository: WishlistRepository,
     private val reservationRepository: ReservationRepository,
     private val flashPurchaseRepository: FlashPurchaseRepository,
+    private val consumerProfileRepository: ConsumerProfileRepository,
+    private val savedLocationRepository: SavedLocationRepository,
 ) : ProductService {
 
     @Cacheable(
         value = ["products-nearby"],
-        key = "#request.lat.toString().substring(0, T(Math).min(6, #request.lat.toString().length())) + ':' + #request.lng.toString().substring(0, T(Math).min(6, #request.lng.toString().length())) + ':' + #request.radius + ':' + #request.sort + ':' + #request.page + ':' + #request.size"
+        key = "#request.locationSource.name + ':' + #request.lat?.toString()?.substring(0, T(Math).min(6, #request.lat.toString().length())) + ':' + #request.lng?.toString()?.substring(0, T(Math).min(6, #request.lng.toString().length())) + ':' + #request.savedLocationId + ':' + #request.radius + ':' + #request.sort + ':' + #request.page + ':' + #request.size"
     )
-    override fun getNearby(request: ProductNearbyRequest): Page<ProductSummaryResponse> {
+    override fun getNearby(request: ProductNearbyRequest, userId: Long?): Page<ProductSummaryResponse> {
+        val (lat, lng) = resolveLocation(request, userId)
         val pageable = PageRequest.of(request.page, request.size)
         return productRepository.findNearby(
-            lat = request.lat.toDouble(),
-            lng = request.lng.toDouble(),
+            lat = lat.toDouble(),
+            lng = lng.toDouble(),
             radius = request.radius,
             sort = request.sort.name.lowercase(),
             pageable = pageable,
         ).map { it.toSummaryResponse() }
     }
+
+    private fun resolveLocation(request: ProductNearbyRequest, userId: Long?): Pair<BigDecimal, BigDecimal> =
+        when (request.locationSource) {
+            LocationSource.DIRECT -> {
+                Pair(
+                    request.lat ?: throw BusinessException(ErrorCode.INVALID_INPUT),
+                    request.lng ?: throw BusinessException(ErrorCode.INVALID_INPUT),
+                )
+            }
+            LocationSource.CURRENT -> {
+                val consumerId = userId ?: throw BusinessException(ErrorCode.UNAUTHORIZED)
+                val profile = consumerProfileRepository.findById(consumerId)
+                    .orElseThrow { BusinessException(ErrorCode.CONSUMER_NOT_FOUND) }
+                Pair(
+                    profile.currentLat ?: throw BusinessException(ErrorCode.LOCATION_NOT_SET),
+                    profile.currentLng ?: throw BusinessException(ErrorCode.LOCATION_NOT_SET),
+                )
+            }
+            LocationSource.SAVED -> {
+                val consumerId = userId ?: throw BusinessException(ErrorCode.UNAUTHORIZED)
+                val savedLocationId = request.savedLocationId ?: throw BusinessException(ErrorCode.INVALID_INPUT)
+                val saved = savedLocationRepository.findByIdAndConsumerUserId(savedLocationId, consumerId)
+                    ?: throw BusinessException(ErrorCode.SAVED_LOCATION_NOT_FOUND)
+                Pair(saved.lat, saved.lng)
+            }
+        }
 
     @Cacheable(value = ["products-detail"], key = "#productId")
     override fun getDetail(productId: Long): ProductDetailResponse {
