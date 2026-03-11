@@ -7,6 +7,8 @@ import com.nearpick.nearpick.product.repository.ProductRepository
 import com.nearpick.nearpick.transaction.entity.FlashPurchaseEntity
 import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository
 import com.nearpick.nearpick.user.repository.UserRepository
+import io.micrometer.core.instrument.MeterRegistry
+import org.redisson.api.RAtomicLong
 import org.redisson.api.RedissonClient
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
@@ -20,40 +22,50 @@ class FlashPurchaseConsumer(
     private val productRepository: ProductRepository,
     private val userRepository: UserRepository,
     private val redissonClient: RedissonClient,
+    private val meterRegistry: MeterRegistry,
 ) {
 
     @KafkaListener(topics = ["flash-purchase-requests"], groupId = "flash-purchase-cg")
     @Transactional
     fun consume(event: FlashPurchaseRequestEvent) {
-        // 1. Idempotency 체크 (Redisson RBucket SETNX) — 중복 요청 방지
-        val idempotencyKey = "idempotency:flash:${event.idempotencyKey}"
-        val idempotencyBucket = redissonClient.getBucket<String>(idempotencyKey)
-        val isNew = idempotencyBucket.setIfAbsent("1", Duration.ofDays(1))
-        if (!isNew) return
+        // 1. Idempotency 체크 — 중복 요청 방지 (SETNX)
+        val idempotencyBucket = redissonClient.getBucket<String>("idempotency:flash:${event.idempotencyKey}")
+        if (!idempotencyBucket.setIfAbsent("1", Duration.ofDays(1))) {
+            meterRegistry.counter("flash.purchase", "result", "duplicate").increment()
+            return
+        }
 
-        // 2. Distributed Lock 획득 (Redisson)
-        val lock = redissonClient.getLock("lock:flash:product:${event.productId}")
-        val acquired = lock.tryLock(3, 10, TimeUnit.SECONDS)
-        if (!acquired) {
-            idempotencyBucket.delete()  // 재시도 가능하도록 키 삭제
-            throw BusinessException(ErrorCode.FLASH_PURCHASE_LOCK_FAILED)
+        // 2. Redis 원자적 재고 차감 (분산 락 제거 — Redis 단일 스레드 원자성 활용)
+        val stockCounter = ensureStockCounter(event.productId)
+            ?: return  // PRODUCT_NOT_FOUND — idempotency key 유지 (재시도 방지)
+
+        val remaining = stockCounter.addAndGet(-event.quantity.toLong())
+        if (remaining < 0) {
+            stockCounter.addAndGet(event.quantity.toLong())  // 복원
+            meterRegistry.counter("flash.purchase", "result", "out_of_stock").increment()
+            return  // OUT_OF_STOCK — idempotency key 유지 (재시도 방지)
         }
 
         try {
-            // 3. 재고 확인 및 감소 (DB Pessimistic Lock)
-            val product = productRepository.findByIdWithLock(event.productId)
-                ?: throw BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
-            if (product.stock < event.quantity) {
-                throw BusinessException(ErrorCode.OUT_OF_STOCK)
+            // 3. DB 재고 차감 (비관적 락 없이 — Redis 원자성으로 이미 보호됨)
+            val updated = productRepository.decrementStockIfSufficient(event.productId, event.quantity)
+            if (updated == 0) {
+                // DB-Redis 재고 불일치 (관리자 수동 조정 필요)
+                stockCounter.addAndGet(event.quantity.toLong())
+                return
             }
-            product.stock -= event.quantity
 
             // 4. 구매자 조회
             val user = userRepository.findById(event.userId).orElseThrow {
                 BusinessException(ErrorCode.USER_NOT_FOUND)
             }
 
-            // 5. FlashPurchase 엔티티 저장 (CONFIRMED)
+            // 5. 구매 엔티티용 상품 참조 (락 없이)
+            val product = productRepository.findById(event.productId).orElseThrow {
+                BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
+            }
+
+            // 6. FlashPurchase 저장 (CONFIRMED)
             flashPurchaseRepository.save(
                 FlashPurchaseEntity(
                     user = user,
@@ -62,11 +74,35 @@ class FlashPurchaseConsumer(
                     status = FlashPurchaseStatus.CONFIRMED,
                 )
             )
-        } catch (e: BusinessException) {
-            // 비즈니스 예외(재고부족 등)는 idempotency key 유지 (중복 재시도 방지)
-            if (e.errorCode == ErrorCode.FLASH_PURCHASE_LOCK_FAILED) throw e
-        } finally {
-            if (lock.isHeldByCurrentThread) lock.unlock()
+            meterRegistry.counter("flash.purchase", "result", "success").increment()
+        } catch (e: Exception) {
+            stockCounter.addAndGet(event.quantity.toLong())  // Redis 재고 복원
+            throw e
         }
+    }
+
+    /**
+     * 상품 재고 Redis 카운터를 지연 초기화한다.
+     * 최초 요청 시에만 DB 조회 후 초기화 — 이후 요청은 Redis 원자적 연산만 사용.
+     * null 반환 시 상품 없음 (PRODUCT_NOT_FOUND).
+     */
+    private fun ensureStockCounter(productId: Long): RAtomicLong? {
+        val stockCounter = redissonClient.getAtomicLong("stock:flash:$productId")
+        if (stockCounter.isExists) return stockCounter
+
+        // 초기화 락 — 최초 1회만 DB 조회
+        val initLock = redissonClient.getLock("init:stock:flash:$productId")
+        if (!initLock.tryLock(1, 5, TimeUnit.SECONDS)) return stockCounter  // 타 스레드 초기화 대기
+
+        try {
+            if (!stockCounter.isExists) {
+                val product = productRepository.findById(productId).orElse(null) ?: return null
+                stockCounter.set(product.stock.toLong())
+                stockCounter.expire(Duration.ofHours(24))
+            }
+        } finally {
+            if (initLock.isHeldByCurrentThread) initLock.unlock()
+        }
+        return stockCounter
     }
 }
