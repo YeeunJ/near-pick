@@ -2,8 +2,8 @@ package com.nearpick.nearpick.location.service
 
 import com.nearpick.common.exception.BusinessException
 import com.nearpick.common.exception.ErrorCode
+import com.nearpick.domain.location.LocationClient
 import com.nearpick.domain.location.dto.LocationSearchResult
-import com.nearpick.nearpick.location.client.KakaoLocationClient
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
@@ -18,16 +18,16 @@ import kotlin.test.assertTrue
 @ExtendWith(MockitoExtension::class)
 class LocationSearchServiceImplTest {
 
-    @Mock lateinit var kakaoLocationClient: KakaoLocationClient
+    @Mock lateinit var locationClient: LocationClient
 
     @InjectMocks lateinit var service: LocationSearchServiceImpl
 
     @Test
-    fun `search - 카카오 결과를 그대로 반환한다`() {
+    fun `search - 클라이언트 결과를 그대로 반환한다`() {
         val results = listOf(
             LocationSearchResult("서울 강남구 테헤란로 1", BigDecimal("37.4979"), BigDecimal("127.0276"))
         )
-        whenever(kakaoLocationClient.searchAddress("강남")).thenReturn(results)
+        whenever(locationClient.searchAddress("강남")).thenReturn(results)
 
         val actual = service.search("강남")
 
@@ -37,7 +37,7 @@ class LocationSearchServiceImplTest {
 
     @Test
     fun `search - 결과 없으면 빈 리스트 반환`() {
-        whenever(kakaoLocationClient.searchAddress("없는주소xyz")).thenReturn(emptyList())
+        whenever(locationClient.searchAddress("없는주소xyz")).thenReturn(emptyList())
 
         val actual = service.search("없는주소xyz")
 
@@ -45,8 +45,8 @@ class LocationSearchServiceImplTest {
     }
 
     @Test
-    fun `search - 카카오 API 실패 시 EXTERNAL_API_UNAVAILABLE 예외 전파`() {
-        whenever(kakaoLocationClient.searchAddress("강남"))
+    fun `search - 클라이언트 예외 시 EXTERNAL_API_UNAVAILABLE 예외 전파`() {
+        whenever(locationClient.searchAddress("강남"))
             .thenThrow(BusinessException(ErrorCode.EXTERNAL_API_UNAVAILABLE))
 
         val ex = assertThrows<BusinessException> {

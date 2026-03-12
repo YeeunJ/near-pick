@@ -8,7 +8,7 @@ import com.nearpick.domain.transaction.dto.FlashPurchaseCreateRequest
 import com.nearpick.domain.transaction.dto.FlashPurchaseItem
 import com.nearpick.domain.transaction.dto.FlashPurchaseStatusResponse
 import com.nearpick.nearpick.transaction.mapper.TransactionMapper.toItem
-import com.nearpick.nearpick.transaction.messaging.FlashPurchaseProducer
+import com.nearpick.nearpick.transaction.messaging.FlashPurchaseEventProducer
 import com.nearpick.nearpick.transaction.messaging.FlashPurchaseRequestEvent
 import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
@@ -21,7 +21,7 @@ import java.time.Instant
 @Service
 @Transactional(readOnly = true)
 class FlashPurchaseServiceImpl(
-    private val producer: FlashPurchaseProducer,
+    private val producer: FlashPurchaseEventProducer,
     private val flashPurchaseRepository: FlashPurchaseRepository,
 ) : FlashPurchaseService {
 

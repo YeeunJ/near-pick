@@ -2,7 +2,7 @@ package com.nearpick.nearpick.transaction.service
 
 import com.nearpick.domain.transaction.FlashPurchaseStatus
 import com.nearpick.domain.transaction.dto.FlashPurchaseCreateRequest
-import com.nearpick.nearpick.transaction.messaging.FlashPurchaseProducer
+import com.nearpick.nearpick.transaction.messaging.FlashPurchaseEventProducer
 import com.nearpick.nearpick.transaction.messaging.FlashPurchaseRequestEvent
 import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository
 import org.junit.jupiter.api.Test
@@ -27,7 +27,7 @@ import kotlin.test.assertNull
 @ExtendWith(MockitoExtension::class)
 class FlashPurchaseServiceImplTest {
 
-    @Mock lateinit var producer: FlashPurchaseProducer
+    @Mock lateinit var producer: FlashPurchaseEventProducer
     @Mock lateinit var flashPurchaseRepository: FlashPurchaseRepository
 
     @InjectMocks lateinit var service: FlashPurchaseServiceImpl

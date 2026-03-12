@@ -10,6 +10,7 @@ import com.nearpick.nearpick.user.repository.UserRepository
 import io.micrometer.core.instrument.MeterRegistry
 import org.redisson.api.RAtomicLong
 import org.redisson.api.RedissonClient
+import org.springframework.context.annotation.Profile
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -17,6 +18,7 @@ import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 @Component
+@Profile("!local & !test")
 class FlashPurchaseConsumer(
     private val flashPurchaseRepository: FlashPurchaseRepository,
     private val productRepository: ProductRepository,

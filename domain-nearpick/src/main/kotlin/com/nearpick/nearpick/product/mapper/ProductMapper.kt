@@ -29,6 +29,7 @@ object ProductMapper {
         shopLat = shopLat,
         shopLng = shopLng,
         category = category?.let { runCatching { ProductCategory.valueOf(it) }.getOrNull() },
+        thumbnailUrl = thumbnailUrl,
     )
 
     fun ProductEntity.toDetailResponse(

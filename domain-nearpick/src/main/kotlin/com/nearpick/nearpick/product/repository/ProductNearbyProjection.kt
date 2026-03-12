@@ -15,4 +15,5 @@ interface ProductNearbyProjection {
     val shopLat: BigDecimal
     val shopLng: BigDecimal
     val category: String?
+    val thumbnailUrl: String?
 }

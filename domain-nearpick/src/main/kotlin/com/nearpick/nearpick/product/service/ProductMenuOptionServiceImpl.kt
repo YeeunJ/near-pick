@@ -11,6 +11,7 @@ import com.nearpick.nearpick.product.entity.ProductMenuChoiceEntity
 import com.nearpick.nearpick.product.entity.ProductMenuOptionGroupEntity
 import com.nearpick.nearpick.product.repository.ProductMenuOptionGroupRepository
 import com.nearpick.nearpick.product.repository.ProductRepository
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,6 +25,7 @@ class ProductMenuOptionServiceImpl(
 ) : ProductMenuOptionService {
 
     @Transactional
+    @CacheEvict(cacheNames = ["products-detail"], key = "#productId")
     override fun saveMenuOptions(
         merchantId: Long,
         productId: Long,
@@ -62,6 +64,7 @@ class ProductMenuOptionServiceImpl(
     }
 
     @Transactional
+    @CacheEvict(cacheNames = ["products-detail"], key = "#productId")
     override fun deleteMenuOptionGroup(merchantId: Long, productId: Long, groupId: Long) {
         val product = productRepository.findById(productId)
             .orElseThrow { BusinessException(ErrorCode.PRODUCT_NOT_FOUND) }

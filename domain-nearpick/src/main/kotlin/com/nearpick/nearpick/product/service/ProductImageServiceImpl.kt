@@ -12,6 +12,7 @@ import com.nearpick.domain.product.dto.ProductImageSaveRequest
 import com.nearpick.nearpick.product.entity.ProductImageEntity
 import com.nearpick.nearpick.product.repository.ProductImageRepository
 import com.nearpick.nearpick.product.repository.ProductRepository
+import org.springframework.cache.annotation.CacheEvict
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -53,6 +54,7 @@ class ProductImageServiceImpl(
     }
 
     @Transactional
+    @CacheEvict(cacheNames = ["products-detail"], key = "#productId")
     override fun saveImageUrl(
         merchantId: Long,
         productId: Long,
@@ -78,6 +80,7 @@ class ProductImageServiceImpl(
     }
 
     @Transactional
+    @CacheEvict(cacheNames = ["products-detail"], key = "#productId")
     override fun deleteImage(merchantId: Long, productId: Long, imageId: Long) {
         findProductAndVerifyOwner(productId, merchantId)
         val image = productImageRepository.findByIdAndProductId(imageId, productId)
@@ -88,6 +91,7 @@ class ProductImageServiceImpl(
     }
 
     @Transactional
+    @CacheEvict(cacheNames = ["products-detail"], key = "#productId")
     override fun reorderImages(
         merchantId: Long,
         productId: Long,

@@ -39,10 +39,12 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
                 mp.shop_address                                             AS shopAddress,
                 p.shop_lat                                                  AS shopLat,
                 p.shop_lng                                                  AS shopLng,
-                p.category                                                  AS category
+                p.category                                                  AS category,
+                pi.url                                                      AS thumbnailUrl
             FROM products p
             LEFT JOIN popularity_scores ps ON ps.product_id = p.id
             JOIN merchant_profiles mp ON mp.user_id = p.merchant_id
+            LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.display_order = 0
             WHERE p.status = 'ACTIVE'
               AND (6371 * ACOS(LEAST(1.0, GREATEST(-1.0,
                     COS(RADIANS(:lat)) * COS(RADIANS(p.shop_lat))

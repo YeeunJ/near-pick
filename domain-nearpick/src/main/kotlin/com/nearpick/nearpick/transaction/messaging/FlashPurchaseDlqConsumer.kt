@@ -7,6 +7,7 @@ import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository
 import com.nearpick.nearpick.user.repository.UserRepository
 import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.Profile
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional
  * 이력 보존 및 관리자 수동 조치를 위한 가시성 확보.
  */
 @Component
+@Profile("!local & !test")
 class FlashPurchaseDlqConsumer(
     private val flashPurchaseRepository: FlashPurchaseRepository,
     private val productRepository: ProductRepository,
