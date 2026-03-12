@@ -202,13 +202,17 @@
 - **산출물:**
   - `docs/04-report/features/phase11-product-enhancement.report.md` (완료 보고서)
 
-### Phase 12 — 구매 라이프사이클 정리 ⏳
-- **내용 (예정):**
-  - 예약 상태 플로우: `PENDING → CONFIRMED → VISITED → COMPLETED / CANCELLED / NO_SHOW`
-  - 선착순 구매 플로우: `PENDING → CONFIRMED → PICKED_UP / CANCELLED`
-  - 방문 확인 기능 (소상공인 QR / 코드 체크인)
-  - 자동 상태 변경 스케줄러 (미방문 시 NO_SHOW 처리)
-  - 취소/환불 정책 로직
+### Phase 12 — 구매 라이프사이클 정리 🔄
+- **상태:** Plan ✅ → Design ⏳
+- **브랜치:** `feature/phase12-purchase-lifecycle` (예정)
+- **내용:**
+  - Reservation 상태 플로우: `PENDING → CONFIRMED → VISITED → COMPLETED / CANCELLED / NO_SHOW`
+  - FlashPurchase 상태 플로우: `PENDING → CONFIRMED → PICKED_UP / CANCELLED`
+  - 방문/픽업 코드 시스템 (6자리 텍스트 코드, QR 이미지 제외)
+  - NO_SHOW 자동 스케줄러 (`@Scheduled`, visitScheduledAt + 2시간 초과)
+  - 취소 정책 확장 (소상공인: CONFIRMED 예약/구매 취소 가능, 재고 복원)
+  - 소상공인 구매 목록 API + 상태별 필터링
+  - 신규 API 8개
 
 ### Phase 13 — 리뷰 시스템 + AI 검증 ⏳
 - **내용 (예정):**
