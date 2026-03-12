@@ -24,9 +24,11 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.springframework.cache.annotation.CacheEvict
 import java.math.BigDecimal
 import java.util.Optional
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 @ExtendWith(MockitoExtension::class)
 class ProductMenuOptionServiceImplTest {
@@ -178,6 +180,28 @@ class ProductMenuOptionServiceImplTest {
             service.deleteMenuOptionGroup(merchantId = 2L, productId = 1L, groupId = 99L)
         }
         assertEquals(ErrorCode.MENU_OPTION_GROUP_NOT_FOUND, ex.errorCode)
+    }
+
+    // ── @CacheEvict 어노테이션 ─────────────────────────────────────────
+
+    @Test
+    fun `saveMenuOptions - products-detail 캐시를 evict하는 어노테이션이 적용되어 있다`() {
+        val method = ProductMenuOptionServiceImpl::class.java.getMethod(
+            "saveMenuOptions", Long::class.java, Long::class.java, List::class.java,
+        )
+        val annotation = method.getAnnotation(CacheEvict::class.java)
+        assertNotNull(annotation)
+        assertEquals("products-detail", annotation.cacheNames.first())
+    }
+
+    @Test
+    fun `deleteMenuOptionGroup - products-detail 캐시를 evict하는 어노테이션이 적용되어 있다`() {
+        val method = ProductMenuOptionServiceImpl::class.java.getMethod(
+            "deleteMenuOptionGroup", Long::class.java, Long::class.java, Long::class.java,
+        )
+        val annotation = method.getAnnotation(CacheEvict::class.java)
+        assertNotNull(annotation)
+        assertEquals("products-detail", annotation.cacheNames.first())
     }
 
     // ── getMenuOptions ────────────────────────────────────────────────

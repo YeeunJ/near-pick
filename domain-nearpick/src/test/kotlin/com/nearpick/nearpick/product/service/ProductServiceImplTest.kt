@@ -31,6 +31,8 @@ import com.nearpick.nearpick.user.repository.MerchantProfileRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.junit.jupiter.MockitoExtension
@@ -147,6 +149,7 @@ class ProductServiceImplTest {
             on { shopLat } doReturn BigDecimal("37.5665")
             on { shopLng } doReturn BigDecimal("126.9780")
             on { category } doReturn null
+            on { thumbnailUrl } doReturn null
         }
         val page = PageImpl(listOf(projection), pageable, 1)
 
@@ -163,6 +166,51 @@ class ProductServiceImplTest {
 
         assertEquals(1, result.totalElements)
         assertEquals("테스트 상품", result.content.first().title)
+        assertNull(result.content.first().thumbnailUrl)
+    }
+
+    @Test
+    fun `getNearby - 이미지가 있는 상품의 thumbnailUrl이 응답에 포함된다`() {
+        val thumbnailUrl = "https://bucket.s3.ap-northeast-2.amazonaws.com/products/1/images/thumb.jpg"
+        val request = ProductNearbyRequest(
+            lat = BigDecimal("37.5665"),
+            lng = BigDecimal("126.9780"),
+            radius = 5.0,
+            sort = SortType.POPULARITY,
+            page = 0,
+            size = 10,
+        )
+        val pageable = PageRequest.of(0, 10)
+        val projection = mock<ProductNearbyProjection> {
+            on { id } doReturn 1L
+            on { title } doReturn "썸네일 상품"
+            on { price } doReturn 5000
+            on { productType } doReturn "FLASH_SALE"
+            on { status } doReturn "ACTIVE"
+            on { popularityScore } doReturn BigDecimal.ZERO
+            on { distanceKm } doReturn 0.3
+            on { merchantName } doReturn "테스트샵"
+            on { shopAddress } doReturn null
+            on { shopLat } doReturn BigDecimal("37.5665")
+            on { shopLng } doReturn BigDecimal("126.9780")
+            on { category } doReturn null
+            on { this.thumbnailUrl } doReturn thumbnailUrl
+        }
+        val page = PageImpl(listOf(projection), pageable, 1)
+
+        whenever(productRepository.findNearby(
+            lat = 37.5665,
+            lng = 126.9780,
+            radius = 5.0,
+            sort = "popularity",
+            category = null,
+            pageable = pageable,
+        )).thenReturn(page)
+
+        val result = productService.getNearby(request)
+
+        assertNotNull(result.content.first().thumbnailUrl)
+        assertEquals(thumbnailUrl, result.content.first().thumbnailUrl)
     }
 
     // ── getMyProducts ─────────────────────────────────────────────────
@@ -208,6 +256,7 @@ class ProductServiceImplTest {
             on { shopLat } doReturn BigDecimal("37.5665")
             on { shopLng } doReturn BigDecimal("126.9780")
             on { category } doReturn "FOOD"
+            on { thumbnailUrl } doReturn null
         }
         val page = PageImpl(listOf(projection), pageable, 1)
 

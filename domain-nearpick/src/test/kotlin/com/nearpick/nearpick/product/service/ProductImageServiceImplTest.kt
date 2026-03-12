@@ -24,9 +24,11 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.springframework.cache.annotation.CacheEvict
 import java.math.BigDecimal
 import java.util.Optional
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 @ExtendWith(MockitoExtension::class)
@@ -204,6 +206,39 @@ class ProductImageServiceImplTest {
         // 순서 변경이 엔티티에 반영됨
         assertEquals(1, result.find { it.id == 1L }?.displayOrder)
         assertEquals(0, result.find { it.id == 2L }?.displayOrder)
+    }
+
+    // ── @CacheEvict 어노테이션 ─────────────────────────────────────────
+
+    @Test
+    fun `saveImageUrl - products-detail 캐시를 evict하는 어노테이션이 적용되어 있다`() {
+        val method = ProductImageServiceImpl::class.java.getMethod(
+            "saveImageUrl", Long::class.java, Long::class.java,
+            com.nearpick.domain.product.dto.ProductImageSaveRequest::class.java,
+        )
+        val annotation = method.getAnnotation(CacheEvict::class.java)
+        assertNotNull(annotation)
+        assertEquals("products-detail", annotation.cacheNames.first())
+    }
+
+    @Test
+    fun `deleteImage - products-detail 캐시를 evict하는 어노테이션이 적용되어 있다`() {
+        val method = ProductImageServiceImpl::class.java.getMethod(
+            "deleteImage", Long::class.java, Long::class.java, Long::class.java,
+        )
+        val annotation = method.getAnnotation(CacheEvict::class.java)
+        assertNotNull(annotation)
+        assertEquals("products-detail", annotation.cacheNames.first())
+    }
+
+    @Test
+    fun `reorderImages - products-detail 캐시를 evict하는 어노테이션이 적용되어 있다`() {
+        val method = ProductImageServiceImpl::class.java.getMethod(
+            "reorderImages", Long::class.java, Long::class.java, List::class.java,
+        )
+        val annotation = method.getAnnotation(CacheEvict::class.java)
+        assertNotNull(annotation)
+        assertEquals("products-detail", annotation.cacheNames.first())
     }
 
     // ── getImages ─────────────────────────────────────────────────────
