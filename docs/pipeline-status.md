@@ -8,7 +8,7 @@
 | **Level** | Enterprise |
 | **Stack** | Spring Boot 4.0.3, Kotlin 2.2.21, Java 17 |
 | **Started** | 2026-02-23 |
-| **Last Updated** | 2026-03-11 (Phase 10 completed) |
+| **Last Updated** | 2026-03-12 (Phase 11 Completed - Match Rate 96%) |
 
 ## Summary
 
@@ -34,7 +34,7 @@
 | 8 | Code Review & Quality | ✅ Completed | 98% | - |
 | 9 | 고성능 아키텍처 (Redis, Kafka, 10K TPS) | ✅ Completed | 97% | - |
 | 10 | 위치 & 지도 서비스 | ✅ Completed | 97% | #14 merged |
-| 11 | 상품 고도화 (사진, 카테고리) | ⏳ Pending | - | - |
+| 11 | 상품 고도화 (사진, 카테고리) | ✅ Completed | 96% | - |
 | 12 | 구매 라이프사이클 정리 | ⏳ Pending | - | - |
 | 13 | 리뷰 시스템 + AI 검증 | ⏳ Pending | - | - |
 | 14 | 사용자 고도화 | ⏳ Pending | - | - |
@@ -166,13 +166,39 @@
   - 11개 단위 테스트 (설계 요구 8개 초과 달성)
   - 8개 enhancement (Swagger, @PreAuthorize 클래스 레벨, 캐싱, apiKey blank check)
 
-### Phase 11 — 상품 고도화 ⏳
-- **내용 (예정):**
-  - 상품 이미지 업로드 (S3 + CloudFront CDN, 최대 5장)
-  - 카테고리 체계 (음식 / 음료 / 뷰티 / 생활용품 / 기타)
-  - 음식 카테고리: 메뉴 옵션 시스템 (사이즈, 추가 토핑 등)
-  - 비음식 카테고리: 유연한 상품 스펙 속성
-  - 소상공인 상품 등록 UI 고도화
+### Phase 11 — 상품 고도화 ✅
+- **완료일:** 2026-03-12
+- **브랜치:** `feature/phase11-product-enhancement`
+- **Match Rate:** 96% (67.5/70 design items)
+- **PDCA:** Plan ✅ → Design ✅ → Do ✅ → Check ✅ (96%) → Report ✅
+- **구현 요약:**
+  - 상품 이미지 업로드 (S3 Presigned URL, 최대 5장, local mock 지원)
+  - 카테고리 체계 (FOOD / BEVERAGE / BEAUTY / DAILY / OTHER)
+  - 음식 카테고리: 메뉴 옵션 시스템 (옵션 그룹 + 선택지, CascadeType.ALL)
+  - 비음식 카테고리: 유연한 스펙 속성 (JSON TEXT, ObjectMapper 직렬화)
+  - 카테고리 필터 (nearby, 목록)
+- **구현 상세:**
+  - 33 파일 생성/수정 (domain 8, domain-nearpick 17, app 7, common 1)
+  - 9 API 엔드포인트 구현 + 4개 컨트롤러 신규
+  - 5 error code 추가
+  - 145+ 테스트 케이스 전체 통과
+  - ImageStorageService interface 분리 (clean architecture)
+  - Strategy Pattern (local/test/prod 환경별 구현)
+  - 8 enhancements beyond design
+- **주요 버그 수정:**
+  - Redis 500 error: products-nearby cache에 JdkSerializationRedisSerializer 적용
+  - Non-deterministic sort: findNearby 쿼리에 p.id ASC tiebreaker 추가
+- **테스트 커버리지:**
+  - domain-nearpick: 63.7% → 69.0% (+5.3%)
+  - AdminServiceImpl: 0% → 100%
+  - ProductImageControllerTest: 5 cases
+  - ProductMenuOptionControllerTest: 4 cases
+  - ProductImageServiceImplTest: 10 cases
+  - ProductMenuOptionServiceImplTest: 8 cases
+  - AdminServiceImplTest: 12 cases
+  - ProductServiceImplTest: extended with 8 new cases
+- **산출물:**
+  - `docs/04-report/features/phase11-product-enhancement.report.md` (완료 보고서)
 
 ### Phase 12 — 구매 라이프사이클 정리 ⏳
 - **내용 (예정):**

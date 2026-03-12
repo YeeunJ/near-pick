@@ -1,5 +1,6 @@
 package com.nearpick.nearpick.product.repository
 
+import com.nearpick.domain.product.ProductCategory
 import com.nearpick.domain.product.ProductStatus
 import jakarta.persistence.LockModeType
 import org.springframework.data.domain.Page
@@ -37,7 +38,8 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
                 mp.business_name                                            AS merchantName,
                 mp.shop_address                                             AS shopAddress,
                 p.shop_lat                                                  AS shopLat,
-                p.shop_lng                                                  AS shopLng
+                p.shop_lng                                                  AS shopLng,
+                p.category                                                  AS category
             FROM products p
             LEFT JOIN popularity_scores ps ON ps.product_id = p.id
             JOIN merchant_profiles mp ON mp.user_id = p.merchant_id
@@ -47,6 +49,7 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
                         * COS(RADIANS(p.shop_lng) - RADIANS(:lng))
                     + SIN(RADIANS(:lat)) * SIN(RADIANS(p.shop_lat))
                 )))) <= :radius
+              AND (:category IS NULL OR p.category = :category)
             ORDER BY
                 CASE WHEN :sort = 'distance' THEN
                     (6371 * ACOS(LEAST(1.0, GREATEST(-1.0,
@@ -54,7 +57,8 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
                             * COS(RADIANS(p.shop_lng) - RADIANS(:lng))
                         + SIN(RADIANS(:lat)) * SIN(RADIANS(p.shop_lat))
                     )))) END ASC,
-                CASE WHEN :sort = 'popularity' THEN COALESCE(ps.score, 0) END DESC
+                CASE WHEN :sort = 'popularity' THEN COALESCE(ps.score, 0) END DESC,
+                p.id ASC
         """,
         countQuery = """
             SELECT COUNT(*)
@@ -65,6 +69,7 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
                         * COS(RADIANS(p.shop_lng) - RADIANS(:lng))
                     + SIN(RADIANS(:lat)) * SIN(RADIANS(p.shop_lat))
                 )))) <= :radius
+              AND (:category IS NULL OR p.category = :category)
         """,
     )
     fun findNearby(
@@ -72,6 +77,7 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
         @Param("lng") lng: Double,
         @Param("radius") radius: Double,
         @Param("sort") sort: String,
+        @Param("category") category: String?,
         pageable: Pageable,
     ): Page<ProductNearbyProjection>
 
@@ -80,8 +86,8 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
     /** 상품 대시보드 목록용 (소량 예상, 최대 100개 제한) */
     fun findTop100ByMerchant_UserId(merchantId: Long): List<ProductEntity>
 
-    @Query("SELECT p FROM ProductEntity p WHERE :status IS NULL OR p.status = :status ORDER BY p.createdAt DESC")
-    fun findAllByOptionalStatus(@Param("status") status: ProductStatus?, pageable: Pageable): Page<ProductEntity>
+    @Query("SELECT p FROM ProductEntity p WHERE (:status IS NULL OR p.status = :status) AND (:category IS NULL OR p.category = :category) ORDER BY p.createdAt DESC")
+    fun findAllByOptionalStatus(@Param("status") status: ProductStatus?, @Param("category") category: ProductCategory?, pageable: Pageable): Page<ProductEntity>
 
     /** 선착순 구매 재고 차감 시 비관적 락 적용 (레거시 — Redis 원자적 차감으로 대체됨) */
     @Lock(LockModeType.PESSIMISTIC_WRITE)

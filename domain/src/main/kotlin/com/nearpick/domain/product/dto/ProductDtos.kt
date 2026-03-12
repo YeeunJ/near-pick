@@ -1,6 +1,7 @@
 package com.nearpick.domain.product.dto
 
 import com.nearpick.domain.location.LocationSource
+import com.nearpick.domain.product.ProductCategory
 import com.nearpick.domain.product.ProductStatus
 import com.nearpick.domain.product.ProductType
 import com.nearpick.domain.product.SortType
@@ -22,6 +23,7 @@ data class ProductNearbyRequest(
     @field:Positive @field:Max(100) val size: Int = 20,
     val locationSource: LocationSource = LocationSource.DIRECT,
     val savedLocationId: Long? = null,
+    val category: ProductCategory? = null,
 ) {
     @AssertTrue(message = "lat and lng are required when locationSource is DIRECT")
     fun isLocationValid(): Boolean {
@@ -31,6 +33,11 @@ data class ProductNearbyRequest(
     }
 }
 
+data class ProductSpecItem(
+    val key: String,
+    val value: String,
+)
+
 data class ProductCreateRequest(
     @field:NotBlank val title: String,
     val description: String? = null,
@@ -39,6 +46,8 @@ data class ProductCreateRequest(
     @field:Min(0) val stock: Int = 0,
     val availableFrom: LocalDateTime? = null,
     val availableUntil: LocalDateTime? = null,
+    val category: ProductCategory? = null,
+    val specs: List<ProductSpecItem>? = null,
 ) {
     @AssertTrue(message = "availableUntil must be equal to or after availableFrom")
     fun isAvailabilityRangeValid(): Boolean {
@@ -59,6 +68,8 @@ data class ProductSummaryResponse(
     val shopAddress: String?,
     val shopLat: BigDecimal,
     val shopLng: BigDecimal,
+    val category: ProductCategory? = null,
+    val thumbnailUrl: String? = null,
 ) : java.io.Serializable
 
 data class ProductDetailResponse(
@@ -78,6 +89,10 @@ data class ProductDetailResponse(
     val wishlistCount: Long,
     val reservationCount: Long,
     val purchaseCount: Long,
+    val category: ProductCategory? = null,
+    val images: List<ProductImageResponse> = emptyList(),
+    val menuOptions: List<ProductMenuOptionGroupResponse> = emptyList(),
+    val specs: List<ProductSpecItem>? = null,
 ) : java.io.Serializable
 
 data class ProductListItem(

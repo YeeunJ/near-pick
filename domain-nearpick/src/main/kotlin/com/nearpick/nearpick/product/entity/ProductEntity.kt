@@ -1,5 +1,6 @@
 package com.nearpick.nearpick.product.entity
 
+import com.nearpick.domain.product.ProductCategory
 import com.nearpick.domain.product.ProductStatus
 import com.nearpick.domain.product.ProductType
 import com.nearpick.nearpick.user.entity.MerchantProfileEntity
@@ -56,6 +57,13 @@ class ProductEntity(
 
     @Column(name = "shop_lng", nullable = false, precision = 10, scale = 7)
     var shopLng: BigDecimal,
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", length = 20)
+    var category: ProductCategory? = null,
+
+    @Column(name = "specs", columnDefinition = "TEXT")
+    var specs: String? = null,
 
     @Column(name = "view_count", nullable = false)
     var viewCount: Int = 0,

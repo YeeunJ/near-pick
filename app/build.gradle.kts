@@ -4,6 +4,10 @@ plugins {
     id("org.springframework.boot")
 }
 
+springBoot {
+    mainClass = "com.nearpick.app.NearPickApplicationKt"
+}
+
 java {
     toolchain { languageVersion = JavaLanguageVersion.of(17) }
 }
@@ -33,6 +37,7 @@ dependencies {
     // Jackson 2.x — Redis GenericJackson2JsonRedisSerializer 용 (Spring Data Redis 의존)
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.2")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.2")
+    implementation("software.amazon.awssdk:s3:2.25.23")
     implementation("org.springframework.boot:spring-boot-flyway")  // Spring Boot 4.x: Flyway auto-config 별도 모듈
     implementation("org.flywaydb:flyway-core")
     runtimeOnly("org.flywaydb:flyway-mysql")
