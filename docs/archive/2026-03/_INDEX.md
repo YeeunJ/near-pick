@@ -1,5 +1,35 @@
 # Archive Index — 2026-03
 
+## phase11-improvement (Phase 11 보완: Cache Evict + thumbnailUrl + Strategy Pattern)
+
+| 항목 | 내용 |
+|------|------|
+| **아카이브일** | 2026-03-13 |
+| **Match Rate** | 100% (29/29, 0 iterations) |
+| **브랜치** | `feature/phase11-product-enhancement` |
+| **경로** | `docs/archive/2026-03/phase11-improvement/` |
+
+### 포함 문서
+
+| 파일 | 설명 |
+|------|------|
+| `phase11-improvement.plan.md` | Phase 11 보완 계획서 |
+| `phase11-improvement.design.md` | Phase 11 보완 설계서 |
+| `phase11-improvement.analysis.md` | Gap Analysis (100%, 29/29) |
+| `phase11-improvement.report.md` | 완료 보고서 |
+
+### 주요 완료 항목
+
+- Cache Invalidation: `ProductImageServiceImpl` (saveImageUrl/deleteImage/reorderImages), `ProductMenuOptionServiceImpl` (saveMenuOptions/deleteMenuOptionGroup) — `@CacheEvict(products-detail)`
+- thumbnailUrl 수정: `findNearby` 네이티브 쿼리에 `product_images` LEFT JOIN (display_order=0), `ProductNearbyProjection.thumbnailUrl: String?` 추가
+- Strategy Pattern — LocationClient: 인터페이스 분리 (`domain/location/`), `KakaoLocationClient @Profile("!test")`, `NoOpLocationClient @Profile("test")`
+- Strategy Pattern — FlashPurchaseEventProducer: 인터페이스 분리, `KafkaFlashPurchaseProducer @Profile("!test")`, `NoOpFlashPurchaseEventProducer @Profile("test")`, Consumer/DlqConsumer `@Profile("!test")` 격리
+- Strategy Pattern — ImageStorageService: `LocalImageStorageService @Profile("local | test")`로 확장, `NoOpImageStorageService` 삭제
+- 테스트 5건 추가: LocationSearchServiceImplTest, FlashPurchaseServiceImplTest 목 타입 변경, ProductServiceImplTest thumbnailUrl, ProductImageServiceImplTest/@CacheEvict 3건, ProductMenuOptionServiceImplTest/@CacheEvict 2건
+
+---
+
+
 ## phase10-location (Phase 10: 위치 & 지도 서비스)
 
 | 항목 | 내용 |

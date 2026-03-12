@@ -1,10 +1,14 @@
 package com.nearpick.nearpick.product.mapper
 
 import com.nearpick.domain.admin.dto.AdminProductItem
+import com.nearpick.domain.product.ProductCategory
 import com.nearpick.domain.product.ProductStatus
 import com.nearpick.domain.product.ProductType
 import com.nearpick.domain.product.dto.ProductDetailResponse
+import com.nearpick.domain.product.dto.ProductImageResponse
 import com.nearpick.domain.product.dto.ProductListItem
+import com.nearpick.domain.product.dto.ProductMenuOptionGroupResponse
+import com.nearpick.domain.product.dto.ProductSpecItem
 import com.nearpick.domain.product.dto.ProductStatusResponse
 import com.nearpick.domain.product.dto.ProductSummaryResponse
 import com.nearpick.nearpick.product.entity.ProductEntity
@@ -24,12 +28,17 @@ object ProductMapper {
         shopAddress = shopAddress,
         shopLat = shopLat,
         shopLng = shopLng,
+        category = category?.let { runCatching { ProductCategory.valueOf(it) }.getOrNull() },
+        thumbnailUrl = thumbnailUrl,
     )
 
     fun ProductEntity.toDetailResponse(
         wishlistCount: Long,
         reservationCount: Long,
         purchaseCount: Long,
+        images: List<ProductImageResponse> = emptyList(),
+        menuOptions: List<ProductMenuOptionGroupResponse> = emptyList(),
+        specs: List<ProductSpecItem>? = null,
     ) = ProductDetailResponse(
         id = id,
         title = title,
@@ -47,6 +56,10 @@ object ProductMapper {
         wishlistCount = wishlistCount,
         reservationCount = reservationCount,
         purchaseCount = purchaseCount,
+        category = category,
+        images = images,
+        menuOptions = menuOptions,
+        specs = specs,
     )
 
     fun ProductEntity.toListItem(wishlistCount: Long) = ProductListItem(

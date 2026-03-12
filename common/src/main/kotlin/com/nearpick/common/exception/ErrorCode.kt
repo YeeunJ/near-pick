@@ -40,4 +40,11 @@ enum class ErrorCode(
     LOCATION_NOT_SET(400, "현재 위치가 설정되지 않았습니다."),
     EXTERNAL_API_UNAVAILABLE(503, "외부 API를 사용할 수 없습니다."),
     CONSUMER_NOT_FOUND(404, "소비자 프로필을 찾을 수 없습니다."),
+
+    // Product Enhancement (Phase 11)
+    PRODUCT_IMAGE_LIMIT_EXCEEDED(400, "상품 이미지는 최대 5장까지 등록 가능합니다."),
+    PRODUCT_IMAGE_NOT_FOUND(404, "상품 이미지를 찾을 수 없습니다."),
+    INVALID_IMAGE_TYPE(400, "허용되지 않는 이미지 형식입니다. (허용: jpg, jpeg, png, webp)"),
+    MENU_OPTION_NOT_ALLOWED(400, "메뉴 옵션은 음식/음료 카테고리 상품에만 등록 가능합니다."),
+    MENU_OPTION_GROUP_NOT_FOUND(404, "메뉴 옵션 그룹을 찾을 수 없습니다."),
 }

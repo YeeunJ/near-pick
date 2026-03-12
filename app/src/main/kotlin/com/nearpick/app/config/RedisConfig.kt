@@ -20,6 +20,7 @@ import org.springframework.data.redis.cache.RedisCacheManager
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext
 import org.springframework.data.redis.serializer.StringRedisSerializer
 import java.time.Duration
@@ -60,23 +61,41 @@ class RedisConfig {
 
     @Bean
     fun cacheManager(connectionFactory: RedisConnectionFactory): CacheManager {
-        val serializer = GenericJackson2JsonRedisSerializer(redisObjectMapper())
-        val defaultConfig = RedisCacheConfiguration.defaultCacheConfig()
+        val jsonSerializer = GenericJackson2JsonRedisSerializer(redisObjectMapper())
+
+        /**
+         * products-nearby 캐시: PageImpl/PageRequest/Sort 는 Jackson 역직렬화 불가
+         * (별도 @JsonCreator 없음). Page 계층 전체가 java.io.Serializable 이므로
+         * JDK 직렬화를 사용해 문제 회피.
+         */
+        val jdkSerializer = JdkSerializationRedisSerializer()
+
+        val jsonConfig = RedisCacheConfiguration.defaultCacheConfig()
             .serializeKeysWith(
                 RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer())
             )
             .serializeValuesWith(
-                RedisSerializationContext.SerializationPair.fromSerializer(serializer)
+                RedisSerializationContext.SerializationPair.fromSerializer(jsonSerializer)
             )
             .disableCachingNullValues()
 
+        val nearbyConfig = RedisCacheConfiguration.defaultCacheConfig()
+            .serializeKeysWith(
+                RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer())
+            )
+            .serializeValuesWith(
+                RedisSerializationContext.SerializationPair.fromSerializer(jdkSerializer)
+            )
+            .disableCachingNullValues()
+            .entryTtl(Duration.ofSeconds(30))
+
         val cacheConfigs = mapOf(
-            "products-detail" to defaultConfig.entryTtl(Duration.ofSeconds(60)),
-            "products-nearby" to defaultConfig.entryTtl(Duration.ofSeconds(30)),
+            "products-detail" to jsonConfig.entryTtl(Duration.ofSeconds(60)),
+            "products-nearby" to nearbyConfig,
         )
 
         return RedisCacheManager.builder(connectionFactory)
-            .cacheDefaults(defaultConfig.entryTtl(Duration.ofMinutes(5)))
+            .cacheDefaults(jsonConfig.entryTtl(Duration.ofMinutes(5)))
             .withInitialCacheConfigurations(cacheConfigs)
             .build()
     }

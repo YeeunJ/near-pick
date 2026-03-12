@@ -20,10 +20,12 @@ dependencies {
     implementation("org.redisson:redisson:3.36.0")
     implementation("io.github.resilience4j:resilience4j-spring-boot3:2.3.0")
     implementation("io.micrometer:micrometer-core")
+    implementation("software.amazon.awssdk:s3:2.25.23")
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

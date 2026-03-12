@@ -63,6 +63,7 @@ class AdminServiceImpl(
     override fun getProducts(status: ProductStatus?, page: Int, size: Int): Page<AdminProductItem> =
         productRepository.findAllByOptionalStatus(
             status = status,
+            category = null,
             pageable = PageRequest.of(page, size),
         ).map { it.toAdminItem() }
 

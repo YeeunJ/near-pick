@@ -1,14 +1,19 @@
 package com.nearpick.nearpick.product.service
 
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.nearpick.common.exception.BusinessException
 import com.nearpick.common.exception.ErrorCode
 import com.nearpick.domain.location.LocationSource
+import com.nearpick.domain.product.ProductImageService
+import com.nearpick.domain.product.ProductMenuOptionService
 import com.nearpick.domain.product.ProductService
 import com.nearpick.domain.product.ProductStatus
 import com.nearpick.domain.product.dto.ProductCreateRequest
 import com.nearpick.domain.product.dto.ProductDetailResponse
 import com.nearpick.domain.product.dto.ProductListItem
 import com.nearpick.domain.product.dto.ProductNearbyRequest
+import com.nearpick.domain.product.dto.ProductSpecItem
 import com.nearpick.domain.product.dto.ProductStatusResponse
 import com.nearpick.domain.product.dto.ProductSummaryResponse
 import com.nearpick.nearpick.location.repository.SavedLocationRepository
@@ -42,11 +47,14 @@ class ProductServiceImpl(
     private val flashPurchaseRepository: FlashPurchaseRepository,
     private val consumerProfileRepository: ConsumerProfileRepository,
     private val savedLocationRepository: SavedLocationRepository,
+    private val productImageService: ProductImageService,
+    private val productMenuOptionService: ProductMenuOptionService,
+    private val objectMapper: ObjectMapper,
 ) : ProductService {
 
     @Cacheable(
         value = ["products-nearby"],
-        key = "#request.locationSource.name + ':' + #request.lat?.toString()?.substring(0, T(Math).min(6, #request.lat.toString().length())) + ':' + #request.lng?.toString()?.substring(0, T(Math).min(6, #request.lng.toString().length())) + ':' + #request.savedLocationId + ':' + #request.radius + ':' + #request.sort + ':' + #request.page + ':' + #request.size"
+        key = "#request.category?.name + ':' + #request.locationSource.name + ':' + #request.lat?.toString()?.substring(0, T(Math).min(6, #request.lat.toString().length())) + ':' + #request.lng?.toString()?.substring(0, T(Math).min(6, #request.lng.toString().length())) + ':' + #request.savedLocationId + ':' + #request.radius + ':' + #request.sort + ':' + #request.page + ':' + #request.size"
     )
     override fun getNearby(request: ProductNearbyRequest, userId: Long?): Page<ProductSummaryResponse> {
         val (lat, lng) = resolveLocation(request, userId)
@@ -56,6 +64,7 @@ class ProductServiceImpl(
             lng = lng.toDouble(),
             radius = request.radius,
             sort = request.sort.name.lowercase(),
+            category = request.category?.name,
             pageable = pageable,
         ).map { it.toSummaryResponse() }
     }
@@ -91,10 +100,18 @@ class ProductServiceImpl(
         val product = productRepository.findById(productId).orElseThrow {
             BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
         }
+        val images = productImageService.getImages(productId)
+        val menuOptions = productMenuOptionService.getMenuOptions(productId)
+        val specs = product.specs?.let {
+            objectMapper.readValue(it, object : TypeReference<List<ProductSpecItem>>() {})
+        }
         return product.toDetailResponse(
             wishlistCount = wishlistRepository.countByProduct_Id(productId),
             reservationCount = reservationRepository.countByProduct_Id(productId),
             purchaseCount = flashPurchaseRepository.countByProduct_Id(productId),
+            images = images,
+            menuOptions = menuOptions,
+            specs = specs,
         )
     }
 
@@ -106,6 +123,7 @@ class ProductServiceImpl(
         val merchant = merchantProfileRepository.findById(merchantId).orElseThrow {
             BusinessException(ErrorCode.USER_NOT_FOUND)
         }
+        val specsJson = request.specs?.let { objectMapper.writeValueAsString(it) }
         val product = ProductEntity(
             merchant = merchant,
             title = request.title,
@@ -117,6 +135,8 @@ class ProductServiceImpl(
             availableUntil = request.availableUntil,
             shopLat = merchant.shopLat,
             shopLng = merchant.shopLng,
+            category = request.category,
+            specs = specsJson,
         )
         product.status = ProductStatus.ACTIVE
         return productRepository.save(product).toStatusResponse()
@@ -144,7 +164,6 @@ class ProductServiceImpl(
 
         if (products.isEmpty) return products.map { it.toListItem(0L) }
 
-        // Batch wishlist count — single query instead of N per product
         val productIds = products.content.map { it.id }
         val wishlistCounts = wishlistRepository.countByProductIds(productIds)
             .associate { it.productId to it.cnt }
