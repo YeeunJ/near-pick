@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
  * 이력 보존 및 관리자 수동 조치를 위한 가시성 확보.
  */
 @Component
-@Profile("!local & !test")
+@Profile("!test")
 class FlashPurchaseDlqConsumer(
     private val flashPurchaseRepository: FlashPurchaseRepository,
     private val productRepository: ProductRepository,

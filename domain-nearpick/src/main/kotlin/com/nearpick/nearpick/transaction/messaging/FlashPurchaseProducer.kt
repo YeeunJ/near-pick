@@ -5,7 +5,7 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 
 @Component
-@Profile("!local & !test")
+@Profile("!test")
 class KafkaFlashPurchaseProducer(
     private val kafkaTemplate: KafkaTemplate<String, Any>,
 ) : FlashPurchaseEventProducer {

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import java.io.File
 
 @Service
-@Profile("local")
+@Profile("local | test")
 class LocalImageStorageService(
     @Value("\${server.port:8080}") private val serverPort: Int,
     @Value("\${product.image.local.upload-dir:./uploads}") private val uploadDir: String,

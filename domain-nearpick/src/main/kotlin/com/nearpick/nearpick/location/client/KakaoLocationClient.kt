@@ -14,7 +14,7 @@ import org.springframework.web.client.RestClientException
 import java.math.BigDecimal
 
 @Component
-@Profile("!local & !test")
+@Profile("!test")
 class KakaoLocationClient(
     @Value("\${kakao.rest-api-key:}") private val apiKey: String,
 ) : LocationClient {

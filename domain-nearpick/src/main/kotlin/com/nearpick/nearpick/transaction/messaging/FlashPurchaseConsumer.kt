@@ -18,7 +18,7 @@ import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 @Component
-@Profile("!local & !test")
+@Profile("!test")
 class FlashPurchaseConsumer(
     private val flashPurchaseRepository: FlashPurchaseRepository,
     private val productRepository: ProductRepository,
