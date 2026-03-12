@@ -18,6 +18,7 @@ import com.nearpick.domain.user.UserRole
 import com.nearpick.nearpick.location.entity.SavedLocationEntity
 import com.nearpick.nearpick.location.repository.SavedLocationRepository
 import com.nearpick.nearpick.product.entity.ProductEntity
+import com.nearpick.nearpick.location.repository.SavedLocationRepository
 import com.nearpick.nearpick.product.repository.ProductNearbyProjection
 import com.nearpick.nearpick.product.repository.ProductRepository
 import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository

@@ -1,0 +1,12 @@
+{
+  "sessionCount": 47,
+  "lastSession": {
+    "startedAt": "2026-03-11T07:51:58.594Z",
+    "platform": "claude",
+    "level": "Enterprise"
+  },
+  "currentFeature": null,
+  "currentPhase": "archived",
+  "matchRate": null,
+  "iterationCount": 0
+}
