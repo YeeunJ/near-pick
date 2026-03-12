@@ -43,3 +43,11 @@ out/
 **/src/main/resources/application-local.properties
 **/src/main/resources/application-prod.properties
 .env
+
+### bkit / PDCA 내부 상태 파일 ###
+.bkit/agent-state.json
+docs/.pdca-snapshots/
+docs/.bkit-memory.json
+
+### Load test 임시 파일 ###
+load-tests/common/tokens.json
