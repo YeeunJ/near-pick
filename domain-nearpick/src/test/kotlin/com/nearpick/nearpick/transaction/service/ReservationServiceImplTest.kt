@@ -25,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 import java.math.BigDecimal
+import java.time.LocalDateTime
 import java.util.Optional
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -251,6 +252,46 @@ class ReservationServiceImplTest {
         // when / then
         val ex = assertThrows<BusinessException> { reservationService.cancelByMerchant(2L, 1L) }
         assertEquals(ErrorCode.RESERVATION_CANNOT_BE_CANCELLED, ex.errorCode)
+    }
+
+    // ───── create - availableFrom/Until 검증 (Phase 12) ─────
+
+    @Test
+    fun `create - availableFrom이 미래이면 PRODUCT_NOT_AVAILABLE_YET 예외를 던진다`() {
+        // given
+        val futureProduct = ProductEntity(
+            id = 10L, merchant = merchant, title = "Future Item",
+            price = 5000, productType = ProductType.RESERVATION,
+            status = ProductStatus.ACTIVE, stock = 10,
+            shopLat = BigDecimal("37.5"), shopLng = BigDecimal("127.0"),
+            availableFrom = LocalDateTime.now().plusDays(1),
+        )
+        val request = ReservationCreateRequest(productId = 10L, quantity = 1, memo = null, visitScheduledAt = null)
+        whenever(userRepository.findById(1L)).thenReturn(Optional.of(consumerUser))
+        whenever(productRepository.findById(10L)).thenReturn(Optional.of(futureProduct))
+
+        // when / then
+        val ex = assertThrows<BusinessException> { reservationService.create(1L, 10L, request) }
+        assertEquals(ErrorCode.PRODUCT_NOT_AVAILABLE_YET, ex.errorCode)
+    }
+
+    @Test
+    fun `create - availableUntil이 과거이면 PRODUCT_AVAILABILITY_EXPIRED 예외를 던진다`() {
+        // given
+        val expiredProduct = ProductEntity(
+            id = 10L, merchant = merchant, title = "Expired Item",
+            price = 5000, productType = ProductType.RESERVATION,
+            status = ProductStatus.ACTIVE, stock = 10,
+            shopLat = BigDecimal("37.5"), shopLng = BigDecimal("127.0"),
+            availableUntil = LocalDateTime.now().minusDays(1),
+        )
+        val request = ReservationCreateRequest(productId = 10L, quantity = 1, memo = null, visitScheduledAt = null)
+        whenever(userRepository.findById(1L)).thenReturn(Optional.of(consumerUser))
+        whenever(productRepository.findById(10L)).thenReturn(Optional.of(expiredProduct))
+
+        // when / then
+        val ex = assertThrows<BusinessException> { reservationService.create(1L, 10L, request) }
+        assertEquals(ErrorCode.PRODUCT_AVAILABILITY_EXPIRED, ex.errorCode)
     }
 
     // ───── create - 재고 감소 (Phase 12) ─────
