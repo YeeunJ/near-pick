@@ -1,7 +1,20 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-03-12T19:42:44.102Z",
-  "activeFeatures": [],
+  "lastUpdated": "2026-03-13T08:10:59.306Z",
+  "activeFeatures": [
+    "exception",
+    "transaction",
+    "entity",
+    "repository",
+    "service",
+    "product",
+    "dto",
+    "mapper",
+    "messaging",
+    "scheduler",
+    "nearpick",
+    "controller"
+  ],
   "primaryFeature": "exception",
   "features": {
     "phase11-product-enhancement": {
@@ -10,6 +23,162 @@
       "iterationCount": 0,
       "archivedAt": "2026-03-13T00:00:00.000Z",
       "archivedTo": "docs/archive/2026-03/phase11-product-enhancement/"
+    },
+    "exception": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T07:57:35.734Z",
+        "lastUpdated": "2026-03-13T07:57:35.734Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/common/src/main/kotlin/com/nearpick/common/exception/ErrorCode.kt"
+    },
+    "transaction": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T07:57:46.395Z",
+        "lastUpdated": "2026-03-13T08:03:56.728Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/transaction/FlashPurchaseService.kt"
+    },
+    "entity": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T07:58:04.250Z",
+        "lastUpdated": "2026-03-13T07:58:05.514Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/transaction/entity/FlashPurchaseEntity.kt"
+    },
+    "repository": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T07:58:33.373Z",
+        "lastUpdated": "2026-03-13T08:00:21.248Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/transaction/repository/FlashPurchaseRepository.kt"
+    },
+    "service": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T08:00:35.292Z",
+        "lastUpdated": "2026-03-13T08:10:59.306Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/test/kotlin/com/nearpick/nearpick/product/service/ProductServiceImplTest.kt"
+    },
+    "product": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T08:00:53.849Z",
+        "lastUpdated": "2026-03-13T08:00:53.849Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/product/ProductService.kt"
+    },
+    "dto": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T08:02:05.334Z",
+        "lastUpdated": "2026-03-13T08:02:29.184Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/product/dto/ProductDtos.kt"
+    },
+    "mapper": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T08:02:47.501Z",
+        "lastUpdated": "2026-03-13T08:02:52.826Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/transaction/mapper/TransactionMapper.kt"
+    },
+    "messaging": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T08:03:43.825Z",
+        "lastUpdated": "2026-03-13T08:03:43.825Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/transaction/messaging/FlashPurchaseConsumer.kt"
+    },
+    "scheduler": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T08:04:30.862Z",
+        "lastUpdated": "2026-03-13T08:04:40.319Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/product/scheduler/ProductScheduler.kt"
+    },
+    "nearpick": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T08:04:52.072Z",
+        "lastUpdated": "2026-03-13T08:04:52.072Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/NearPickApplication.kt"
+    },
+    "controller": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-03-13T08:05:13.036Z",
+        "lastUpdated": "2026-03-13T08:06:07.016Z"
+      },
+      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/app/src/main/kotlin/com/nearpick/app/controller/FlashPurchaseController.kt"
     }
   },
   "pipeline": {
@@ -20,7 +189,7 @@
   "session": {
     "startedAt": "2026-03-12T19:41:01.975Z",
     "onboardingCompleted": false,
-    "lastActivity": "2026-03-12T19:42:44.102Z"
+    "lastActivity": "2026-03-13T08:10:59.306Z"
   },
   "history": [
     {
@@ -85,6 +254,270 @@
     },
     {
       "timestamp": "2026-03-12T19:42:44.102Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:57:35.734Z",
+      "feature": "exception",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:57:46.395Z",
+      "feature": "transaction",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:57:49.129Z",
+      "feature": "transaction",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:58:04.250Z",
+      "feature": "entity",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:58:05.514Z",
+      "feature": "entity",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:58:33.373Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:59:10.691Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T07:59:33.046Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:00:02.924Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:00:21.248Z",
+      "feature": "repository",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:00:35.292Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:00:53.849Z",
+      "feature": "product",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:01:07.799Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:01:23.739Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:01:41.380Z",
+      "feature": "transaction",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:02:05.334Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:02:14.248Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:02:22.388Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:02:29.184Z",
+      "feature": "dto",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:02:47.501Z",
+      "feature": "mapper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:02:52.826Z",
+      "feature": "mapper",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:03:01.488Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:03:09.807Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:03:30.243Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:03:43.825Z",
+      "feature": "messaging",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:03:56.728Z",
+      "feature": "transaction",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:04:06.697Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:04:19.605Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:04:30.862Z",
+      "feature": "scheduler",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:04:40.319Z",
+      "feature": "scheduler",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:04:52.072Z",
+      "feature": "nearpick",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:05:13.036Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:05:22.640Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:05:30.779Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:05:43.154Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:06:07.016Z",
+      "feature": "controller",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:07:51.041Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:08:59.013Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:09:08.409Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:09:14.191Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:09:19.937Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:10:18.816Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:10:35.975Z",
+      "feature": "service",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-03-13T08:10:59.306Z",
       "feature": "service",
       "phase": "do",
       "action": "updated"

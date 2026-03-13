@@ -39,4 +39,10 @@ class FlashPurchaseEntity(
 
     @Column(name = "updated_at", nullable = false)
     var updatedAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "pickup_code", length = 6)
+    var pickupCode: String? = null,
+
+    @Column(name = "picked_up_at")
+    var pickedUpAt: LocalDateTime? = null,
 )

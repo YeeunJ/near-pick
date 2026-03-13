@@ -2,6 +2,7 @@ package com.nearpick.nearpick.transaction.service
 
 import com.nearpick.domain.transaction.FlashPurchaseStatus
 import com.nearpick.domain.transaction.dto.FlashPurchaseCreateRequest
+import com.nearpick.nearpick.product.repository.ProductRepository
 import com.nearpick.nearpick.transaction.messaging.FlashPurchaseEventProducer
 import com.nearpick.nearpick.transaction.messaging.FlashPurchaseRequestEvent
 import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository
@@ -13,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.verify
+import org.redisson.api.RedissonClient
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -29,6 +31,8 @@ class FlashPurchaseServiceImplTest {
 
     @Mock lateinit var producer: FlashPurchaseEventProducer
     @Mock lateinit var flashPurchaseRepository: FlashPurchaseRepository
+    @Mock lateinit var productRepository: ProductRepository
+    @Mock lateinit var redissonClient: RedissonClient
 
     @InjectMocks lateinit var service: FlashPurchaseServiceImpl
 

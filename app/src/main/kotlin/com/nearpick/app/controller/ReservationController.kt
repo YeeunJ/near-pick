@@ -2,7 +2,9 @@ package com.nearpick.app.controller
 
 import com.nearpick.common.response.ApiResponse
 import com.nearpick.domain.transaction.ReservationService
+import com.nearpick.domain.transaction.ReservationStatus
 import com.nearpick.domain.transaction.dto.ReservationCreateRequest
+import com.nearpick.domain.transaction.dto.ReservationVisitRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.responses.ApiResponse as SwaggerApiResponse
@@ -67,13 +69,47 @@ class ReservationController(private val reservationService: ReservationService) 
         @RequestParam(defaultValue = "20") size: Int,
     ) = ApiResponse.success(reservationService.getMyReservations(userId, page, size))
 
-    @Operation(summary = "대기 예약 목록 조회 (소상공인 전용)")
+    @Operation(summary = "대기 예약 목록 조회 (소상공인 전용, deprecated)", description = "getMerchantReservations로 대체됨")
     @SwaggerApiResponse(responseCode = "200", description = "조회 성공")
-    @GetMapping("/merchant")
+    @GetMapping("/merchant/pending")
     @PreAuthorize("hasRole('MERCHANT')")
     fun getPendingReservations(
         @AuthenticationPrincipal userId: Long,
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int,
     ) = ApiResponse.success(reservationService.getPendingReservations(userId, page, size))
+
+    @Operation(summary = "예약 상세 조회 (소비자/소상공인)", description = "소비자 본인은 visitCode 포함")
+    @GetMapping("/{reservationId}")
+    @PreAuthorize("hasAnyRole('CONSUMER', 'MERCHANT')")
+    fun getDetail(
+        @AuthenticationPrincipal userId: Long,
+        @PathVariable reservationId: Long,
+    ) = ApiResponse.success(reservationService.getDetail(userId, reservationId))
+
+    @Operation(summary = "방문 코드 확인 → 완료 처리 (소상공인 전용)")
+    @PatchMapping("/visit")
+    @PreAuthorize("hasRole('MERCHANT')")
+    fun visit(
+        @AuthenticationPrincipal userId: Long,
+        @RequestBody @Valid request: ReservationVisitRequest,
+    ) = ApiResponse.success(reservationService.visitByCode(userId, request))
+
+    @Operation(summary = "소상공인 예약 취소 (PENDING/CONFIRMED → CANCELLED)")
+    @PatchMapping("/{reservationId}/cancel-by-merchant")
+    @PreAuthorize("hasRole('MERCHANT')")
+    fun cancelByMerchant(
+        @AuthenticationPrincipal userId: Long,
+        @PathVariable reservationId: Long,
+    ) = ApiResponse.success(reservationService.cancelByMerchant(userId, reservationId))
+
+    @Operation(summary = "소상공인 예약 목록 조회 (상태 필터)")
+    @GetMapping("/merchant")
+    @PreAuthorize("hasRole('MERCHANT')")
+    fun getMerchantReservations(
+        @AuthenticationPrincipal userId: Long,
+        @RequestParam(required = false) status: ReservationStatus?,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "20") size: Int,
+    ) = ApiResponse.success(reservationService.getMerchantReservations(userId, status, page, size))
 }

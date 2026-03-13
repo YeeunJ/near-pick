@@ -9,6 +9,7 @@ import com.nearpick.domain.product.ProductImageService
 import com.nearpick.domain.product.ProductMenuOptionService
 import com.nearpick.domain.product.ProductService
 import com.nearpick.domain.product.ProductStatus
+import com.nearpick.domain.product.ProductType
 import com.nearpick.domain.product.dto.ProductCreateRequest
 import com.nearpick.domain.product.dto.ProductDetailResponse
 import com.nearpick.domain.product.dto.ProductListItem
@@ -171,5 +172,60 @@ class ProductServiceImpl(
         return products.map { product ->
             product.toListItem(wishlistCounts[product.id] ?: 0L)
         }
+    }
+
+    @Transactional
+    @Caching(evict = [
+        CacheEvict(value = ["products-detail"], key = "#productId"),
+        CacheEvict(value = ["products-nearby"], allEntries = true),
+    ])
+    override fun pauseProduct(merchantId: Long, productId: Long): ProductStatusResponse {
+        val product = productRepository.findById(productId).orElseThrow {
+            BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
+        }
+        if (product.merchant.userId != merchantId) throw BusinessException(ErrorCode.FORBIDDEN)
+        if (product.status != ProductStatus.ACTIVE) throw BusinessException(ErrorCode.PRODUCT_CANNOT_BE_PAUSED)
+        product.status = ProductStatus.PAUSED
+        return product.toStatusResponse()
+    }
+
+    @Transactional
+    @Caching(evict = [
+        CacheEvict(value = ["products-detail"], key = "#productId"),
+        CacheEvict(value = ["products-nearby"], allEntries = true),
+    ])
+    override fun resumeProduct(merchantId: Long, productId: Long): ProductStatusResponse {
+        val product = productRepository.findById(productId).orElseThrow {
+            BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
+        }
+        if (product.merchant.userId != merchantId) throw BusinessException(ErrorCode.FORBIDDEN)
+        if (product.status != ProductStatus.PAUSED) throw BusinessException(ErrorCode.PRODUCT_CANNOT_BE_RESUMED)
+        product.status = ProductStatus.ACTIVE
+        return product.toStatusResponse()
+    }
+
+    @Transactional
+    @Caching(evict = [
+        CacheEvict(value = ["products-detail"], key = "#productId"),
+        CacheEvict(value = ["products-nearby"], allEntries = true),
+    ])
+    override fun addStock(merchantId: Long, productId: Long, additionalStock: Int): ProductStatusResponse {
+        val product = productRepository.findById(productId).orElseThrow {
+            BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
+        }
+        if (product.merchant.userId != merchantId) throw BusinessException(ErrorCode.FORBIDDEN)
+        if (product.status == ProductStatus.CLOSED || product.status == ProductStatus.FORCE_CLOSED)
+            throw BusinessException(ErrorCode.FORBIDDEN)
+        productRepository.incrementStock(productId, additionalStock)
+        productRepository.resumeIfRestored(productId)
+        return productRepository.findById(productId).get().toStatusResponse()
+    }
+
+    private fun validateAvailability(product: com.nearpick.nearpick.product.entity.ProductEntity) {
+        val now = java.time.LocalDateTime.now()
+        if (product.availableFrom != null && now.isBefore(product.availableFrom))
+            throw BusinessException(ErrorCode.PRODUCT_NOT_AVAILABLE_YET)
+        if (product.availableUntil != null && now.isAfter(product.availableUntil))
+            throw BusinessException(ErrorCode.PRODUCT_AVAILABILITY_EXPIRED)
     }
 }

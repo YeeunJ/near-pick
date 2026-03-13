@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
+import jakarta.validation.constraints.PositiveOrZero
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -106,3 +107,8 @@ data class ProductListItem(
 )
 
 data class ProductStatusResponse(val id: Long, val status: ProductStatus)
+
+data class ProductAddStockRequest(
+    @field:Positive @field:Max(9999)
+    val additionalStock: Int,
+)

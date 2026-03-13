@@ -72,7 +72,7 @@ class AdminServiceImpl(
         val product = productRepository.findById(productId).orElseThrow {
             BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
         }
-        product.status = ProductStatus.CLOSED
+        product.status = ProductStatus.FORCE_CLOSED
         return product.toAdminItem()
     }
 

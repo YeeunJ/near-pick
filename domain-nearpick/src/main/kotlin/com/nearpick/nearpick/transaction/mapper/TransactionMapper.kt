@@ -1,7 +1,9 @@
 package com.nearpick.nearpick.transaction.mapper
 
+import com.nearpick.domain.transaction.dto.FlashPurchaseDetailResponse
 import com.nearpick.domain.transaction.dto.FlashPurchaseItem
 import com.nearpick.domain.transaction.dto.FlashPurchaseStatusResponse
+import com.nearpick.domain.transaction.dto.ReservationDetailResponse
 import com.nearpick.domain.transaction.dto.ReservationItem
 import com.nearpick.domain.transaction.dto.ReservationStatusResponse
 import com.nearpick.domain.transaction.dto.WishlistItem
@@ -47,4 +49,28 @@ object TransactionMapper {
 
     fun FlashPurchaseEntity.toStatusResponse() =
         FlashPurchaseStatusResponse(purchaseId = id, status = status)
+
+    fun ReservationEntity.toDetailResponse(isOwner: Boolean) = ReservationDetailResponse(
+        reservationId = id,
+        productId = product.id,
+        productTitle = product.title,
+        quantity = quantity,
+        status = status,
+        memo = memo,
+        visitScheduledAt = visitScheduledAt,
+        reservedAt = reservedAt,
+        completedAt = completedAt,
+        visitCode = if (isOwner) visitCode else null,
+    )
+
+    fun FlashPurchaseEntity.toDetailResponse(isOwner: Boolean) = FlashPurchaseDetailResponse(
+        purchaseId = id,
+        productId = product.id,
+        productTitle = product.title,
+        quantity = quantity,
+        status = status,
+        purchasedAt = purchasedAt,
+        pickedUpAt = pickedUpAt,
+        pickupCode = if (isOwner) pickupCode else null,
+    )
 }

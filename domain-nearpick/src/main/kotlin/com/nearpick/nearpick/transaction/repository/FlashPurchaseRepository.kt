@@ -1,5 +1,6 @@
 package com.nearpick.nearpick.transaction.repository
 
+import com.nearpick.domain.transaction.FlashPurchaseStatus
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -26,4 +27,20 @@ interface FlashPurchaseRepository : JpaRepository<FlashPurchaseEntity, Long> {
         @Param("from") from: LocalDateTime,
         @Param("to") to: LocalDateTime,
     ): Long
+
+    /** 픽업 코드로 구매 조회 */
+    fun findByPickupCode(pickupCode: String): FlashPurchaseEntity?
+
+    /** 소상공인 구매 목록 (상태 필터, null이면 전체) */
+    @Query("""
+        SELECT f FROM FlashPurchaseEntity f
+        WHERE f.product.merchant.userId = :merchantId
+        AND (:status IS NULL OR f.status = :status)
+        ORDER BY f.purchasedAt DESC
+    """)
+    fun findByMerchantIdAndOptionalStatus(
+        @Param("merchantId") merchantId: Long,
+        @Param("status") status: FlashPurchaseStatus?,
+        pageable: Pageable,
+    ): Page<FlashPurchaseEntity>
 }

@@ -182,12 +182,12 @@ class AdminServiceImplTest {
     // ── forceCloseProduct ─────────────────────────────────────────────
 
     @Test
-    fun `forceCloseProduct - 상품을 강제 CLOSED 상태로 변경한다`() {
+    fun `forceCloseProduct - 상품을 강제 FORCE_CLOSED 상태로 변경한다`() {
         whenever(productRepository.findById(1L)).thenReturn(Optional.of(product))
 
         val result = service.forceCloseProduct(1L)
 
-        assertEquals(ProductStatus.CLOSED, result.status)
+        assertEquals(ProductStatus.FORCE_CLOSED, result.status)
         assertEquals(1L, result.productId)
         assertEquals("테스트 상품", result.title)
     }

@@ -14,4 +14,7 @@ interface ProductService {
     fun create(merchantId: Long, request: ProductCreateRequest): ProductStatusResponse
     fun close(merchantId: Long, productId: Long): ProductStatusResponse
     fun getMyProducts(merchantId: Long, page: Int, size: Int): Page<ProductListItem>
+    fun pauseProduct(merchantId: Long, productId: Long): ProductStatusResponse
+    fun resumeProduct(merchantId: Long, productId: Long): ProductStatusResponse
+    fun addStock(merchantId: Long, productId: Long, additionalStock: Int): ProductStatusResponse
 }
