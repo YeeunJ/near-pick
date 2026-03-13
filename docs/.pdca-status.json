@@ -1,65 +1,15 @@
 {
   "version": "2.0",
   "lastUpdated": "2026-03-12T19:42:44.102Z",
-  "activeFeatures": [
-    "exception",
-    "dto",
-    "client",
-    "service"
-  ],
+  "activeFeatures": [],
   "primaryFeature": "exception",
   "features": {
-    "exception": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
+    "phase11-product-enhancement": {
+      "phase": "archived",
+      "matchRate": 96,
       "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-03-12T19:41:01.975Z",
-        "lastUpdated": "2026-03-12T19:41:01.975Z"
-      },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/common/src/main/kotlin/com/nearpick/common/exception/ErrorCode.kt"
-    },
-    "dto": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-03-12T19:41:15.670Z",
-        "lastUpdated": "2026-03-12T19:41:21.546Z"
-      },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain/src/main/kotlin/com/nearpick/domain/product/dto/ProductDtos.kt"
-    },
-    "client": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-03-12T19:41:38.448Z",
-        "lastUpdated": "2026-03-12T19:41:38.448Z"
-      },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/main/kotlin/com/nearpick/nearpick/location/client/KakaoLocationClient.kt"
-    },
-    "service": {
-      "phase": "do",
-      "phaseNumber": 3,
-      "matchRate": null,
-      "iterationCount": 0,
-      "requirements": [],
-      "documents": {},
-      "timestamps": {
-        "started": "2026-03-12T19:41:50.627Z",
-        "lastUpdated": "2026-03-12T19:42:44.102Z"
-      },
-      "lastFile": "/Users/jeong-yeeun/git/ai-project/near-pick/domain-nearpick/src/test/kotlin/com/nearpick/nearpick/product/service/ProductServiceImplTest.kt"
+      "archivedAt": "2026-03-13T00:00:00.000Z",
+      "archivedTo": "docs/archive/2026-03/phase11-product-enhancement/"
     }
   },
   "pipeline": {

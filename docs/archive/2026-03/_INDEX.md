@@ -1,5 +1,35 @@
 # Archive Index — 2026-03
 
+## phase11-product-enhancement (Phase 11: 상품 고도화 — 카테고리/이미지/메뉴옵션/스펙)
+
+| 항목 | 내용 |
+|------|------|
+| **아카이브일** | 2026-03-13 |
+| **Match Rate** | 96% (1회 반복 없음) |
+| **브랜치** | `feature/phase11-product-enhancement` |
+| **PR** | #15 merged |
+| **경로** | `docs/archive/2026-03/phase11-product-enhancement/` |
+
+### 포함 문서
+
+| 파일 | 설명 |
+|------|------|
+| `phase11-product-enhancement.plan.md` | Phase 11 계획서 |
+| `phase11-product-enhancement.design.md` | Phase 11 설계서 |
+| `phase11-product-enhancement.analysis.md` | Gap Analysis (96%) |
+| `phase11-product-enhancement.report.md` | 완료 보고서 |
+
+### 주요 완료 항목
+
+- 상품 카테고리 체계 (FOOD/BEVERAGE/BEAUTY/DAILY/OTHER)
+- 상품 이미지 업로드 (S3 Presigned URL, 최대 5장)
+- 메뉴 옵션 시스템 (음식/음료 카테고리, 옵션 그룹 + 선택지)
+- 비음식 카테고리 스펙 속성 (JSON TEXT)
+- 카테고리 필터 (nearby, 목록)
+- 9개 API 엔드포인트 + 4개 컨트롤러 신규
+
+---
+
 ## phase11-improvement (Phase 11 보완: Cache Evict + thumbnailUrl + Strategy Pattern)
 
 | 항목 | 내용 |
