@@ -4,6 +4,7 @@ import com.nearpick.common.response.ApiResponse
 import com.nearpick.domain.location.LocationSource
 import com.nearpick.domain.product.ProductService
 import com.nearpick.domain.product.SortType
+import com.nearpick.domain.product.dto.ProductAddStockRequest
 import com.nearpick.domain.product.dto.ProductCreateRequest
 import com.nearpick.domain.product.dto.ProductNearbyRequest
 import io.swagger.v3.oas.annotations.Operation
@@ -93,4 +94,32 @@ class ProductController(private val productService: ProductService) {
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "20") size: Int,
     ) = ApiResponse.success(productService.getMyProducts(userId, page, size))
+
+    @Operation(summary = "상품 일시정지 (소상공인 전용)", description = "ACTIVE → PAUSED")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PatchMapping("/{productId}/pause")
+    @PreAuthorize("hasRole('MERCHANT')")
+    fun pause(
+        @AuthenticationPrincipal userId: Long,
+        @PathVariable productId: Long,
+    ) = ApiResponse.success(productService.pauseProduct(userId, productId))
+
+    @Operation(summary = "상품 재개 (소상공인 전용)", description = "PAUSED → ACTIVE")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PatchMapping("/{productId}/resume")
+    @PreAuthorize("hasRole('MERCHANT')")
+    fun resume(
+        @AuthenticationPrincipal userId: Long,
+        @PathVariable productId: Long,
+    ) = ApiResponse.success(productService.resumeProduct(userId, productId))
+
+    @Operation(summary = "재고 추가 (소상공인 전용)")
+    @SecurityRequirement(name = "Bearer Authentication")
+    @PatchMapping("/{productId}/stock")
+    @PreAuthorize("hasRole('MERCHANT')")
+    fun addStock(
+        @AuthenticationPrincipal userId: Long,
+        @PathVariable productId: Long,
+        @RequestBody @Valid request: ProductAddStockRequest,
+    ) = ApiResponse.success(productService.addStock(userId, productId, request.additionalStock))
 }

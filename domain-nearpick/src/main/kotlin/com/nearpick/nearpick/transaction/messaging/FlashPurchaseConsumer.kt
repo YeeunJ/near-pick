@@ -67,15 +67,21 @@ class FlashPurchaseConsumer(
                 BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
             }
 
-            // 6. FlashPurchase 저장 (CONFIRMED)
+            // 6. FlashPurchase 저장 (CONFIRMED) + pickupCode 생성
+            val chars = ('A'..'Z') + ('0'..'9')
+            val pickupCode = (1..6).map { chars.random() }.joinToString("")
             flashPurchaseRepository.save(
                 FlashPurchaseEntity(
                     user = user,
                     product = product,
                     quantity = event.quantity,
                     status = FlashPurchaseStatus.CONFIRMED,
+                    pickupCode = pickupCode,
                 )
             )
+
+            // 7. stock=0이면 상품 PAUSED 자동 전환
+            productRepository.pauseIfSoldOut(event.productId)
             meterRegistry.counter("flash.purchase", "result", "success").increment()
         } catch (e: Exception) {
             stockCounter.addAndGet(event.quantity.toLong())  // Redis 재고 복원

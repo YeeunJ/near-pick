@@ -18,7 +18,6 @@ import com.nearpick.domain.user.UserRole
 import com.nearpick.nearpick.location.entity.SavedLocationEntity
 import com.nearpick.nearpick.location.repository.SavedLocationRepository
 import com.nearpick.nearpick.product.entity.ProductEntity
-import com.nearpick.nearpick.location.repository.SavedLocationRepository
 import com.nearpick.nearpick.product.repository.ProductNearbyProjection
 import com.nearpick.nearpick.product.repository.ProductRepository
 import com.nearpick.nearpick.transaction.repository.FlashPurchaseRepository
@@ -409,6 +408,67 @@ class ProductServiceImplTest {
         whenever(productRepository.findById(1L)).thenReturn(Optional.of(product))
 
         val ex = assertThrows<BusinessException> { productService.close(merchantId = 99L, productId = 1L) }
+        assertEquals(ErrorCode.FORBIDDEN, ex.errorCode)
+    }
+
+    // ── pauseProduct (Phase 12) ────────────────────────────────────────
+
+    @Test
+    fun `pauseProduct - ACTIVE 상품을 PAUSED로 변경한다`() {
+        whenever(productRepository.findById(1L)).thenReturn(Optional.of(product))
+
+        val result = productService.pauseProduct(merchantId = 2L, productId = 1L)
+
+        assertEquals(ProductStatus.PAUSED, result.status)
+    }
+
+    @Test
+    fun `pauseProduct - ACTIVE가 아닌 상품은 PRODUCT_CANNOT_BE_PAUSED 예외를 던진다`() {
+        product.status = ProductStatus.PAUSED
+        whenever(productRepository.findById(1L)).thenReturn(Optional.of(product))
+
+        val ex = assertThrows<BusinessException> { productService.pauseProduct(merchantId = 2L, productId = 1L) }
+        assertEquals(ErrorCode.PRODUCT_CANNOT_BE_PAUSED, ex.errorCode)
+    }
+
+    // ── resumeProduct (Phase 12) ───────────────────────────────────────
+
+    @Test
+    fun `resumeProduct - PAUSED 상품을 ACTIVE로 변경한다`() {
+        product.status = ProductStatus.PAUSED
+        whenever(productRepository.findById(1L)).thenReturn(Optional.of(product))
+
+        val result = productService.resumeProduct(merchantId = 2L, productId = 1L)
+
+        assertEquals(ProductStatus.ACTIVE, result.status)
+    }
+
+    @Test
+    fun `resumeProduct - PAUSED가 아닌 상품은 PRODUCT_CANNOT_BE_RESUMED 예외를 던진다`() {
+        whenever(productRepository.findById(1L)).thenReturn(Optional.of(product))
+
+        val ex = assertThrows<BusinessException> { productService.resumeProduct(merchantId = 2L, productId = 1L) }
+        assertEquals(ErrorCode.PRODUCT_CANNOT_BE_RESUMED, ex.errorCode)
+    }
+
+    // ── addStock (Phase 12) ────────────────────────────────────────────
+
+    @Test
+    fun `addStock - 재고를 추가하고 PAUSED 상품을 자동 ACTIVE로 복원한다`() {
+        whenever(productRepository.findById(1L)).thenReturn(Optional.of(product))
+
+        productService.addStock(merchantId = 2L, productId = 1L, additionalStock = 10)
+
+        org.mockito.kotlin.verify(productRepository).incrementStock(1L, 10)
+        org.mockito.kotlin.verify(productRepository).resumeIfRestored(1L)
+    }
+
+    @Test
+    fun `addStock - FORCE_CLOSED 상품에 재고 추가 시 FORBIDDEN 예외를 던진다`() {
+        product.status = ProductStatus.FORCE_CLOSED
+        whenever(productRepository.findById(1L)).thenReturn(Optional.of(product))
+
+        val ex = assertThrows<BusinessException> { productService.addStock(merchantId = 2L, productId = 1L, additionalStock = 5) }
         assertEquals(ErrorCode.FORBIDDEN, ex.errorCode)
     }
 }

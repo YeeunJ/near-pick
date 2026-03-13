@@ -46,4 +46,10 @@ class ReservationEntity(
 
     @Column(name = "updated_at", nullable = false)
     var updatedAt: LocalDateTime = LocalDateTime.now(),
+
+    @Column(name = "visit_code", length = 6)
+    var visitCode: String? = null,
+
+    @Column(name = "completed_at")
+    var completedAt: LocalDateTime? = null,
 )

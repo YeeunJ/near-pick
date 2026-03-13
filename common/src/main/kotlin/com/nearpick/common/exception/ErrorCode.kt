@@ -47,4 +47,15 @@ enum class ErrorCode(
     INVALID_IMAGE_TYPE(400, "허용되지 않는 이미지 형식입니다. (허용: jpg, jpeg, png, webp)"),
     MENU_OPTION_NOT_ALLOWED(400, "메뉴 옵션은 음식/음료 카테고리 상품에만 등록 가능합니다."),
     MENU_OPTION_GROUP_NOT_FOUND(404, "메뉴 옵션 그룹을 찾을 수 없습니다."),
+
+    // Purchase Lifecycle (Phase 12)
+    PRODUCT_NOT_AVAILABLE_YET(422, "아직 판매 시작 전인 상품입니다."),
+    PRODUCT_AVAILABILITY_EXPIRED(422, "판매 기간이 종료된 상품입니다."),
+    PRODUCT_FORCE_CLOSED(403, "관리자에 의해 강제 종료된 상품입니다."),
+    PRODUCT_CANNOT_BE_RESUMED(422, "일시정지 상태인 상품만 재개할 수 있습니다."),
+    PRODUCT_CANNOT_BE_PAUSED(422, "활성 상태인 상품만 일시정지할 수 있습니다."),
+    RESERVATION_VISIT_CODE_INVALID(404, "유효하지 않은 방문 코드입니다."),
+    RESERVATION_ALREADY_COMPLETED(422, "이미 완료된 예약입니다."),
+    FLASH_PURCHASE_CANNOT_BE_CANCELLED(422, "취소할 수 없는 선착순 구매입니다."),
+    FLASH_PURCHASE_PICKUP_CODE_INVALID(404, "유효하지 않은 픽업 코드입니다."),
 }

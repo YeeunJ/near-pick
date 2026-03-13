@@ -1,5 +1,66 @@
 # Archive Index — 2026-03
 
+## phase12-purchase-lifecycle (Phase 12: 구매 라이프사이클 완성)
+
+| 항목 | 내용 |
+|------|------|
+| **아카이브일** | 2026-03-13 |
+| **Match Rate** | 98% (Core Logic 100%, Tests 91%) |
+| **브랜치** | `feature/phase11-product-enhancement` |
+| **경로** | `docs/archive/2026-03/phase12-purchase-lifecycle/` |
+
+### 포함 문서
+
+| 파일 | 설명 |
+|------|------|
+| `phase12-purchase-lifecycle.plan.md` | Phase 12 계획서 |
+| `phase12-purchase-lifecycle.design.md` | Phase 12 설계서 |
+| `phase12-purchase-lifecycle.analysis.md` | Gap Analysis (92% → 98%) |
+| `phase12-purchase-lifecycle.report.md` | 완료 보고서 |
+
+### 주요 완료 항목
+
+- 상품 상태 고도화: PAUSED API (pause/resume), FORCE_CLOSED 버그 수정, stock=0 자동 PAUSED, availableFrom/Until 시행
+- Reservation 플로우 완성: visitCode 생성, COMPLETED/NO_SHOW 상태, 소상공인 취소+재고복원
+- FlashPurchase 플로우 완성: pickupCode 생성, PICKED_UP 상태, 소상공인 취소+DB/Redis 재고복원
+- 재고 복원 정책: 예약·선착순 취소 시 재고 복원, Redis+DB 이중 복원
+- 스케줄러 2개: ReservationScheduler (processNoShow, processExpiredPending), ProductScheduler (pauseExpiredProducts, syncRedisStockWithDb)
+- Reservation 생성 시 재고 감소 (오버부킹 방지)
+- 11개 신규 API 엔드포인트, 9개 ErrorCode 추가
+- 테스트 190개 전체 통과 (Phase 12에서 15개 신규 추가)
+
+---
+
+## phase11-product-enhancement (Phase 11: 상품 고도화 — 카테고리/이미지/메뉴옵션/스펙)
+
+| 항목 | 내용 |
+|------|------|
+| **아카이브일** | 2026-03-13 |
+| **Match Rate** | 96% (1회 반복 없음) |
+| **브랜치** | `feature/phase11-product-enhancement` |
+| **PR** | #15 merged |
+| **경로** | `docs/archive/2026-03/phase11-product-enhancement/` |
+
+### 포함 문서
+
+| 파일 | 설명 |
+|------|------|
+| `phase11-product-enhancement.plan.md` | Phase 11 계획서 |
+| `phase11-product-enhancement.design.md` | Phase 11 설계서 |
+| `phase11-product-enhancement.analysis.md` | Gap Analysis (96%) |
+| `phase11-product-enhancement.report.md` | 완료 보고서 |
+
+### 주요 완료 항목
+
+- 상품 카테고리 체계 (FOOD/BEVERAGE/BEAUTY/DAILY/OTHER)
+- 상품 이미지 업로드 (S3 Presigned URL, 최대 5장)
+- 메뉴 옵션 시스템 (음식/음료 카테고리, 옵션 그룹 + 선택지)
+- 비음식 카테고리 스펙 속성 (JSON TEXT)
+- 카테고리 필터 (nearby, 목록)
+- 9개 API 엔드포인트 + 4개 컨트롤러 신규
+
+---
+
 ## phase11-improvement (Phase 11 보완: Cache Evict + thumbnailUrl + Strategy Pattern)
 
 | 항목 | 내용 |

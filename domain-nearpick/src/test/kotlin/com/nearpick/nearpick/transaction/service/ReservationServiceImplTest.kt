@@ -6,6 +6,7 @@ import com.nearpick.domain.product.ProductStatus
 import com.nearpick.domain.product.ProductType
 import com.nearpick.domain.transaction.ReservationStatus
 import com.nearpick.domain.transaction.dto.ReservationCreateRequest
+import com.nearpick.domain.transaction.dto.ReservationVisitRequest
 import com.nearpick.domain.user.UserRole
 import com.nearpick.nearpick.product.entity.ProductEntity
 import com.nearpick.nearpick.product.repository.ProductRepository
@@ -24,8 +25,11 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 import java.math.BigDecimal
+import java.time.LocalDateTime
 import java.util.Optional
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 @ExtendWith(MockitoExtension::class)
 class ReservationServiceImplTest {
@@ -69,6 +73,7 @@ class ReservationServiceImplTest {
         )
         whenever(userRepository.findById(1L)).thenReturn(Optional.of(consumerUser))
         whenever(productRepository.findById(10L)).thenReturn(Optional.of(activeProduct))
+        whenever(productRepository.decrementStockIfSufficient(10L, 1)).thenReturn(1)
         whenever(reservationRepository.save(any())).thenReturn(savedReservation)
 
         // when
@@ -148,6 +153,7 @@ class ReservationServiceImplTest {
             quantity = 1, status = ReservationStatus.PENDING,
         )
         whenever(reservationRepository.findById(1L)).thenReturn(Optional.of(reservation))
+        whenever(reservationRepository.save(any())).thenReturn(reservation)
 
         // when
         val response = reservationService.confirm(2L, 1L)  // merchantId = 2L
@@ -182,5 +188,124 @@ class ReservationServiceImplTest {
         // when / then
         val ex = assertThrows<BusinessException> { reservationService.confirm(2L, 1L) }
         assertEquals(ErrorCode.RESERVATION_CANNOT_BE_CONFIRMED, ex.errorCode)
+    }
+
+    // ───── visitByCode (Phase 12) ─────
+
+    @Test
+    fun `visitByCode - 유효한 방문 코드로 CONFIRMED 예약을 COMPLETED로 처리한다`() {
+        // given
+        val reservation = ReservationEntity(
+            id = 1L, user = consumerUser, product = activeProduct,
+            quantity = 1, status = ReservationStatus.CONFIRMED, visitCode = "ABC123",
+        )
+        whenever(reservationRepository.findByVisitCode("ABC123")).thenReturn(reservation)
+        whenever(reservationRepository.save(any())).thenReturn(reservation)
+
+        // when
+        val response = reservationService.visitByCode(2L, ReservationVisitRequest("ABC123"))
+
+        // then
+        assertEquals(ReservationStatus.COMPLETED, response.status)
+        assertNull(reservation.visitCode)
+        assertNotNull(reservation.completedAt)
+    }
+
+    @Test
+    fun `visitByCode - 유효하지 않은 코드이면 RESERVATION_VISIT_CODE_INVALID 예외를 던진다`() {
+        whenever(reservationRepository.findByVisitCode("XXXXXX")).thenReturn(null)
+
+        val ex = assertThrows<BusinessException> {
+            reservationService.visitByCode(2L, ReservationVisitRequest("XXXXXX"))
+        }
+        assertEquals(ErrorCode.RESERVATION_VISIT_CODE_INVALID, ex.errorCode)
+    }
+
+    // ───── cancelByMerchant (Phase 12) ─────
+
+    @Test
+    fun `cancelByMerchant - PENDING 예약을 취소하고 재고를 복원한다`() {
+        // given
+        val reservation = ReservationEntity(
+            id = 1L, user = consumerUser, product = activeProduct,
+            quantity = 2, status = ReservationStatus.PENDING,
+        )
+        whenever(reservationRepository.findById(1L)).thenReturn(Optional.of(reservation))
+        whenever(reservationRepository.save(any())).thenReturn(reservation)
+
+        // when
+        val response = reservationService.cancelByMerchant(2L, 1L)
+
+        // then
+        assertEquals(ReservationStatus.CANCELLED, response.status)
+    }
+
+    @Test
+    fun `cancelByMerchant - COMPLETED 상태 예약은 RESERVATION_CANNOT_BE_CANCELLED 예외를 던진다`() {
+        // given
+        val reservation = ReservationEntity(
+            id = 1L, user = consumerUser, product = activeProduct,
+            quantity = 1, status = ReservationStatus.COMPLETED,
+        )
+        whenever(reservationRepository.findById(1L)).thenReturn(Optional.of(reservation))
+
+        // when / then
+        val ex = assertThrows<BusinessException> { reservationService.cancelByMerchant(2L, 1L) }
+        assertEquals(ErrorCode.RESERVATION_CANNOT_BE_CANCELLED, ex.errorCode)
+    }
+
+    // ───── create - availableFrom/Until 검증 (Phase 12) ─────
+
+    @Test
+    fun `create - availableFrom이 미래이면 PRODUCT_NOT_AVAILABLE_YET 예외를 던진다`() {
+        // given
+        val futureProduct = ProductEntity(
+            id = 10L, merchant = merchant, title = "Future Item",
+            price = 5000, productType = ProductType.RESERVATION,
+            status = ProductStatus.ACTIVE, stock = 10,
+            shopLat = BigDecimal("37.5"), shopLng = BigDecimal("127.0"),
+            availableFrom = LocalDateTime.now().plusDays(1),
+        )
+        val request = ReservationCreateRequest(productId = 10L, quantity = 1, memo = null, visitScheduledAt = null)
+        whenever(userRepository.findById(1L)).thenReturn(Optional.of(consumerUser))
+        whenever(productRepository.findById(10L)).thenReturn(Optional.of(futureProduct))
+
+        // when / then
+        val ex = assertThrows<BusinessException> { reservationService.create(1L, 10L, request) }
+        assertEquals(ErrorCode.PRODUCT_NOT_AVAILABLE_YET, ex.errorCode)
+    }
+
+    @Test
+    fun `create - availableUntil이 과거이면 PRODUCT_AVAILABILITY_EXPIRED 예외를 던진다`() {
+        // given
+        val expiredProduct = ProductEntity(
+            id = 10L, merchant = merchant, title = "Expired Item",
+            price = 5000, productType = ProductType.RESERVATION,
+            status = ProductStatus.ACTIVE, stock = 10,
+            shopLat = BigDecimal("37.5"), shopLng = BigDecimal("127.0"),
+            availableUntil = LocalDateTime.now().minusDays(1),
+        )
+        val request = ReservationCreateRequest(productId = 10L, quantity = 1, memo = null, visitScheduledAt = null)
+        whenever(userRepository.findById(1L)).thenReturn(Optional.of(consumerUser))
+        whenever(productRepository.findById(10L)).thenReturn(Optional.of(expiredProduct))
+
+        // when / then
+        val ex = assertThrows<BusinessException> { reservationService.create(1L, 10L, request) }
+        assertEquals(ErrorCode.PRODUCT_AVAILABILITY_EXPIRED, ex.errorCode)
+    }
+
+    // ───── create - 재고 감소 (Phase 12) ─────
+
+    @Test
+    fun `create - RESERVATION 타입 재고 소진 시 OUT_OF_STOCK 예외를 던진다`() {
+        // given
+        val request = ReservationCreateRequest(productId = 10L, quantity = 5, memo = null, visitScheduledAt = null)
+        whenever(userRepository.findById(1L)).thenReturn(Optional.of(consumerUser))
+        whenever(productRepository.findById(10L)).thenReturn(Optional.of(activeProduct))
+        whenever(productRepository.decrementStockIfSufficient(10L, 5)).thenReturn(0)
+
+        // when / then
+        val ex = assertThrows<BusinessException> { reservationService.create(1L, 10L, request) }
+        assertEquals(ErrorCode.OUT_OF_STOCK, ex.errorCode)
     }
 }

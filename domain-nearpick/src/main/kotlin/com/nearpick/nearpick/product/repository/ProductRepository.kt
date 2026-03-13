@@ -46,6 +46,9 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
             JOIN merchant_profiles mp ON mp.user_id = p.merchant_id
             LEFT JOIN product_images pi ON pi.product_id = p.id AND pi.display_order = 0
             WHERE p.status = 'ACTIVE'
+              AND (p.available_from IS NULL OR p.available_from <= NOW())
+              AND (p.available_until IS NULL OR p.available_until >= NOW())
+              AND p.stock > 0
               AND (6371 * ACOS(LEAST(1.0, GREATEST(-1.0,
                     COS(RADIANS(:lat)) * COS(RADIANS(p.shop_lat))
                         * COS(RADIANS(p.shop_lng) - RADIANS(:lng))
@@ -66,6 +69,9 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
             SELECT COUNT(*)
             FROM products p
             WHERE p.status = 'ACTIVE'
+              AND (p.available_from IS NULL OR p.available_from <= NOW())
+              AND (p.available_until IS NULL OR p.available_until >= NOW())
+              AND p.stock > 0
               AND (6371 * ACOS(LEAST(1.0, GREATEST(-1.0,
                     COS(RADIANS(:lat)) * COS(RADIANS(p.shop_lat))
                         * COS(RADIANS(p.shop_lng) - RADIANS(:lng))
@@ -105,4 +111,34 @@ interface ProductRepository : JpaRepository<ProductEntity, Long> {
     @Modifying
     @Query("UPDATE ProductEntity p SET p.stock = p.stock - :quantity WHERE p.id = :id AND p.stock >= :quantity")
     fun decrementStockIfSufficient(@Param("id") id: Long, @Param("quantity") quantity: Int): Int
+
+    /** stock=0이면 ACTIVE → PAUSED 자동 전환 */
+    @Transactional
+    @Modifying
+    @Query("UPDATE ProductEntity p SET p.status = 'PAUSED' WHERE p.id = :id AND p.stock = 0 AND p.status = 'ACTIVE'")
+    fun pauseIfSoldOut(@Param("id") id: Long): Int
+
+    /** 재고 복원 후 PAUSED → ACTIVE 자동 복원 */
+    @Transactional
+    @Modifying
+    @Query("UPDATE ProductEntity p SET p.status = 'ACTIVE' WHERE p.id = :id AND p.stock > 0 AND p.status = 'PAUSED'")
+    fun resumeIfRestored(@Param("id") id: Long): Int
+
+    /** 재고 증가 (addStock, 취소 시 복원) */
+    @Transactional
+    @Modifying
+    @Query("UPDATE ProductEntity p SET p.stock = p.stock + :quantity WHERE p.id = :id")
+    fun incrementStock(@Param("id") id: Long, @Param("quantity") quantity: Int): Int
+
+    /** 스케줄러: availableUntil 만료 → PAUSED */
+    @Transactional
+    @Modifying
+    @Query("""
+        UPDATE ProductEntity p
+        SET p.status = 'PAUSED'
+        WHERE p.status = 'ACTIVE'
+        AND p.availableUntil IS NOT NULL
+        AND p.availableUntil < :now
+    """)
+    fun pauseExpiredProducts(@Param("now") now: java.time.LocalDateTime): Int
 }
