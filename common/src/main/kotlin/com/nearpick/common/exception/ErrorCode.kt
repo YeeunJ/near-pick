@@ -58,4 +58,13 @@ enum class ErrorCode(
     RESERVATION_ALREADY_COMPLETED(422, "이미 완료된 예약입니다."),
     FLASH_PURCHASE_CANNOT_BE_CANCELLED(422, "취소할 수 없는 선착순 구매입니다."),
     FLASH_PURCHASE_PICKUP_CODE_INVALID(404, "유효하지 않은 픽업 코드입니다."),
+
+    // Review System (Phase 13)
+    REVIEW_NOT_FOUND(404, "리뷰를 찾을 수 없습니다."),
+    REVIEW_ALREADY_EXISTS(422, "이미 해당 거래에 대한 리뷰가 존재합니다."),
+    REVIEW_NOT_ELIGIBLE(422, "구매 또는 방문 완료 후에만 리뷰를 작성할 수 있습니다."),
+    REVIEW_BLINDED(403, "블라인드 처리된 리뷰입니다."),
+    REVIEW_REPLY_ALREADY_EXISTS(422, "이미 답글이 존재합니다."),
+    REVIEW_REPLY_NOT_FOUND(404, "답글을 찾을 수 없습니다."),
+    REVIEW_IMAGE_LIMIT_EXCEEDED(422, "리뷰 이미지는 최대 3장까지 등록 가능합니다."),
 }

@@ -8,7 +8,7 @@
 | **Level** | Enterprise |
 | **Stack** | Spring Boot 4.0.3, Kotlin 2.2.21, Java 17 |
 | **Started** | 2026-02-23 |
-| **Last Updated** | 2026-03-13 (Phase 12: 구매 라이프사이클 구현 완료, Report ✅, Match Rate 98%) |
+| **Last Updated** | 2026-03-19 (Phase 13: Check 완료 — Match Rate 98%) |
 
 ## Summary
 
@@ -36,7 +36,7 @@
 | 10 | 위치 & 지도 서비스 | ✅ Completed | 97% | #14 merged |
 | 11 | 상품 고도화 (사진, 카테고리) | ✅ Completed | 96% | - |
 | 12 | 구매 라이프사이클 정리 | ✅ Completed | 98% | - |
-| 13 | 리뷰 시스템 + AI 검증 | ⏳ Pending | - | - |
+| 13 | 리뷰 시스템 + AI 검증 | 🔍 Check | 98% | - |
 | 14 | 사용자 고도화 | ⏳ Pending | - | - |
 | 15 | 종합 QA & 배포 | ⏳ Pending | - | - |
 | 16 | 운영 가시성 강화 (단기) | ⏳ Pending | - | - |
@@ -214,14 +214,23 @@
   - 소상공인 구매 목록 API + 상태별 필터링
   - 신규 API 8개
 
-### Phase 13 — 리뷰 시스템 + AI 검증 ⏳
-- **내용 (예정):**
-  - 리뷰 엔티티 (구매/방문 완료 후에만 작성 가능)
-  - 리뷰: 별점 + 텍스트 + 이미지 (최대 3장)
-  - 소상공인 답글 기능
-  - AI 리뷰 검증 (Claude API): 비속어, 허위 리뷰 패턴 감지 → 자동 블라인드
-  - 리뷰 신고 기능 → 관리자 검토 큐
-  - 상품 평점 자동 집계
+### Phase 13 — 리뷰 시스템 + AI 검증 🔄
+- **상태:** Plan ✅ → Design ✅ → Do ✅ (2026-03-19) → Check ⏳
+- **브랜치:** `feature/phase13-review-system`
+- **구현:**
+  - ReviewEntity / ReviewImageEntity / ReviewReplyEntity (3개 엔티티)
+  - ReviewStatus enum (ACTIVE / BLINDED / DELETED)
+  - 7개 ErrorCode 추가
+  - Flyway V7__review_system.sql (3테이블 + products 평점 컬럼 추가)
+  - ProductEntity averageRating / reviewCount 필드 추가
+  - 3개 Repository (Review / ReviewImage / ReviewReply)
+  - 4개 Domain 서비스 인터페이스 + Mapper
+  - Claude API 비동기 AI 검증 (ReviewAiServiceImpl + NoOpReviewAiServiceImpl)
+  - AsyncConfig (@EnableAsync + reviewAiExecutor 스레드풀)
+  - ReviewServiceImpl / ReviewReplyServiceImpl / ReviewImageServiceImpl
+  - ReviewController (9 endpoints) + AdminReviewController (3 endpoints)
+  - 15개 신규 테스트 (ReviewServiceImplTest 11건, ReviewReplyServiceImplTest 4건)
+  - **전체 136 tests, 0 failures GREEN**
 
 ### Phase 14 — 사용자 고도화 ⏳
 - **내용 (예정):**
