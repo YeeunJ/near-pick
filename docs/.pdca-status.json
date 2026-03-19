@@ -19,6 +19,14 @@
   ],
   "primaryFeature": "exception",
   "features": {
+    "phase13-review-system": {
+      "phase": "archived",
+      "matchRate": 98,
+      "iterationCount": 0,
+      "startedAt": "2026-03-19T00:00:00.000Z",
+      "archivedAt": "2026-03-19T07:30:00.000Z",
+      "archivedTo": "docs/archive/2026-03/phase13-review-system/"
+    },
     "phase12-purchase-lifecycle": {
       "phase": "archived",
       "matchRate": 98,
