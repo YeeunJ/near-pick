@@ -29,6 +29,7 @@ import com.nearpick.nearpick.transaction.repository.ReservationRepository
 import com.nearpick.nearpick.transaction.repository.WishlistRepository
 import com.nearpick.nearpick.user.repository.ConsumerProfileRepository
 import com.nearpick.nearpick.user.repository.MerchantProfileRepository
+import org.redisson.api.RedissonClient
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.cache.annotation.Caching
@@ -51,6 +52,7 @@ class ProductServiceImpl(
     private val productImageService: ProductImageService,
     private val productMenuOptionService: ProductMenuOptionService,
     private val objectMapper: ObjectMapper,
+    private val redissonClient: RedissonClient,
 ) : ProductService {
 
     @Cacheable(
@@ -218,7 +220,12 @@ class ProductServiceImpl(
             throw BusinessException(ErrorCode.FORBIDDEN)
         productRepository.incrementStock(productId, additionalStock)
         productRepository.resumeIfRestored(productId)
-        return productRepository.findById(productId).get().toStatusResponse()
+        if (product.productType == ProductType.FLASH_SALE) {
+            redissonClient.getAtomicLong("stock:flash:$productId").addAndGet(additionalStock.toLong())
+        }
+        return productRepository.findById(productId).orElseThrow {
+            BusinessException(ErrorCode.PRODUCT_NOT_FOUND)
+        }.toStatusResponse()
     }
 
     private fun validateAvailability(product: com.nearpick.nearpick.product.entity.ProductEntity) {

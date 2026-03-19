@@ -39,7 +39,10 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.redisson.api.RAtomicLong
+import org.redisson.api.RedissonClient
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import java.math.BigDecimal
@@ -58,6 +61,7 @@ class ProductServiceImplTest {
     @Mock lateinit var savedLocationRepository: SavedLocationRepository
     @Mock lateinit var productImageService: ProductImageService
     @Mock lateinit var productMenuOptionService: ProductMenuOptionService
+    @Mock lateinit var redissonClient: RedissonClient
 
     private val objectMapper = ObjectMapper().apply { registerModule(kotlinModule()) }
     private lateinit var productService: ProductServiceImpl
@@ -79,6 +83,7 @@ class ProductServiceImplTest {
             productImageService = productImageService,
             productMenuOptionService = productMenuOptionService,
             objectMapper = objectMapper,
+            redissonClient = redissonClient,
         )
 
         merchantUser = UserEntity(id = 2L, email = "merchant@test.com", passwordHash = "h", role = UserRole.MERCHANT)
@@ -455,12 +460,15 @@ class ProductServiceImplTest {
 
     @Test
     fun `addStock - 재고를 추가하고 PAUSED 상품을 자동 ACTIVE로 복원한다`() {
+        val atomicLong = mock<RAtomicLong>()
         whenever(productRepository.findById(1L)).thenReturn(Optional.of(product))
+        whenever(redissonClient.getAtomicLong("stock:flash:1")).thenReturn(atomicLong)
 
         productService.addStock(merchantId = 2L, productId = 1L, additionalStock = 10)
 
-        org.mockito.kotlin.verify(productRepository).incrementStock(1L, 10)
-        org.mockito.kotlin.verify(productRepository).resumeIfRestored(1L)
+        verify(productRepository).incrementStock(1L, 10)
+        verify(productRepository).resumeIfRestored(1L)
+        verify(atomicLong).addAndGet(10L)
     }
 
     @Test
