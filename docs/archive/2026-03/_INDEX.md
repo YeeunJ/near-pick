@@ -1,5 +1,38 @@
 # Archive Index — 2026-03
 
+## phase13-review-system (Phase 13: 리뷰 시스템 + Claude AI 검증)
+
+| 항목 | 내용 |
+|------|------|
+| **아카이브일** | 2026-03-19 |
+| **Match Rate** | 98% (설계 명세 118/118, 0 iterations) |
+| **브랜치** | `feature/phase13-review-system` |
+| **경로** | `docs/archive/2026-03/phase13-review-system/` |
+
+### 포함 문서
+
+| 파일 | 설명 |
+|------|------|
+| `phase13-review-system.plan.md` | Phase 13 계획서 |
+| `phase13-review-system.design.md` | Phase 13 설계서 |
+| `phase13-review-system.analysis.md` | Gap Analysis (98%) |
+| `phase13-review-system.report.md` | 완료 보고서 |
+
+### 주요 완료 항목
+
+- 리뷰 작성/조회/삭제/신고 (Reservation.COMPLETED, FlashPurchase.PICKED_UP 자격 검증)
+- Claude API(claude-haiku-4-5-20251001) 비동기 AI 검증 (pass/fail/need_review, blindPending fallback)
+- 소상공인 답글 작성/삭제 (상품 소유자만 가능)
+- 리뷰 이미지 Presigned URL 발급 + 업로드 확인 (최대 3장)
+- 관리자 블라인드/해제 + 관리자 큐 조회 (blindPending=true OR reportCount>=3)
+- products 평점 집계 자동 갱신 (averageRating, reviewCount)
+- Flyway V7 (리뷰 스키마) + V8 (rating TINYINT→INT)
+- @Async reviewAiExecutor 스레드 풀 (corePoolSize=2, maxPoolSize=5)
+- 12개 API 엔드포인트 (ReviewController 9, AdminReviewController 3)
+- 테스트 217개 전체 통과 (+81: ReviewImageServiceImplTest 신규 6, ReviewServiceImplTest +4, ReviewReplyServiceImplTest +2)
+
+---
+
 ## phase12-purchase-lifecycle (Phase 12: 구매 라이프사이클 완성)
 
 | 항목 | 내용 |

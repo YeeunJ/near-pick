@@ -8,7 +8,7 @@
 | **Level** | Enterprise |
 | **Stack** | Spring Boot 4.0.3, Kotlin 2.2.21, Java 17 |
 | **Started** | 2026-02-23 |
-| **Last Updated** | 2026-03-13 (Phase 12: 구매 라이프사이클 구현 완료, Report ✅, Match Rate 98%) |
+| **Last Updated** | 2026-03-19 (Phase 13: 완료 — Match Rate 98%, 217 tests GREEN) |
 
 ## Summary
 
@@ -36,7 +36,7 @@
 | 10 | 위치 & 지도 서비스 | ✅ Completed | 97% | #14 merged |
 | 11 | 상품 고도화 (사진, 카테고리) | ✅ Completed | 96% | - |
 | 12 | 구매 라이프사이클 정리 | ✅ Completed | 98% | - |
-| 13 | 리뷰 시스템 + AI 검증 | ⏳ Pending | - | - |
+| 13 | 리뷰 시스템 + AI 검증 | ✅ Completed | 98% | - |
 | 14 | 사용자 고도화 | ⏳ Pending | - | - |
 | 15 | 종합 QA & 배포 | ⏳ Pending | - | - |
 | 16 | 운영 가시성 강화 (단기) | ⏳ Pending | - | - |
@@ -202,26 +202,37 @@
 - **산출물:**
   - `docs/04-report/features/phase11-product-enhancement.report.md` (완료 보고서)
 
-### Phase 12 — 구매 라이프사이클 정리 🔄
-- **상태:** Plan ✅ → Design ⏳
-- **브랜치:** `feature/phase12-purchase-lifecycle` (예정)
-- **내용:**
-  - Reservation 상태 플로우: `PENDING → CONFIRMED → VISITED → COMPLETED / CANCELLED / NO_SHOW`
-  - FlashPurchase 상태 플로우: `PENDING → CONFIRMED → PICKED_UP / CANCELLED`
-  - 방문/픽업 코드 시스템 (6자리 텍스트 코드, QR 이미지 제외)
-  - NO_SHOW 자동 스케줄러 (`@Scheduled`, visitScheduledAt + 2시간 초과)
-  - 취소 정책 확장 (소상공인: CONFIRMED 예약/구매 취소 가능, 재고 복원)
-  - 소상공인 구매 목록 API + 상태별 필터링
-  - 신규 API 8개
+### Phase 12 — 구매 라이프사이클 정리 ✅
+- **상태:** Plan ✅ → Design ✅ → Do ✅ → Check ✅ → Report ✅ → Archive ✅
+- **완료일:** 2026-03-13
+- **Match Rate:** 98% (0 iterations)
+- **브랜치:** `feature/phase12-purchase-lifecycle` → PR #16 merged
+- **구현:**
+  - Reservation 플로우 완성: visitCode 생성, COMPLETED/NO_SHOW 상태, 소상공인 취소+재고복원
+  - FlashPurchase 플로우 완성: pickupCode 생성, PICKED_UP 상태, 소상공인 취소+DB/Redis 재고복원
+  - 상품 상태 고도화: PAUSED API (pause/resume), FORCE_CLOSED 버그 수정, stock=0 자동 PAUSED, availableFrom/Until 시행
+  - 재고 복원 정책: 예약·선착순 취소 시 재고 복원, Redis+DB 이중 복원
+  - 스케줄러 2개: ReservationScheduler (processNoShow, processExpiredPending), ProductScheduler (pauseExpiredProducts, syncRedisStockWithDb)
+  - Reservation 생성 시 재고 감소 (오버부킹 방지)
+  - 11개 신규 API 엔드포인트, 9개 ErrorCode 추가
+- **테스트:** 190 tests 전체 통과 (Phase 12에서 15개 신규 추가)
+- **산출물:** `docs/archive/2026-03/phase12-purchase-lifecycle/`
 
-### Phase 13 — 리뷰 시스템 + AI 검증 ⏳
-- **내용 (예정):**
-  - 리뷰 엔티티 (구매/방문 완료 후에만 작성 가능)
-  - 리뷰: 별점 + 텍스트 + 이미지 (최대 3장)
-  - 소상공인 답글 기능
-  - AI 리뷰 검증 (Claude API): 비속어, 허위 리뷰 패턴 감지 → 자동 블라인드
-  - 리뷰 신고 기능 → 관리자 검토 큐
-  - 상품 평점 자동 집계
+### Phase 13 — 리뷰 시스템 + AI 검증 ✅
+- **상태:** Plan ✅ → Design ✅ → Do ✅ → Check ✅ → Report ✅ → Archive ✅
+- **완료일:** 2026-03-19
+- **Match Rate:** 98% (0 iterations)
+- **브랜치:** `feature/phase13-review-system` → PR #17
+- **구현:**
+  - ReviewEntity / ReviewImageEntity / ReviewReplyEntity (3개 엔티티)
+  - ReviewStatus enum (ACTIVE / BLINDED / DELETED), 7개 ErrorCode 추가
+  - Flyway V7 (리뷰 스키마) + V8 (rating TINYINT→INT)
+  - Claude API(claude-haiku-4-5-20251001) 비동기 AI 검증 — pass/fail/need_review, blindPending fallback
+  - AsyncConfig (@EnableAsync + reviewAiExecutor corePoolSize=2, maxPoolSize=5)
+  - ReviewController (9 endpoints) + AdminReviewController (3 endpoints)
+  - products 평점 집계 자동 갱신 (averageRating, reviewCount)
+- **테스트:** 217 tests 전체 통과 (+81: ReviewImageServiceImplTest 신규 포함)
+- **산출물:** `docs/archive/2026-03/phase13-review-system/`
 
 ### Phase 14 — 사용자 고도화 ⏳
 - **내용 (예정):**
